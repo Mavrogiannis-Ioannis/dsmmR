@@ -11,7 +11,7 @@
 
 #' @title Least Square Estimation (LSE) of a Drifting Semi-Markov Chain
 #' @aliases dsmm_fit
-#' @description Least Square Estimation of a Drifting semi-Markov chain,
+#' @description Least Square Estimation of a Drifting Semi-Markov chain,
 #'     given one sequence of states. This estimation is non-parametric and
 #'     the estimation of three different models is available.
 #'
@@ -35,33 +35,32 @@
 #'     should be used for Models 2 and 3. \emph{Currently not supported}.
 #'     Default value is \code{FALSE}.
 #'
-#' @details This function estimates a Drifting Semi-Markov Model the
-#'     non-parametric case. Three possible models are able to be estimated.
+#' @details This function estimates a Drifting Semi-Markov Model in the
+#'     non-parametric case. Three possible models can be estimated.
 #'     More about the three Models in \link{dsmmR}. A normalization technique
 #'     is used in order to correct the estimation errors from small sequences.
 #'
 #' \strong{Model 1}
 #'
-#' When the Transition Matrix of the embedded Markov chain \eqn{p} and
-#' the Conditional Sojourn Time Distribution \eqn{f} are both drifting,
+#' When the transition matrix of the embedded Markov chain \eqn{p} and
+#' the conditional sojourn time distribution \eqn{f} are both drifting,
 #' the Drifting Semi-Markov Kernel can \strong{estimated} as:
 #' \deqn{\hat{q}_{\frac{t}{n}}(u,v,l) =
 #' \sum_{i = 0}^{d}A_{i}\hat{q}_{\frac{i}{d}}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{0,\dots, k_{max} \}},
 #' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-#' \eqn{d} (see \link{dsmmR}). The kernels
+#' \eqn{d} (see \link{dsmmR}). The Semi-Markov kernels
 #' \eqn{\hat{q}_{\frac{i}{d}}(u,v,l), i = 0, \dots, d},
-#' are estimated through LSE, and are obtained after solving the system:
-#' \deqn{MJ = P,}
-#' where
+#' are estimated through Least Square Estimation and are obtained
+#' after solving the system \deqn{MJ = P,} where
 #' \itemize{
 #' \item \eqn{M = (M_{ij})_{i,j \in E} =
 #'     (\sum_{t=1}^{n}1_{u}(t)A_{i}A_{j})_{i,j \in E}};
 #' \item \eqn{J = (J_i)_{i\in E}= (\hat{q}_{\frac{i}{d}}(u,v,l))_{i\in E}};
 #' \item \eqn{P=(P_i)_{i\in E}=(\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t))_{i\in E}},
 #' }
-#' where \eqn{1_{u}(t)} is the identifier function that has the value 1 if
+#' and \eqn{1_{u}(t)} is the identifier function that has the value 1 if
 #' at the instance \eqn{t} the previous state on the
 #' instance \eqn{t-1} was \eqn{u}, and the value 0 otherwise.
 #' \eqn{1_{uvl}(t)} is defined similarly and it has the value 1, if at
@@ -72,9 +71,11 @@
 #' the other cases.
 #'
 #' In order to obtain the estimations of \eqn{\hat{p}_{\frac{i}{d}}(u,v)}
-#' and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, so that the following is satisfied,
+#' and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, so that the following are satisfied,
 #' \deqn{\hat{q}_{\frac{i}{d}}(u,v,l) =
 #'     \hat{p}_{\frac{i}{d}}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l),}
+#' \deqn{\sum_{v \in E}p_{\frac{i}{d}}(u,v) = 1,}
+#' \deqn{\sum_{l = 1}^{k_{max}}f_{\frac{i}{d}}(u,v,l) = 1,}
 #' \eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}}, where
 #' \eqn{k_{max}} is the maximum realized sojourn time,
 #' we use the following estimations:
@@ -108,10 +109,10 @@
 #'     \frac{\hat{q}_{\frac{i}{d}}(u,v,l)}{
 #'        \sum_{i = 0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)},}
 #'
-#' Thus, the \emph{estimated} kernels for Model 2,
+#' Thus, the \emph{estimated} Semi-Markov kernels for Model 2,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) =
 #' \hat{p}_{\frac{i}{d}}(u,v)\hat{f}_{notdrift}(u,v,l)}, can be written with
-#' regards to the \emph{estimated} kernels of Model 1,
+#' regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 #' \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 #'
 #' \deqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) = \frac{
@@ -142,10 +143,10 @@
 #'     \frac{\hat{q}_{\frac{i}{d}}(u,v,l)}{
 #'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}.}
 #'
-#' Thus, the \emph{estimated} kernels for Model 3,
+#' Thus, the \emph{estimated} Semi-Markov kernels for Model 3,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) =
 #' \hat{p}_{notdrift}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l)}, can be written with
-#' regards to the \emph{estimated} kernels of Model 1,
+#' regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 #' \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 #'
 #' \deqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) = \frac{

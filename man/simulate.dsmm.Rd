@@ -7,8 +7,8 @@
 \method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 80L, ...)
 }
 \arguments{
-\item{object}{An object of S3 class.
-\code{`dsmm`,`dsmm_fit`,`dsmm_nonparametric`} or \code{`dsmm_parametric`}.}
+\item{object}{An object of S3 class \code{`dsmm`,`dsmm_fit`}
+\code{`dsmm_nonparametric`} or \code{`dsmm_parametric`}.}
 
 \item{nsim}{Optional. A positive integer specifying the number of simulations
 that will make up the sequence, with the maximum value being the model size

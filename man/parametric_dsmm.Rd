@@ -33,7 +33,7 @@ the state space.}
 for the Drifting Semi-Markov Model.}
 
 \item{p_dist}{Numerical array, representing the probabilities of the
-Transition Matrix \eqn{p} of the embedded Markov chain (it is defined
+transition matrix \eqn{p} of the embedded Markov chain (it is defined
 the same way in the \link{nonparametric_dsmm} function).
 It can be defined in two ways:
 \itemize{
@@ -55,7 +55,7 @@ It can be defined in two ways:
 (see more in \emph{Details, Defined Arguments}.)}}
 
 \item{f_dist_params}{Numerical array, specifying the parameters of the
-Sojourn Time Distributions given in \code{`f_dist`}. \code{NA} is allowed,
+sojourn time distributions given in \code{`f_dist`}. \code{NA} is allowed,
 in the case that the distribution of our choice does not require
 a parameter. It can be defined in two ways:
 \itemize{
@@ -66,7 +66,7 @@ a parameter. It can be defined in two ways:
     \eqn{(s,s,2,d+1)},
     specifying \strong{two} possible parameters required for the discrete
     distributions, but for every single one of the \eqn{i = 0, \dots, d}
-    Sojourn Time Distributions \eqn{f_{\frac{i}{d}}} that are required.
+    sojourn time distributions \eqn{f_{\frac{i}{d}}} that are required.
     (see more in \emph{Details, Defined Arguments}.)}}
 
 \item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
@@ -116,7 +116,7 @@ Semi-Markov model. Returns an object of class \code{dsmm_parametric}.
 
 For the parametric case, we explicitly define:
 \enumerate{
-\item The \emph{Transition Matrix} of the embedded Markov chain, given in
+\item The \emph{transition matrix} of the embedded Markov chain, given in
 the attribute \code{`p_dist`}:
 \itemize{
 \item If \eqn{p} \strong{is not drifting}, it contains the values:
@@ -132,7 +132,7 @@ the attribute \code{`p_dist`}:
     case, and the third dimension corresponds to the \eqn{d+1} different
     matrices \eqn{p_{\frac{i}{d}}.}
 }
-\item The \emph{Conditional Sojourn Time Distribution}, given in the
+\item The \emph{conditional sojourn time distribution}, given in the
 attribute \code{`f_dist`}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the discrete
@@ -147,7 +147,7 @@ attribute \code{`f_dist`}:
     non-drifting case, and the third dimension corresponds to the
     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
 }
-\item The \emph{Conditional Sojourn Time Distribution Parameters},
+\item The \emph{conditional sojourn time distribution parameters},
 given in the attribute \code{`f_dist_params`}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the
@@ -166,7 +166,7 @@ given in the attribute \code{`f_dist_params`}:
 }
 }
 
-\strong{Sojourn Time Distributions}
+\strong{Sojourn time distributions}
 
 In this package, the available distributions for the modeling of the
 conditional sojourn times, of the Drifting Semi-Markov Model, used through

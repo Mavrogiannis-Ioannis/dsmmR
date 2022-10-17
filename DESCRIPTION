@@ -1,6 +1,6 @@
 Type: Package
 Package: dsmmR
-Title: Simulation and Estimation of Drifting Semi-Markov Models
+Title: Estimation and simulation of Drifting Semi-Markov Models
 Version: 0.0.92
 Date: 2022-10-04
 Authors@R: c(
@@ -13,12 +13,17 @@ Authors@R: c(
         role = c("aut", "cre"),
         email = "mavrogiannis.ioa@gmail.com")
         )
-Description: Performs parametric and non-parametric estimation and simulation 
-    for multi-state discrete-time Drifting Semi-Markov processes.
-    For the parametric estimation, several discrete distributions are considered
-    for the sojourn times: Uniform, Geometric, Poisson, Discrete Weibull and
-    Negative Binomial. The non-parametric estimation concerns the sojourn time
-    distributions, where no assumptions are done on the shape of distributions.
+Description: Performs non-parametric estimation and simulation from 
+    parametric and non-parametric model specifications, that concern
+    (multi-state) discrete-time Drifting Semi-Markov processes.
+    Three different models are possible, regarding the number of transition
+    matrices and sojourn time distributions used for the computation of
+    the Semi-Markov kernels, which describe the Drifting Semi-Markov kernel.
+    For the parametric specification several discrete distributions are 
+    considered for the sojourn times: Uniform, Geometric, Poisson,
+    Discrete Weibull and Negative Binomial.
+    For the non-parametric counterpart, no assumptions are done on the shape
+    of the sojourn time distributions.
     Semi-Markov models are described in:
     Barbu, V.S., Limnios, N. (2008) <doi:10.1007/978-0-387-73173-5>.
     Drifting Semi-Markov models are described in:
@@ -30,7 +35,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    spelling
 Encoding: UTF-8
 RoxygenNote: 7.2.1
 NeedsCompilation: yes
@@ -40,4 +44,3 @@ Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
 Depends: R (>= 2.10)
 Config/testthat/edition: 3
-Language: en-US

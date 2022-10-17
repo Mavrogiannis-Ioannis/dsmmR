@@ -56,7 +56,7 @@
 #'
 #' For the non-parametric case, we explicitly define:
 #' \enumerate{
-#' \item The \emph{Transition Matrix} of the embedded Markov chain, given in
+#' \item The \emph{transition matrix} of the embedded Markov chain, given in
 #' the attribute \code{`p_dist`}:
 #' \itemize{
 #' \item If \eqn{p} \strong{is not drifting}, it contains the values:
@@ -73,7 +73,7 @@
 #'     \eqn{d+1} different matrices \eqn{p_{\frac{i}{d}}.}
 #'     }
 #'
-#' \item The \emph{Conditional Sojourn Time Distribution}, given in the
+#' \item The \emph{conditional sojourn time distribution}, given in the
 #' attribute \code{`f_dist`}:
 #' \itemize{
 #' \item If \eqn{f} \strong{is not drifting}, it contains the values:
@@ -82,7 +82,7 @@
 #'     where the first dimension corresponds to the previous state \eqn{u},
 #'     the second dimension corresponds to the current state \eqn{v},
 #'     and the third dimension correspond to the sojourn time \eqn{l};
-#' \item If \eqn{p} \strong{is drifting} then, for\eqn{i\in \{0,\dots,d\}},
+#' \item If \eqn{p} \strong{is drifting} then, for \eqn{i\in \{0,\dots,d\}},
 #'     it contains the values:
 #'     \deqn{f_{\frac{i}{d}}(u,v,l),\forall u,v\in E,
 #'     \forall l\in \{1,\dots,k_{max}\},}

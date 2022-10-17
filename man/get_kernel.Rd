@@ -32,7 +32,7 @@ Default value is 80L. A larger value will result in a considerably larger
 kernel (which has dimensions of \eqn{(s, s, klim, n + 1)}), that will
 require more memory and will slow down considerably the
 \code{`simulate.dsmm()`} method.
-(\link{dsmm_parametric} \link{simulate.dsmm})}
+(\link{dsmm_parametric}, \link{simulate.dsmm})}
 }
 \value{
 An array with dimensions of \eqn{(n+1, s, s, k_{max})}, giving the
@@ -53,7 +53,7 @@ Specifically, it is given as the sum of a linear combination:
 \deqn{q_{\frac{t}{n}}(u,v,l)=
      \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}(u,v,l),}
 where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-\eqn{d} that satisfy certain conditions (r.f. \link{dsmmR}) and
+\eqn{d} that satisfy certain conditions (\link{dsmmR}) and
 \eqn{q_{\frac{i}{d}}(u,v,l), i = 0, \dots, d}
 are \eqn{d + 1} kernels that describe a multiplication between
 a number of Markov Transition Matrices \eqn{p} and

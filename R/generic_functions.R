@@ -288,7 +288,7 @@ is.dsmm_parametric <- function(obj) {
 #' \deqn{q_{\frac{t}{n}}(u,v,l)=
 #'      \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}(u,v,l),}
 #' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-#' \eqn{d} that satisfy certain conditions (r.f. \link{dsmmR}) and
+#' \eqn{d} that satisfy certain conditions (\link{dsmmR}) and
 #' \eqn{q_{\frac{i}{d}}(u,v,l), i = 0, \dots, d}
 #' are \eqn{d + 1} kernels that describe a multiplication between
 #' a number of Markov Transition Matrices \eqn{p} and
@@ -344,7 +344,7 @@ is.dsmm_parametric <- function(obj) {
 #' kernel (which has dimensions of \eqn{(s, s, klim, n + 1)}), that will
 #' require more memory and will slow down considerably the
 #' \code{`simulate.dsmm()`} method.
-#' (\link{dsmm_parametric} \link{simulate.dsmm})
+#' (\link{dsmm_parametric}, \link{simulate.dsmm})
 #'
 #' @return An array with dimensions of \eqn{(n+1, s, s, k_{max})}, giving the
 #' value of \eqn{q_{\frac{t}{n}}(u,v,l)} for the corresponding \eqn{(t,u,v,l)}.
@@ -652,8 +652,8 @@ print.dsmm_parametric <- function(x, ...) {
 #' under the rule of a Drifting Semi-Markov Kernel, which is retrieved from the
 #' object \code{`obj`}, which in turn inherits from the S3 class \code{`dsmm`}.
 #'
-#' @param object An object of S3 class.
-#' \code{`dsmm`,`dsmm_fit`,`dsmm_nonparametric`} or \code{`dsmm_parametric`}.
+#' @param object An object of S3 class \code{`dsmm`,`dsmm_fit`}
+#' \code{`dsmm_nonparametric`} or \code{`dsmm_parametric`}.
 #' @param nsim Optional. A positive integer specifying the number of simulations
 #' that will make up the sequence, with the maximum value being the model size
 #' that is specified in \code{`obj`}. The model size is also the default value.
