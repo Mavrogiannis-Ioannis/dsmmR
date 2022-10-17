@@ -1,0 +1,43 @@
+Type: Package
+Package: dsmmR
+Title: Simulation and Estimation of Drifting Semi-Markov Models
+Version: 0.0.92
+Date: 2022-10-04
+Authors@R: c(
+    person("Vlad Stefan", "Barbu",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0002-0840-016X")),
+    person("Nicolas", "Vergne",
+           role = c("aut")),
+    person("Ioannis", "Mavrogiannis", 
+        role = c("aut", "cre"),
+        email = "mavrogiannis.ioa@gmail.com")
+        )
+Description: Performs parametric and non-parametric estimation and simulation 
+    for multi-state discrete-time Drifting Semi-Markov processes.
+    For the parametric estimation, several discrete distributions are considered
+    for the sojourn times: Uniform, Geometric, Poisson, Discrete Weibull and
+    Negative Binomial. The non-parametric estimation concerns the sojourn time
+    distributions, where no assumptions are done on the shape of distributions.
+    Semi-Markov models are described in:
+    Barbu, V.S., Limnios, N. (2008) <doi:10.1007/978-0-387-73173-5>.
+    Drifting Semi-Markov models are described in:
+    Vergne, N. (2008) <doi:10.2202/1544-6115.1326>.
+License: GPL
+Imports: DiscreteWeibull
+Suggests: 
+    utils,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Encoding: UTF-8
+RoxygenNote: 7.2.1
+NeedsCompilation: yes
+Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
+  Nicolas Vergne [aut], 
+  Ioannis Mavrogiannis [aut, cre]
+Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
+Depends: R (>= 2.10)
+Config/testthat/edition: 3
+URL: https://github.com/Mavrogiannis-Ioannis/dsmmR
+BugReports: https://github.com/Mavrogiannis-Ioannis/dsmmR/issues

@@ -1,0 +1,443 @@
+# '''
+#    1. This file concerns itself with the creation and definition of the
+#    non parametric drifting semi-Markov model, called `dsmm_nonparametric`.
+#    It is a child class of `dsmm`.
+# '''
+
+#' @title Non-parametric semi-Markov model specification
+#' @aliases dsmm_nonparametric nonparametric
+#' @description Creates a non-parametric model specification for a Drifting
+#' Semi-Markov model. Returns an object of class
+#' \code{dsmm_nonparametric}.
+#'
+#' @param model_size Positive integer that specifies the length of the
+#' model \eqn{n}.
+#' @param states Character vector representing the state space \eqn{E}
+#' of choice. It has length equal to \eqn{s}.
+#' @param initial_dist Numerical vector that represents \eqn{s}
+#' probabilities, specifying the initial distribution for each state in
+#' the state space.
+#' @param degree Positive integer that specifies the polynomial degree
+#' \eqn{d} for the Drifting Semi-Markov Model.
+#' @param k_max Positive integer that specifies the maximum sojourn time
+#' of the Drifting Semi-Markov Model.
+#' @param p_dist Numerical array, representing the probabilities of the
+#' Transition Matrix \eqn{p} of the embedded Markov chain (it is defined
+#' the same way in the \link{parametric_dsmm} function).
+#' It can be defined in two ways:
+#' \itemize{
+#' \item If \eqn{p} \strong{is not} drifting, it has dimensions
+#' of \eqn{(s,s)};
+#' \item If \eqn{p} \strong{is} drifting, it has dimensions
+#' of \eqn{(s,s,d+1)} (see more in \emph{Details, Defined Arguments}.)
+#' }
+#'
+#' @param f_dist Numerical array, representing the probabilities of the
+#' conditional sojourn time distributions \eqn{f}.
+#' \code{NA} is allowed for state transitions
+#' that we do not wish to have a sojourn time distribution
+#' (e.g. all state transition to the same state should have \code{NA}
+#' as their value).
+#' It can be defined in two ways:
+#' \itemize{
+#' \item If \eqn{f} \strong{is not} drifting, it has dimensions of
+#'  \eqn{(s,s,k_{max})};
+#' \item If \eqn{f} \strong{is} drifting, it has dimensions of
+#'  \eqn{(s,s,k_{max},d+1)}
+#' (see more in \emph{Details, Defined Arguments}.)
+#' }
+#'
+#' @param f_is_drifting Logical. Specifies if \eqn{f} is drifting or not.
+#' @param p_is_drifting Logical. Specifies if \eqn{p} is drifting or not.
+#'
+#' @details
+#'
+#' \strong{Defined Arguments}
+#'
+#' For the non-parametric case, we explicitly define:
+#' \enumerate{
+#' \item The \emph{Transition Matrix} of the embedded Markov chain, given in
+#' the attribute \code{`p_dist`}:
+#' \itemize{
+#' \item If \eqn{p} \strong{is not drifting}, it contains the values:
+#'     \deqn{p(u,v), \forall u, v \in E,}
+#'     given in an array with dimensions of \eqn{(s, s)},
+#'     where the first dimension corresponds to the previous state \eqn{u}
+#'     and the second dimension corresponds to the current state \eqn{v};
+#' \item If \eqn{p} \strong{is drifting} then, for \eqn{i \in\{0,\dots,d\}},
+#'     it contains the values:
+#'     \deqn{p_{\frac{i}{d}}(u,v), \forall u, v \in E,}
+#'     given in an array with dimensions of \eqn{(s, s, d + 1)},
+#'     where the first and second dimensions are defined as in the
+#'     non-drifting case, and the third dimension corresponds to the
+#'     \eqn{d+1} different matrices \eqn{p_{\frac{i}{d}}.}
+#'     }
+#'
+#' \item The \emph{Conditional Sojourn Time Distribution}, given in the
+#' attribute \code{`f_dist`}:
+#' \itemize{
+#' \item If \eqn{f} \strong{is not drifting}, it contains the values:
+#'     \deqn{f(u,v,l), \forall u,v\in E,\forall l\in \{1,\dots,k_{max}\},}
+#'     given in an array with dimensions of \eqn{(s,s,k_{max})},
+#'     where the first dimension corresponds to the previous state \eqn{u},
+#'     the second dimension corresponds to the current state \eqn{v},
+#'     and the third dimension correspond to the sojourn time \eqn{l};
+#' \item If \eqn{p} \strong{is drifting} then, for\eqn{i\in \{0,\dots,d\}},
+#'     it contains the values:
+#'     \deqn{f_{\frac{i}{d}}(u,v,l),\forall u,v\in E,
+#'     \forall l\in \{1,\dots,k_{max}\},}
+#'     given in an array with dimensions of \eqn{(s,s,k_{max}, d + 1)},
+#'     where the first, second and third dimensions are defined as in the
+#'     non-drifting case, and the fourth dimension corresponds to the
+#'     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
+#'     }
+#' }
+#'
+#' @return Returns an object of the S3 class
+#'         \code{`dsmm_nonparametric`,`dsmm`}.
+#' \itemize{
+#' \item \code{dist} : List. Contains 2 arrays:
+#' \itemize{
+#' \item \code{`p_drift`} or \code{`p_notdrift`}, corresponding to the
+#' defined \eqn{p} transition matrix.
+#' \item \code{`f_drift`} or \code{`f_notdrift`}, corresponding to the
+#' defined \eqn{f} sojourn time distribution.
+#' }
+#' \item \code{model_size} : Positive integer that contains the length
+#' of the model; This is equal to \code{length(seq) - 1}, for \code{`seq`}
+#' as defined above.
+#' \item \code{states} : Character vector that contains the realized states
+#' given in the argument \code{`sequence`};
+#' \item \code{s} : Positive integer that contains the length of the state
+#' space \eqn{E} given in the attribute \code{`states`}.
+#' \item \code{initial_dist} : Numerical vector that contains an estimation
+#' for the initial distribution of the realized states in \code{`sequence`};
+#' \item \code{degree} : Positive integer that contains the polynomial
+#' degree \eqn{d} considered for the drifting of the model.
+#' \item \code{k_max} : Numerical value that contains the maximum sojourn
+#' time, meaning the maximum value in \code{`soj_times`};
+#' \item \code{f_is_drifting} : Logical. Passing down from the arguments.
+#' \item \code{p_is_drifting} : Logical. Passing down from the arguments.
+#' \item \code{Model} : Character vector. Possible values:
+#' \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
+#' \eqn{p,f} are drifting or not.
+#' \item \code{A_i} : Numerical Matrix. Used for the methods defined for the
+#' object. Is not printed when viewing the object.
+#' }
+#'
+#'
+#' @seealso
+#' More theory: \link{dsmmR}, \link{fit_dsmm}, \link{parametric_dsmm}.
+#'
+#' Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
+#'
+#' (Fast) Random Sequence simulation: \link{create_sequence}
+#'
+#' @references
+#' V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov
+#' Models Toward Applications - Their Use in Reliability and DNA Analysis.
+#' New York: Lecture Notes in Statistics, vol. 191, Springer.
+#'
+#' @export
+#'
+#' @examples
+#' # Setup.
+#' states <- c("AA", "AC", "CC")
+#' s <- length(states)
+#' d <- 2
+#' k_max <- 3
+#' # ===========================================================================
+#' # Defining distributions for Model 1 - both p and f are drifting.
+#'
+#' # `p_dist` has dimensions of: (s, s, d + 1).
+#' # Sums over v must be 1 for all u and i = 0, ..., d.
+#' p_dist_1 <- matrix(c(0, 0.1, 0.9,
+#'                      0.5, 0, 0.5,
+#'                      0.3, 0.7, 0),
+#'                    ncol = s, byrow = TRUE)
+#'
+#' p_dist_2 <- matrix(c(0, 0.6, 0.4,
+#'                      0.7, 0, 0.3,
+#'                      0.6, 0.4, 0),
+#'                    ncol = s, byrow = TRUE)
+#'
+#' p_dist_3 <- matrix(c(0, 0.2, 0.8,
+#'                      0.6, 0, 0.4,
+#'                      0.7, 0.3, 0),
+#'                    ncol = s, byrow = TRUE)
+#'
+#' # Get `p_dist` as an array of p_dist_1, p_dist_2 and p_dist_3.
+#' p_dist <- array(c(p_dist_1, p_dist_2, p_dist_3),
+#'                 dim = c(s, s, d + 1))
+#'
+#' # `f_dist` has dimensions of: (s, s, k_max, d + 1).
+#' # First f distribution. Dimensions: (s, s, k_max).
+#' # Sums over l must be 1, for every u, v and i = 0, ..., d.
+#' f_dist_1_l_1 <- matrix(c(0, 0.2, 0.7,
+#'                          0.3, 0, 0.4,
+#'                          0.2, 0.8, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_1_l_2 <- matrix(c(0, 0.3, 0.2,
+#'                          0.2, 0, 0.5,
+#'                          0.1, 0.15, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_1_l_3 <- matrix(c(0, 0.5, 0.1,
+#'                          0.5, 0, 0.1,
+#'                          0.7, 0.05, 0),
+#'                        ncol = s, byrow = TRUE)
+#' # Get f_dist_1
+#' f_dist_1 <- array(c(f_dist_1_l_1, f_dist_1_l_2, f_dist_1_l_3),
+#'                   dim = c(s, s, k_max))
+#'
+#' # Second f distribution. Dimensions: (s, s, k_max)
+#' f_dist_2_l_1 <- matrix(c(0, 1/3, 0.4,
+#'                          0.3, 0, 0.4,
+#'                          0.2, 0.1, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_2_l_2 <- matrix(c(0, 1/3, 0.4,
+#'                          0.4, 0, 0.2,
+#'                          0.3, 0.4, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_2_l_3 <- matrix(c(0, 1/3, 0.2,
+#'                          0.3, 0, 0.4,
+#'                          0.5, 0.5, 0),
+#'                        ncol = s, byrow = TRUE)
+#' # Get f_dist_2
+#' f_dist_2 <- array(c(f_dist_2_l_1, f_dist_2_l_2, f_dist_2_l_3),
+#'                   dim = c(s, s, k_max))
+#'
+#' # Third f distribution. Dimensions: (s, s, k_max)
+#' f_dist_3_l_1 <- matrix(c(0, 0.3, 0.3,
+#'                          0.3, 0, 0.5,
+#'                          0.05, 0.1, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_3_l_2 <- matrix(c(0, 0.2, 0.6,
+#'                          0.3, 0, 0.35,
+#'                          0.9, 0.2, 0),
+#'                        ncol = s, byrow = TRUE)
+#' f_dist_3_l_3 <- matrix(c(0, 0.5, 0.1,
+#'                          0.4, 0, 0.15,
+#'                          0.05, 0.7, 0),
+#'                        ncol = s, byrow = TRUE)
+#' # Get f_dist_3
+#' f_dist_3 <- array(c(f_dist_3_l_1, f_dist_3_l_2, f_dist_3_l_3),
+#'                   dim = c(s, s, k_max))
+#'
+#' # Get f_dist as an array of f_dist_1, f_dist_2 and f_dist_3.
+#' f_dist <- array(c(f_dist_1, f_dist_2, f_dist_3),
+#'                   dim = c(s, s, k_max, d + 1))
+#'
+#' # ===========================================================================
+#' # Non-Parametric object for Model 1 - both p and f are drifting.
+#' obj_nonpar_model_1 <- nonparametric_dsmm(
+#'     model_size = 8000,
+#'     states = states,
+#'     initial_dist = c(0.3, 0.5, 0.2),
+#'     degree = d,
+#'     k_max = k_max,
+#'     p_dist = p_dist,
+#'     f_dist = f_dist,
+#'     p_is_drifting = TRUE,
+#'     f_is_drifting = TRUE
+#' )
+#'
+#' # p drifting array.
+#' p_drift <- obj_nonpar_model_1$dist$p_drift
+#' p_drift
+#'
+#' # f distribution.
+#' f_drift <- obj_nonpar_model_1$dist$f_drift
+#' f_drift
+#'
+#'
+#' # ===========================================================================
+#' # Defining Model 2 - p is drifting, f is not drifting.
+#' #
+#' # p_dist has the same dimensions as in Model 1: (s, s, d + 1).
+#' # Sums over v must be 1 for every u and i = 0, ..., d.
+#' p_dist_model_2 <- array(c(p_dist_1, p_dist_2, p_dist_3),
+#'                         dim = c(s, s, d + 1))
+#'
+#' # f_dist has dimensions of # (s,s,k_{max}) #
+#' # Sums over l must be 1 for every u and v.
+#' f_dist_model_2 <- f_dist_2
+#'
+#'
+#' # Non-Parametric object for Model 2.
+#' obj_nonpar_model_2 <- nonparametric_dsmm(
+#'     model_size = 10000,
+#'     states = states,
+#'     initial_dist = c(0.7, 0.1, 0.2),
+#'     degree = d,
+#'     k_max = k_max,
+#'     p_dist = p_dist_model_2,
+#'     f_dist = f_dist_model_2,
+#'     p_is_drifting = TRUE,
+#'     f_is_drifting = FALSE
+#' )
+#'
+#' # p drifting array.
+#' p_drift <- obj_nonpar_model_2$dist$p_drift
+#' p_drift
+#'
+#' # f distribution array.
+#' f_notdrift <- obj_nonpar_model_2$dist$f_notdrift
+#' f_notdrift
+#'
+#'
+#'
+#' # ===========================================================================
+#' # Defining Model 3.
+#' # `p_dist` has dimensions of: (s, s, d + 1).
+#' p_dist_model_3 <- p_dist_3
+#'
+#' # `f_dist` has the same dimensions as in Model 1: (s, s, d + 1).
+#' f_dist_model_3 <- array(c(f_dist_1, f_dist_2, f_dist_3),
+#'
+#'                         dim = c(s, s, k_max, d + 1))
+#'
+#' # Non-Parametric object for Model 2.
+#' obj_nonpar_model_3 <- nonparametric_dsmm(
+#'     model_size = 10000,
+#'     states = states,
+#'     initial_dist = c(0.3, 0.4, 0.3),
+#'     degree = d,
+#'     k_max = k_max,
+#'     p_dist = p_dist_model_3,
+#'     f_dist = f_dist_model_3,
+#'     p_is_drifting = FALSE,
+#'     f_is_drifting = TRUE
+#' )
+#'
+#' # p distribution matrix.
+#' p_notdrift <- obj_nonpar_model_3$dist$p_notdrift
+#' p_notdrift
+#'
+#' # f distribution array.
+#' f_drift <- obj_nonpar_model_3$dist$f_drift
+#' f_drift
+#'
+#' # ===========================================================================
+#' # Using some methods for non-parametric objects.
+#' kernel_parametric <- get_kernel(obj = obj_nonpar_model_3)
+#' str(kernel_parametric)
+#'
+#' sim_seq_par <- simulate(obj_nonpar_model_3, nsim = 50)
+#' str(sim_seq_par)
+nonparametric_dsmm <- function(model_size,
+                               states,
+                               initial_dist,
+                               degree,
+                               k_max,
+                               p_dist,
+                               f_dist,
+                               f_is_drifting,
+                               p_is_drifting) {
+    # Check for the validity of parameters given.
+    if (missing(model_size)) {
+        stop("\nPlease provide a character vector for the",
+             " `model_size` parameter.")
+    }
+    stopifnot(is_integer(model_size))
+    model_size <- as.integer(model_size)
+    # State Space
+    if (missing(states)) {
+        stop("\nPlease provide a character vector for the `states`",
+             " of the State Space.")
+    }
+    stopifnot(valid_states(states))
+    s <- length(states)
+    # Initial Distribution
+    if (missing(initial_dist)) {
+        stop("\nPlease provide a numeric vector for the ",
+             "initial distribution defined in `initial_dist`.")
+    }
+    stopifnot(valid_initial_dist(initial_dist, s))
+    names(initial_dist) <- states
+    # degree
+    if (missing(degree)) {
+        stop("\nPlease provide the polynomial `degree` as an integer.")
+    }
+    stopifnot(valid_degree(degree))
+    degree <- as.integer(degree)
+    # k_max
+    if (missing(k_max)) {
+        stop("\nPlease provide the maximum sojourn time `k_max`",
+             "as an integer.")
+    }
+    stopifnot(is_integer(k_max))
+    k_max <- as.integer(k_max)
+    # f_is_drifting
+    if (missing(f_is_drifting)) {
+        stop("\nPlease provide whether the sojourn time distribution f is",
+             " drifting through the logical parameter `f_is_drifting`.")
+    } else if (!is_logical(f_is_drifting)) {
+        stop("\nThe logical parameter `f_is_drifting` should be",
+             " either TRUE or FALSE.")
+    }
+    # p_is_drifting
+    if (missing(p_is_drifting)) {
+        stop("\nPlease provide whether the transition matrix p is drifting",
+             " through the logical parameter `p_is_drifting`.")
+    } else if (!is_logical(p_is_drifting)) {
+        stop("\nThe logical parameter `p_is_drifting` should be",
+             " either TRUE or FALSE.")
+    }
+    # p_dist
+    if (missing(p_dist)) {
+        stop("\nPlease provide the `p_dist` array.")
+    }
+    # f_dist
+    if (missing(f_dist)) {
+        stop("\nPlease provide the `f_dist` array.")
+    }
+    stopifnot(valid_model(p_is_drifting = p_is_drifting,
+                          f_is_drifting = f_is_drifting),
+              valid_p_dist(p_dist = p_dist,
+                           s = s, degree = degree,
+                           p_is_drifting = p_is_drifting,
+                           states = states),
+              valid_fdist_nonparametric(f_dist = f_dist,
+                                        states = states, s = s,
+                                        degree = degree, k_max = k_max,
+                                        f_is_drifting = f_is_drifting)
+    )
+    # Assign names for p_dist, f_dist, f_dist_parameters.
+    # Empty the names first so the process works as intended.
+    dimnames(p_dist) <- NULL
+    dimnames(f_dist) <- NULL
+    dimnames(p_dist) <- list(as.list(states), as.list(states))
+    dimnames(f_dist) <- list(as.list(states), as.list(states),
+                             as.list(paste0("l = ", 1:k_max)))
+    if (p_is_drifting) {
+        dimnames(p_dist)[[3]] <- as.list(names_i_d(degree, 'p'))
+    }
+    if (f_is_drifting) {
+        dimnames(f_dist)[[4]] <- as.list(names_i_d(degree, 'f'))
+    }
+    # Get `dist`.
+    model <- get_model(p_is_drifting, f_is_drifting)
+    if (model == "Model_1") {
+        dist <- list('p_drift' = p_dist, 'f_drift' = f_dist)
+    } else if (model == "Model_2") {
+        dist <- list("p_drift" = p_dist, "f_notdrift" = f_dist)
+    } else if (model == "Model_3") {
+        dist <- list("p_notdrift" = p_dist, "f_drift" = f_dist)
+    }
+    # Assign the values to the object.
+    obj <- list(
+        "dist" = dist,
+        "model_size" = model_size,
+        "states" = states,
+        "s" =  s,
+        "initial_dist" = initial_dist,
+        "degree" = degree,
+        "k_max" = k_max,
+        "f_is_drifting" = f_is_drifting,
+        "p_is_drifting" = p_is_drifting,
+        "Model" = model,
+        "A_i" =  get_A_i(degree, model_size) # Not shown through `print`.
+    )
+    class(obj) <- c("dsmm_nonparametric", "dsmm")
+    return(obj)
+}
