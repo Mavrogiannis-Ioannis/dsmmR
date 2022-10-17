@@ -29,7 +29,8 @@ Suggests:
     utils,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    spelling
 Encoding: UTF-8
 RoxygenNote: 7.2.1
 NeedsCompilation: yes
@@ -39,5 +40,4 @@ Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
 Depends: R (>= 2.10)
 Config/testthat/edition: 3
-URL: https://github.com/Mavrogiannis-Ioannis/dsmmR
-BugReports: https://github.com/Mavrogiannis-Ioannis/dsmmR/issues
+Language: en-US

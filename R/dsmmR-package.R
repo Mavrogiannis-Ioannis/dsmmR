@@ -9,7 +9,7 @@
 #' \strong{Introduction}
 #'
 #' The difference between the Markov model and the semi-Markov model concerns
-#' the modelling of the sojourn time.
+#' the modeling of the sojourn time.
 #' The Markov Models are modeled by a (discrete time) Geometric distribution.
 #' However, for a Semi-Markov Model, the sojourn time can be \emph{arbitrarily}
 #' distributed. The further difference with a \emph{Drifting Semi-Markov Model},
@@ -74,7 +74,7 @@
 #' of the model with size (or length) \eqn{n}.
 #'
 #'
-#' @section Parametric and Non-parametric modelling :
+#' @section Parametric and Non-parametric modeling :
 #'
 #' For the \emph{parametric estimation} of a Drifting Semi-Markov Model,
 #' several discrete distributions are considered for the
