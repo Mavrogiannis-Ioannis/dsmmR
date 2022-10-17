@@ -7,10 +7,10 @@
 \title{dsmmR : Estimation and Simulation of Drifting Semi-Markov Models}
 \description{
 This package performs non-parametric estimation
-and simulation based upon parametric and nonparametric model specifications,
-for discrete-time Drifting Semi-Markov processes. Three possible
-models are considered, regarding the number of transition matrices
-and sojourn time distributions used for the computation of the
+and simulation based upon parametric and non-parametric model
+specifications, for discrete-time Drifting Semi-Markov processes.
+Three possible models are considered, regarding the number of transition
+matrices and sojourn time distributions used for the computation of the
 Semi-Markov kernels which characterize the Drifting Semi-Markov kernel.
 }
 \details{
