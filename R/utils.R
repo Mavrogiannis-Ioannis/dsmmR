@@ -886,15 +886,15 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 #' probabilities for each of the states in \code{`states`}. Default value
 #' is equal to 1 over the number of states given, for every state.
 #' @param seed Optional. Object specifying the initialization of the random
-#' number generator (see more in \link{set.seed}).
+#' number generator (see more in \code{\link[base:set.seed]{set.seed}}).
 #'
 #' @seealso
 #' For the simulation of a sequence with a Drifting Semi-Markov Kernel
 #' \link{simulate.dsmm}.
 #'
-#' The original function \link{sample} that this function uses.
+#' The original function \code{\link[base:sample]{sample}} that this function uses.
 #'
-#' \link{RNG} about random number generation in R.
+#' \code{\link[base:RNG]{RNG}} about random number generation in R.
 #'
 #' @return A character sequence of length \code{`len`}.
 #' @export

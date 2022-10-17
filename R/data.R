@@ -16,7 +16,7 @@
 #'
 #' @keywords datasets
 #'
-#' @seealso \code{\link[utils]{data}}
+#' @seealso \code{\link[utils:data]{data}}
 #'
 #' @examples
 #' data(lambda, package = "dsmmR")

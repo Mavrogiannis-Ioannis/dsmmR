@@ -27,6 +27,6 @@ str(sequence)
 # > chr [1:48502] "g" "g" "g" "c" "g" "g" "c" "g" "a" "c" "c" "t" ...
 }
 \seealso{
-\code{\link[utils]{data}}
+\code{\link[utils:data]{data}}
 }
 \keyword{datasets}

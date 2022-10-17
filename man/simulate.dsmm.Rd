@@ -58,6 +58,6 @@ str(cut_sim)
 }
 \seealso{
 \link{create_sequence} for simulation of random sequences.
-\link{RNG} about random number generation in R. \link{dsmmR},
+\code{\link[base:RNG]{RNG}} about random number generation in R. \link{dsmmR},
 \link{fit_dsmm}, \link{parametric_dsmm} \link{nonparametric_dsmm}
 }

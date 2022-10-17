@@ -669,7 +669,7 @@ print.dsmm_parametric <- function(x, ...) {
 #' Currently not used.
 #'
 #' @seealso \link{create_sequence} for simulation of random sequences.
-#' \link{RNG} about random number generation in R. \link{dsmmR},
+#' \code{\link[base:RNG]{RNG}} about random number generation in R. \link{dsmmR},
 #' \link{fit_dsmm}, \link{parametric_dsmm} \link{nonparametric_dsmm}
 #' @return A character vector based on \code{`nsim`} simulations, with a
 #' maximum length of \code{`seq_length`}.
