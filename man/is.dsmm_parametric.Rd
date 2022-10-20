@@ -2,18 +2,18 @@
 % Please edit documentation in R/generic_functions.R
 \name{is.dsmm_parametric}
 \alias{is.dsmm_parametric}
-\title{Function to check if an object is of class \code{`dsmm_parametric`}}
+\title{Function to check if an object is of class \code{dsmm_parametric}}
 \usage{
 is.dsmm_parametric(obj)
 }
 \arguments{
-\item{obj}{Arbitrary \code{`R`} object.}
+\item{obj}{Arbitrary \code{R} object.}
 }
 \value{
-`TRUE` or `FALSE`.
+TRUE or FALSE.
 }
 \description{
-It checks for inheritance of the class \code{`dsmm_parametric`}
+It checks for inheritance of the class \code{dsmm_parametric}
 and also for the validity of the attributes specified.
 }
 \seealso{

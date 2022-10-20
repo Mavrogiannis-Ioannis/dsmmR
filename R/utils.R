@@ -876,27 +876,29 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 
 # Random sequence creation
 #' @title Simulate a sequence for states of choice.
-#' @description This is a wrapper function around \code{`sample()`}.
-#'
+#' @description This is a wrapper function around \code{sample()}.
+#'-
 #' @param states Character vector of unique values. If given the value
 #' "DNA" the values c("a", "c", "g", "t") are given instead.
 #' @param len Optional. Positive integer with the default value
 #' equal to 5000L.
 #' @param probs Optional. Numeric vector with values interpreted as
-#' probabilities for each of the states in \code{`states`}. Default value
+#' probabilities for each of the states in \code{states}. Default value
 #' is equal to 1 over the number of states given, for every state.
 #' @param seed Optional. Object specifying the initialization of the random
 #' number generator (see more in \code{\link[base:set.seed]{set.seed}}).
 #'
 #' @seealso
-#' For the simulation of a sequence with a Drifting Semi-Markov Kernel
+#' For the simulation of a sequence with a Drifting Semi-Markov kernel:
 #' \link{simulate.dsmm}.
 #'
-#' The original function \code{\link[base:sample]{sample}} that this function uses.
+#' The original function: \code{\link[base:sample]{sample}}.
 #'
 #' \code{\link[base:RNG]{RNG}} about random number generation in R.
 #'
-#' @return A character sequence of length \code{`len`}.
+#' For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+#'
+#' @return A character sequence of length \code{len}.
 #' @export
 #' @examples
 #' # This is equal to having the argument `probs = c(1/4, 1/4, 1/4, 1/4)`.

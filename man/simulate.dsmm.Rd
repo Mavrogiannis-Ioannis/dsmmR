@@ -2,40 +2,40 @@
 % Please edit documentation in R/generic_functions.R
 \name{simulate.dsmm}
 \alias{simulate.dsmm}
-\title{Simulate a sequence under a Drifting Semi-Markov Model.}
+\title{Simulate a sequence under a Drifting Semi-Markov kernel.}
 \usage{
 \method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 80L, ...)
 }
 \arguments{
-\item{object}{An object of S3 class \code{`dsmm`,`dsmm_fit`}
-\code{`dsmm_nonparametric`} or \code{`dsmm_parametric`}.}
+\item{object}{An object of S3 class \code{dsmm,dsmm_fit}
+\code{dsmm_nonparametric} or \code{dsmm_parametric}.}
 
 \item{nsim}{Optional. A positive integer specifying the number of simulations
 that will make up the sequence, with the maximum value being the model size
-that is specified in \code{`obj`}. The model size is also the default value.}
+that is specified in \code{obj}. The model size is also the default value.}
 
 \item{seed}{Optional. An integer specifying the initialization of the random
 number generator.}
 
 \item{seq_length}{Optional. A positive integer that will ensure the simulated
-sequence will not have a \emph{total length} greater than \code{`seq_length`}
+sequence will not have a \emph{total length} greater than \code{seq_length}
 (however, it is possible for the total length to be \emph{less} than
-\code{`seq_length`}).}
+\code{seq_length}).}
 
-\item{klim}{Optional. Positive integer. Passed down to \code{`get_kernel`}
-for the parametric object, with class \code{`dsmm_parametric`}.}
+\item{klim}{Optional. Positive integer. Passed down to \code{get_kernel}
+for the parametric object, with class \code{dsmm_parametric}.}
 
-\item{...}{Attributes passed down from the \code{`simulate`} method.
+\item{...}{Attributes passed down from the \code{simulate} method.
 Currently not used.}
 }
 \value{
-A character vector based on \code{`nsim`} simulations, with a
-maximum length of \code{`seq_length`}.
+A character vector based on \code{nsim} simulations, with a
+maximum length of \code{seq_length}.
 }
 \description{
-Generic function that simulates a number of states \code{`nsim`}
-under the rule of a Drifting Semi-Markov Kernel, which is retrieved from the
-object \code{`obj`}, which in turn inherits from the S3 class \code{`dsmm`}.
+Generic function that simulates a number of states \code{nsim}
+under the rule of a Drifting Semi-Markov kernel, which is retrieved from the
+object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
 }
 \examples{
 # Setup.
@@ -57,7 +57,9 @@ str(short_sim)
 str(cut_sim)
 }
 \seealso{
-\link{create_sequence} for simulation of random sequences.
-\code{\link[base:RNG]{RNG}} about random number generation in R. \link{dsmmR},
-\link{fit_dsmm}, \link{parametric_dsmm} \link{nonparametric_dsmm}
+About random number generation in R \code{\link[base:RNG]{RNG}}.
+
+Fitting a model through a sequence from this function: \link{fit_dsmm}.
+
+For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
 }

@@ -4,7 +4,7 @@
 \alias{nonparametric_dsmm}
 \alias{dsmm_nonparametric}
 \alias{nonparametric}
-\title{Non-parametric semi-Markov model specification}
+\title{Non-parametric Drifting Semi-Markov Model specification}
 \usage{
 nonparametric_dsmm(
   model_size,
@@ -30,10 +30,10 @@ probabilities, specifying the initial distribution for each state in
 the state space.}
 
 \item{degree}{Positive integer that specifies the polynomial degree
-\eqn{d} for the Drifting Semi-Markov Model.}
+\eqn{d} for the Drifting Semi-Markov model.}
 
 \item{k_max}{Positive integer that specifies the maximum sojourn time
-of the Drifting Semi-Markov Model.}
+of the Drifting Semi-Markov model.}
 
 \item{p_dist}{Numerical array, representing the probabilities of the
 Transition Matrix \eqn{p} of the embedded Markov chain (it is defined
@@ -67,28 +67,28 @@ It can be defined in two ways:
 }
 \value{
 Returns an object of the S3 class
-        \code{`dsmm_nonparametric`,`dsmm`}.
+        \code{dsmm_nonparametric,dsmm}.
 \itemize{
 \item \code{dist} : List. Contains 2 arrays:
 \itemize{
-\item \code{`p_drift`} or \code{`p_notdrift`}, corresponding to the
+\item \code{p_drift} or \code{p_notdrift}, corresponding to the
 defined \eqn{p} transition matrix.
-\item \code{`f_drift`} or \code{`f_notdrift`}, corresponding to the
+\item \code{f_drift} or \code{f_notdrift}, corresponding to the
 defined \eqn{f} sojourn time distribution.
 }
 \item \code{model_size} : Positive integer that contains the length
-of the model; This is equal to \code{length(seq) - 1}, for \code{`seq`}
+of the model; This is equal to \code{length(seq) - 1}, for \code{seq}
 as defined above.
 \item \code{states} : Character vector that contains the realized states
-given in the argument \code{`sequence`};
+given in the argument \code{sequence};
 \item \code{s} : Positive integer that contains the length of the state
-space \eqn{E} given in the attribute \code{`states`}.
+space \eqn{E} given in the attribute \code{states}.
 \item \code{initial_dist} : Numerical vector that contains an estimation
-for the initial distribution of the realized states in \code{`sequence`};
+for the initial distribution of the realized states in \code{sequence};
 \item \code{degree} : Positive integer that contains the polynomial
 degree \eqn{d} considered for the drifting of the model.
 \item \code{k_max} : Numerical value that contains the maximum sojourn
-time, meaning the maximum value in \code{`soj_times`};
+time, meaning the maximum value in \code{soj_times};
 \item \code{f_is_drifting} : Logical. Passing down from the arguments.
 \item \code{p_is_drifting} : Logical. Passing down from the arguments.
 \item \code{Model} : Character vector. Possible values:
@@ -109,7 +109,7 @@ Semi-Markov model. Returns an object of class
 For the non-parametric case, we explicitly define:
 \enumerate{
 \item The \emph{transition matrix} of the embedded Markov chain, given in
-the attribute \code{`p_dist`}:
+the attribute \code{p_dist}:
 \itemize{
 \item If \eqn{p} \strong{is not drifting}, it contains the values:
     \deqn{p(u,v), \forall u, v \in E,}
@@ -126,7 +126,7 @@ the attribute \code{`p_dist`}:
     }
 
 \item The \emph{conditional sojourn time distribution}, given in the
-attribute \code{`f_dist`}:
+attribute \code{f_dist}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the values:
     \deqn{f(u,v,l), \forall u,v\in E,\forall l\in \{1,\dots,k_{max}\},}
@@ -263,7 +263,7 @@ f_drift
 p_dist_model_2 <- array(c(p_dist_1, p_dist_2, p_dist_3),
                         dim = c(s, s, d + 1))
 
-# f_dist has dimensions of # (s,s,k_{max}) #
+# f_dist has dimensions of: (s,s,k_{max}).
 # Sums over l must be 1 for every u and v.
 f_dist_model_2 <- f_dist_2
 
@@ -298,7 +298,6 @@ p_dist_model_3 <- p_dist_3
 
 # `f_dist` has the same dimensions as in Model 1: (s, s, d + 1).
 f_dist_model_3 <- array(c(f_dist_1, f_dist_2, f_dist_3),
-
                         dim = c(s, s, k_max, d + 1))
 
 # Non-Parametric object for Model 2.
@@ -336,9 +335,10 @@ Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
 }
 \seealso{
-More theory: \link{dsmmR}, \link{fit_dsmm}, \link{parametric_dsmm}.
-
 Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
 
-(Fast) Random Sequence simulation: \link{create_sequence}
+For the parametric Drifting Semi-Markov model specification:
+\link{parametric_dsmm}.
+
+For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
 }

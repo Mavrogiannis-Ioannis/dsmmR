@@ -30,7 +30,7 @@ probabilities, specifying the initial distribution for each state in
 the state space.}
 
 \item{degree}{Positive integer specifying the polynomial degree \eqn{d}
-for the Drifting Semi-Markov Model.}
+for the Drifting Semi-Markov model.}
 
 \item{p_dist}{Numerical array, representing the probabilities of the
 transition matrix \eqn{p} of the embedded Markov chain (it is defined
@@ -55,7 +55,7 @@ It can be defined in two ways:
 (see more in \emph{Details, Defined Arguments}.)}}
 
 \item{f_dist_params}{Numerical array, specifying the parameters of the
-sojourn time distributions given in \code{`f_dist`}. \code{NA} is allowed,
+sojourn time distributions given in \code{f_dist}. \code{NA} is allowed,
 in the case that the distribution of our choice does not require
 a parameter. It can be defined in two ways:
 \itemize{
@@ -74,28 +74,28 @@ a parameter. It can be defined in two ways:
 \item{p_is_drifting}{Logical. Specifies if \eqn{p} is drifting or not.}
 }
 \value{
-Returns an object of the S3 class \code{`dsmm_parametric`, `dsmm`}.
+Returns an object of the S3 class \code{dsmm_parametric, dsmm}.
 It has the following attributes:
 \itemize{
 \item \code{dist} : List. Contains 3 arrays:
  \itemize{
-  \item \code{`p_drift`} or \code{`p_notdrift`}, corresponding to the
+  \item \code{p_drift} or \code{p_notdrift}, corresponding to the
   defined \eqn{p} transition matrix.
-  \item \code{`f_drift`} or \code{`f_notdrift`}, corresponding to the
+  \item \code{f_drift} or \code{f_notdrift}, corresponding to the
   defined \eqn{f} sojourn time distribution.
-  \item \code{`f_drift_params`} or \code{`f_notdrift_params`},
+  \item \code{f_drift_params} or \code{f_notdrift_params},
     corresponding to the defined \eqn{f} sojourn time
     distribution parameters.
 }
 \item \code{model_size} : Integer value that contains the
 length of the model; This is equal to \code{length(seq) - 1},
-for \code{`seq`} as defined above.
+for \code{seq} as defined above.
 \item \code{states} : Character vector that contains the realized states
-given in the argument \code{`sequence`};
+given in the argument \code{sequence};
 \item \code{s} : Integer that contains the length of the state space
-\eqn{E} given in the attribute \code{`states`}.
+\eqn{E} given in the attribute \code{states}.
 \item \code{initial_dist} : Numerical vector that contains an estimation
-for the initial distribution of the realized states in \code{`sequence`};
+for the initial distribution of the realized states in \code{sequence};
 \item \code{degree} : Integer that contains the polynomial degree \eqn{d}
 considered for the drifting of the model.
 \item \code{f_is_drifting} : Logical. Passing down from the arguments.
@@ -117,7 +117,7 @@ Semi-Markov model. Returns an object of class \code{dsmm_parametric}.
 For the parametric case, we explicitly define:
 \enumerate{
 \item The \emph{transition matrix} of the embedded Markov chain, given in
-the attribute \code{`p_dist`}:
+the attribute \code{p_dist}:
 \itemize{
 \item If \eqn{p} \strong{is not drifting}, it contains the values:
     \deqn{p(u,v), \forall u, v \in E,}
@@ -133,7 +133,7 @@ the attribute \code{`p_dist`}:
     matrices \eqn{p_{\frac{i}{d}}.}
 }
 \item The \emph{conditional sojourn time distribution}, given in the
-attribute \code{`f_dist`}:
+attribute \code{f_dist}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the discrete
     distribution \emph{names} (as characters or \code{NA}), given in an
@@ -148,17 +148,17 @@ attribute \code{`f_dist`}:
     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
 }
 \item The \emph{conditional sojourn time distribution parameters},
-given in the attribute \code{`f_dist_params`}:
+given in the attribute \code{f_dist_params}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the
     \emph{numerical values} (or \code{NA}) of the corresponding
-    distributions defined in \code{`f_dist`}, given in
+    distributions defined in \code{f_dist}, given in
     an array with dimensions of \eqn{(s, s)},
     where the first dimension corresponds to the previous state \eqn{u},
     the second dimension corresponds to the current state \eqn{v};
 \item If \eqn{f} \strong{is drifting}, it contains the
     \emph{numerical values} (or \code{NA}) of the corresponding
-    distributions defined in \code{`f_dist`}, given in an array
+    distributions defined in \code{f_dist}, given in an array
     with dimensions of \eqn{(s, s, d + 1)},
     where the first and second dimensions are defined as in the
     non-drifting case, and the third dimension corresponds to the
@@ -169,8 +169,8 @@ given in the attribute \code{`f_dist_params`}:
 \strong{Sojourn time distributions}
 
 In this package, the available distributions for the modeling of the
-conditional sojourn times, of the Drifting Semi-Markov Model, used through
-the argument \code{`f_dist`}, are the following:
+conditional sojourn times, of the Drifting Semi-Markov model, used through
+the argument \code{f_dist}, are the following:
 \itemize{
 \item Uniform: \eqn{f(x) = 1/n} for \eqn{a \le x \le b},
     with \eqn{n = b-a+1}.
@@ -219,12 +219,13 @@ the argument \code{`f_dist`}, are the following:
 
 From these discrete distributions, by using \code{"dweibull", "nbinom"}
 we require two parameters. It's for this reason that the attribute
-\code{`f_dist_params`} is an array of dimensions \eqn{(s,s,2)} if \eqn{f}
+\code{f_dist_params} is an array of dimensions \eqn{(s,s,2)} if \eqn{f}
 \strong{is not drifting} or \eqn{(s,s,2,d+1)} if \eqn{f}
 \strong{is drifting}.
 }
 \examples{
 # Setup.
+# We can define states in a flexible way, including spaces.
 states <- c("Dollar $", " /1'2'3/ ", " Z E T A ", "O_M_E_G_A")
 s <- length(states)
 d <- 1
@@ -351,7 +352,8 @@ f_dist_model_2 <- matrix(c(NA, "pois", NA, "nbinom",
                          nrow = s, ncol = s, byrow = TRUE)
 
 # `f_dist_params` has dimensions of: (s, s, 2),
-#  corresponding to `f_dist_model_2`.
+# corresponding to `f_dist_model_2`.
+
 # First matrix.
 f_dist_params_1_model_2 <- matrix(c(NA, 0.2, NA, 3,
                                     0.2, NA, 0.2, 0.5,
@@ -456,9 +458,10 @@ Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
 }
 \seealso{
-More Theory: \link{dsmmR}, \link{fit_dsmm}, \link{nonparametric_dsmm}.
-
 Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
 
-(Fast) Random Sequence simulation: \link{create_sequence}
+For the non-parametric Drifting Semi-Markov model specification:
+\link{nonparametric_dsmm}.
+
+For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
 }

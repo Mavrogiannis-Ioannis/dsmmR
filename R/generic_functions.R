@@ -157,17 +157,19 @@ check_attributes.dsmm_parametric <- function(obj) {
 # Checking the class of an object and if it satisfies the necessary conditions.
 # ______________________________________________________________________________
 
-#' @title Function to check if an object is of class \code{`dsmm`}
+#' @title Function to check if an object is of class \code{dsmm}
 #'
-#' @description It checks for inheritance of the class \code{`dsmm`} and
-#'  also for the validity of the attributes specified.
+#' @description It checks for inheritance of the class \code{dsmm} and
+#' also for the validity of the attributes specified. This class acts like
+#' a parent class for the classes \code{dsmm_fit, dsmm_parametric,
+#' dsmm_nonparametric}.
 #'
-#' @param obj Arbitrary \code{`R`} object.
+#' @param obj Arbitrary \code{R} object.
 
 #' @seealso \link{is.dsmm_fit}, \link{is.dsmm_parametric},
 #' \link{is.dsmm_nonparametric}
 #'
-#' @return `TRUE` or `FALSE`.
+#' @return TRUE or FALSE.
 #'
 #' @export
 is.dsmm <- function(obj) {
@@ -185,19 +187,17 @@ is.dsmm <- function(obj) {
     check_attributes(obj)
 }
 
-#' @title Function to check if an object is of class \code{`dsmm_fit`}
+#' @title Function to check if an object is of class \code{dsmm_fit}
 #'
-#' @description It checks for inheritance of the class \code{`dsmm_fit`} and
-#' also for the validity of the attributes specified. This class acts like a
-#' parent class for the classes \code{`dsmm_fit`, `dsmm_parametric`,
-#' `dsmm_nonparametric`}.
+#' @description It checks for inheritance of the class \code{dsmm_fit} and
+#' also for the validity of the attributes specified.
 #'
-#' @param obj Arbitrary \code{`R`} object.
+#' @param obj Arbitrary \code{R} object.
 #'
 #' @seealso \link{is.dsmm}, \link{is.dsmm_parametric},
 #' \link{is.dsmm_nonparametric}
 #'
-#' @return `TRUE` or `FALSE`.
+#' @return TRUE or FALSE.
 #'
 #' @export
 is.dsmm_fit <- function(obj) {
@@ -215,18 +215,18 @@ is.dsmm_fit <- function(obj) {
 }
 
 #' @title Function to check if an object is of class
-#' \code{`dsmm_nonparametric`}
+#' \code{dsmm_nonparametric}
 #'
 #' @description It checks for inheritance of the class
-#' \code{`dsmm_nonparametric`} and also for the validity of
+#' \code{dsmm_nonparametric} and also for the validity of
 #' the attributes specified. This class inherits methods from the parent class
-#' \code{`dsmm`}.
+#' \code{dsmm}.
 #'
 #' @seealso \link{is.dsmm}, \link{is.dsmm_fit}, \link{is.dsmm_parametric}
 #'
-#' @param obj Arbitrary \code{`R`} object.
+#' @param obj Arbitrary \code{R} object.
 #'
-#' @return `TRUE` or `FALSE`.
+#' @return TRUE or FALSE.
 #'
 #' @export
 is.dsmm_nonparametric <- function(obj) {
@@ -242,17 +242,17 @@ is.dsmm_nonparametric <- function(obj) {
     check_attributes(obj)
 }
 
-#' @title Function to check if an object is of class \code{`dsmm_parametric`}
+#' @title Function to check if an object is of class \code{dsmm_parametric}
 #'
-#' @description It checks for inheritance of the class \code{`dsmm_parametric`}
+#' @description It checks for inheritance of the class \code{dsmm_parametric}
 #' and also for the validity of the attributes specified.
 #'
-#' @param obj Arbitrary \code{`R`} object.
+#' @param obj Arbitrary \code{R} object.
 #'
 #' @seealso \link{is.dsmm}, \link{is.dsmm_fit},
 #' \link{is.dsmm_nonparametric}
 #'
-#' @return `TRUE` or `FALSE`.
+#' @return TRUE or FALSE.
 #'
 #' @export
 is.dsmm_parametric <- function(obj) {
@@ -274,13 +274,13 @@ is.dsmm_parametric <- function(obj) {
 # Get the kernel q_(t/n) (u,v,l) that is necessary for the `simulate` function.
 # ______________________________________________________________________________
 
-#' @title Obtain the Drifting Semi-Markov Kernel
+#' @title Obtain the Drifting Semi-Markov kernel
 #' @description
 #' This is a generic method that computes and returns the Drifting
-#' Semi-Markov Kernel as a numerical array of dimensions (s, s, k_max, n + 1).
+#' Semi-Markov kernel as a numerical array of dimensions (s, s, k_max, n + 1).
 #'
 #' @details
-#' The Drifting Semi-Markov Kernel \eqn{q_{\frac{t}{n}}(u,v,l)} describes
+#' The Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} describes
 #' the probability to jump to the current state \eqn{v} when the previous
 #' state \eqn{u} had a sojourn time of \eqn{l}, for every point \eqn{t} of a
 #' model with length \eqn{n}.
@@ -295,37 +295,62 @@ is.dsmm_parametric <- function(obj) {
 #' a number of Sojourn Time Distributions \eqn{f}.
 #' Three possible model specifications are described below.
 #'
-#' \strong{Model 1}
+#' \strong{\emph{Model 1}}
 #'
 #' In this case, both \eqn{p} and \eqn{f} are "drifting" between \eqn{d + 1}
 #' fixed points of the model, hence the "drifting" in
-#' Drifting Semi-Markov Models. Therefore,
-#' \deqn{q_{\frac{i}{d}}(u,v,l)=
+#' Drifting Semi-Markov Models. Therefore, we denote specifically this kernel,
+#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(1)}} and
+#' the corresponding Semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(1)}}.
+#' \deqn{q_{\frac{i}{d}}^{(1)}(u,v,l)=
 #'      {p_{\frac{i}{d}}(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
 #' where for \eqn{i = 0, \dots, d} we have \eqn{d + 1} Markov
 #' Transition Matrices \eqn{p_{\frac{i}{d}}(u,v,l)},
 #' and \eqn{d + 1} Sojourn Time Distributions
 #' \eqn{f_{\frac{i}{d}}(u,v,l)}, where \eqn{d} is the polynomial degree.
 #'
-#' \strong{Model 2}
+#' Thus, the Drifting Semi-Markov kernel will be equal to:
+#'
+#' \deqn{q_{\frac{t}{n}}^{(1)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)q_{\frac{i}{d}}^{(1)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l)
+#'    }
+#'
+#'
+#' \strong{\emph{Model 2}}
 #'
 #' In this case, \eqn{p} is drifting and \eqn{f} \strong{is not drifting}.
-#' Therefore,
-#' \deqn{q_{\frac{i}{d}}(u,v,l)={p_{\frac{i}{d}}(u,v)}{f(u,v,l)},}
+#' Therefore, we denote specifically this kernel,
+#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(2)}} and
+#' the corresponding Semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(2)}}.
+#' \deqn{q_{\frac{i}{d}}^{(2)}(u,v,l)={p_{\frac{i}{d}}(u,v)}{f(u,v,l)},}
 #' where the \eqn{f(u,v,l)} is constant, not drifting alongside the point
-#' \eqn{t} of the model with length \eqn{n}.
+#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting Semi-Markov kernel
+#'  will be equal to:
+#'
+#' \deqn{q_{\frac{t}{n}}^{(2)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)q_{\frac{i}{d}}^{(2)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l)
+#'    }
 #'
 #'
-#' \strong{Model 3}
+#' \strong{\emph{Model 3}}
 #'
 #' In this case, \eqn{f} is drifting and \eqn{p} \strong{is not drifting}.
-#' Therefore, the Markov Kernel is now described as:
-#' \deqn{q_{\frac{i}{d}}(u,v,l)={p(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
+#' Therefore, the Markov kernel is now described as:
+#' \deqn{q_{\frac{i}{d}}^{(3)}(u,v,l)={p(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
 #' where \eqn{p(u,v)} is constant, not drifting alongside the point
-#' \eqn{t} of the model with length \eqn{n}.
+#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting Semi-Markov kernel
+#'  will be equal to:
 #'
-#' @param obj An object of S3 class \code{`dsmm`, `dsmm_fit`,
-#' `dsmm_nonparametric`} or \code{`dsmm_parametric`}.
+#' \deqn{q_{\frac{t}{n}}^{(3)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)q_{\frac{i}{d}}^{(3)}(u,v,l) =
+#'   \sum_{i = 0}^{d} A_i(t)p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l)
+#'    }
+#'
+#'
+#' @param obj An object of S3 class \code{dsmm, dsmm_fit,
+#' dsmm_nonparametric} or \code{dsmm_parametric}.
 #' @param t Optional, but recommended. Positive integer specifying a
 #' single point \eqn{t} in the length of the model.
 #' @param u Optional. Character specifying the previous state \eqn{u}.
@@ -343,21 +368,24 @@ is.dsmm_parametric <- function(obj) {
 #' Default value is 80L. A larger value will result in a considerably larger
 #' kernel (which has dimensions of \eqn{(s, s, klim, n + 1)}), that will
 #' require more memory and will slow down considerably the
-#' \code{`simulate.dsmm()`} method.
+#' \code{simulate.dsmm()} method.
 #' (\link{dsmm_parametric}, \link{simulate.dsmm})
 #'
 #' @return An array with dimensions of \eqn{(n+1, s, s, k_{max})}, giving the
-#' value of \eqn{q_{\frac{t}{n}}(u,v,l)} for the corresponding \eqn{(t,u,v,l)}.
-#' If any of \eqn{t,u,v,} or \eqn{l} were specified, their dimension in the
-#' array becomes 1.
+#' value of the Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} for
+#' the corresponding \eqn{(t,u,v,l)}. If any of \eqn{t,u,v,} or \eqn{l} were
+#' specified, their dimension in the array becomes 1.
 #'
 #' @export
 #'
 #' @seealso
-#' More theory: \link{dsmmR}, \link{dsmm_fit},
-#' \link{dsmm_parametric}, \link{dsmm_nonparametric}
+#' This kernel can be a result either from the estimation using: \link{fit_dsmm},
+#' or through the functions defining a Drifting Semi-Markov model specification:
+#' \link{parametric_dsmm}, \link{nonparametric_dsmm}.
 #'
-#' Sequence simulation: \link{simulate.dsmm}, \link{create_sequence}
+#' For sequence simulation through this kernel: \link{simulate.dsmm}.
+#'
+#' For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
 #'
 #' @examples
 #' # Setup.
@@ -647,32 +675,36 @@ print.dsmm_parametric <- function(x, ...) {
 # ______________________________________________________________________________
 # Simulate a sequence from any `dsmm` object.
 # ______________________________________________________________________________
-#' @title Simulate a sequence under a Drifting Semi-Markov Model.
-#' @description Generic function that simulates a number of states \code{`nsim`}
-#' under the rule of a Drifting Semi-Markov Kernel, which is retrieved from the
-#' object \code{`obj`}, which in turn inherits from the S3 class \code{`dsmm`}.
+#' @title Simulate a sequence under a Drifting Semi-Markov kernel.
+#' @description Generic function that simulates a number of states \code{nsim}
+#' under the rule of a Drifting Semi-Markov kernel, which is retrieved from the
+#' object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
 #'
-#' @param object An object of S3 class \code{`dsmm`,`dsmm_fit`}
-#' \code{`dsmm_nonparametric`} or \code{`dsmm_parametric`}.
+#' @param object An object of S3 class \code{dsmm,dsmm_fit}
+#' \code{dsmm_nonparametric} or \code{dsmm_parametric}.
 #' @param nsim Optional. A positive integer specifying the number of simulations
 #' that will make up the sequence, with the maximum value being the model size
-#' that is specified in \code{`obj`}. The model size is also the default value.
+#' that is specified in \code{obj}. The model size is also the default value.
 #' @param seq_length Optional. A positive integer that will ensure the simulated
-#' sequence will not have a \emph{total length} greater than \code{`seq_length`}
+#' sequence will not have a \emph{total length} greater than \code{seq_length}
 #' (however, it is possible for the total length to be \emph{less} than
-#' \code{`seq_length`}).
+#' \code{seq_length}).
 #' @param seed Optional. An integer specifying the initialization of the random
 #' number generator.
-#' @param klim Optional. Positive integer. Passed down to \code{`get_kernel`}
-#' for the parametric object, with class \code{`dsmm_parametric`}.
-#' @param ... Attributes passed down from the \code{`simulate`} method.
+#' @param klim Optional. Positive integer. Passed down to \code{get_kernel}
+#' for the parametric object, with class \code{dsmm_parametric}.
+#' @param ... Attributes passed down from the \code{simulate} method.
 #' Currently not used.
 #'
-#' @seealso \link{create_sequence} for simulation of random sequences.
-#' \code{\link[base:RNG]{RNG}} about random number generation in R. \link{dsmmR},
-#' \link{fit_dsmm}, \link{parametric_dsmm} \link{nonparametric_dsmm}
-#' @return A character vector based on \code{`nsim`} simulations, with a
-#' maximum length of \code{`seq_length`}.
+#' @seealso
+#' About random number generation in R \code{\link[base:RNG]{RNG}}.
+#'
+#' Fitting a model through a sequence from this function: \link{fit_dsmm}.
+#'
+#' For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
+#'
+#' @return A character vector based on \code{nsim} simulations, with a
+#' maximum length of \code{seq_length}.
 #' @export
 #' @examples
 #' # Setup.

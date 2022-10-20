@@ -40,24 +40,24 @@
 #'     More about the three Models in \link{dsmmR}. A normalization technique
 #'     is used in order to correct the estimation errors from small sequences.
 #'
-#' \strong{Model 1}
+#' \strong{\emph{Model 1}}
 #'
 #' When the transition matrix of the embedded Markov chain \eqn{p} and
 #' the conditional sojourn time distribution \eqn{f} are both drifting,
-#' the Drifting Semi-Markov Kernel can \strong{estimated} as:
-#' \deqn{\hat{q}_{\frac{t}{n}}(u,v,l) =
-#' \sum_{i = 0}^{d}A_{i}\hat{q}_{\frac{i}{d}}(u,v,l),}
+#' the Drifting Semi-Markov kernel can \strong{estimated} as:
+#' \deqn{\hat{q}_{\frac{t}{n}}^{(1)}(u,v,l) =
+#' \sum_{i = 0}^{d}A_{i}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{0,\dots, k_{max} \}},
 #' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
 #' \eqn{d} (see \link{dsmmR}). The Semi-Markov kernels
-#' \eqn{\hat{q}_{\frac{i}{d}}(u,v,l), i = 0, \dots, d},
+#' \eqn{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l), i = 0, \dots, d},
 #' are estimated through Least Square Estimation and are obtained
 #' after solving the system \deqn{MJ = P,} where
 #' \itemize{
 #' \item \eqn{M = (M_{ij})_{i,j \in E} =
 #'     (\sum_{t=1}^{n}1_{u}(t)A_{i}A_{j})_{i,j \in E}};
-#' \item \eqn{J = (J_i)_{i\in E}= (\hat{q}_{\frac{i}{d}}(u,v,l))_{i\in E}};
+#' \item \eqn{J = (J_i)_{i\in E}= (\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l))_{i\in E}};
 #' \item \eqn{P=(P_i)_{i\in E}=(\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t))_{i\in E}},
 #' }
 #' and \eqn{1_{u}(t)} is the identifier function that has the value 1 if
@@ -72,7 +72,7 @@
 #'
 #' In order to obtain the estimations of \eqn{\hat{p}_{\frac{i}{d}}(u,v)}
 #' and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, so that the following are satisfied,
-#' \deqn{\hat{q}_{\frac{i}{d}}(u,v,l) =
+#' \deqn{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l) =
 #'     \hat{p}_{\frac{i}{d}}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l),}
 #' \deqn{\sum_{v \in E}p_{\frac{i}{d}}(u,v) = 1,}
 #' \deqn{\sum_{l = 1}^{k_{max}}f_{\frac{i}{d}}(u,v,l) = 1,}
@@ -81,105 +81,103 @@
 #' we use the following estimations:
 #'
 #' \deqn{\hat{p}_{\frac{i}{d}}(u,v) =
-#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l),}
+#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
 #' \deqn{\hat{f}_{\frac{i}{d}}(u,v,l) =
-#'     \frac{\hat{q}_{\frac{i}{d}}(u,v,l)}{
-#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}.}
+#'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
+#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #'
-#' \strong{Model 2}
+#' \strong{\emph{Model 2}}
 #'
 #' In this case, \eqn{p} is drifting and \eqn{f} is not drifting. Therefore,
-#' the estimated Drifting Semi-Markov Kernel will be given by:
+#' the estimated Drifting Semi-Markov kernel will be given by:
 #' \deqn{\hat{q}_{\frac{t}{n}}^{(2)}(u,v,l) =
 #' \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{0,\dots, k_{max} \}},
 #' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
 #' \eqn{d} (see \link{dsmmR}). Since \eqn{p} is drifting,
-#' we define the estimation of \eqn{p} the same way as we did in Model 1,
-#' and since \eqn{f} is \strong{not drifting}, we will symbolize it by
-#' \eqn{f_{notdrift}}. Therefore,
+#' we define the estimation of \eqn{p} the same way as we did in Model 1.
+#' Therefore,
 #' \eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}},
 #' we have the following estimations:
 #'
 #' \deqn{\hat{p}_{\frac{i}{d}}(u,v) =
-#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l),}
-#' \deqn{\hat{f}_{notdrift}(u,v,l) =
-#'     \frac{\hat{q}_{\frac{i}{d}}(u,v,l)}{
-#'        \sum_{i = 0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)},}
+#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
+#' \deqn{\hat{f}(u,v,l) =
+#'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
+#'        \sum_{i = 0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)},}
 #'
 #' Thus, the \emph{estimated} Semi-Markov kernels for Model 2,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) =
-#' \hat{p}_{\frac{i}{d}}(u,v)\hat{f}_{notdrift}(u,v,l)}, can be written with
+#' \hat{p}_{\frac{i}{d}}(u,v)\hat{f}(u,v,l)}, can be written with
 #' regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 #' \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 #'
 #' \deqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) = \frac{
-#' \sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)
-#' \sum_{i = 0}^{d}\hat{q}_{\frac{i}{d}}(u,v,l)}{
-#' \sum_{i = 0}^{d}\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}.}
+#' \sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)
+#' \sum_{i = 0}^{d}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
+#' \sum_{i = 0}^{d}\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #'
-#' \strong{Model 3}
+#' \strong{\emph{Model 3}}
 #'
 #' In this case, \eqn{f} is drifting and \eqn{p} is not drifting. Therefore,
-#' the estimated Drifting Semi-Markov Kernel will be given by:
+#' the estimated Drifting Semi-Markov kernel will be given by:
 #' \deqn{\hat{q}_{\frac{t}{n}}^{(3)}(u,v,l) =
 #' \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{0,\dots, k_{max} \}},
 #' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
 #' \eqn{d} (see \link{dsmmR}). Since \eqn{f} is drifting,
-#' we define the estimation of \eqn{f} the same way as we did in Model 1,
-#' and since \eqn{p} is \strong{not drifting}, we will symbolize it by
-#' \eqn{p_{notdrift}}. Therefore,
+#' we define the estimation of \eqn{f} the same way as we did in Model 1.
+#' Therefore,
 #' \eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}},
 #' we have the following estimations:
 #'
-#' \deqn{\hat{p}_{notdrift}(u,v) =
-#' \frac{\sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}{d+1}}
+#' \deqn{\hat{p}(u,v) =
+#' \frac{\sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{d+1}}
 #' \deqn{\hat{f}_{\frac{i}{d}}(u,v,l) =
-#'     \frac{\hat{q}_{\frac{i}{d}}(u,v,l)}{
-#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}.}
+#'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
+#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #' Thus, the \emph{estimated} Semi-Markov kernels for Model 3,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) =
-#' \hat{p}_{notdrift}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l)}, can be written with
+#' \hat{p}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l)}, can be written with
 #' regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 #' \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 #'
 #' \deqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) = \frac{
-#' \hat{q}_{\frac{i}{d}}(u,v,l)
-#' \sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}
-#' {(d+1)\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}(u,v,l)}.}
+#' \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)
+#' \sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}
+#' {(d+1)\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #'
 #'
-#' @return Returns an object of S3 class \code{`dsmm_fit`, `dsmmm`}.
+#' @return Returns an object of S3 class \code{dsmm_fit, dsmmm}.
 #' It has the following attributes:
 #' \itemize{
 #' \item \code{dist} : List that contains the \emph{p} and \emph{f}
 #' estimated distributions from the sequence, given in the argument
-#' \code{`sequence`};
+#' \code{sequence};
 #' \item \code{seq} : Character vector that contains the
 #' \strong{state jumps of the original sequence}. It is this attribute of the
 #' object that describes the length of the model \eqn{n}. Last state is also
 #' included, for a total length of \eqn{n+1}, but it should not used;
 #' \item \code{soj_times} : Numerical vector that contains the sojourn times
-#' spent for each state in \code{`seq`} before the jump to the next state;
+#' spent for each state in \code{seq} before the jump to the next state;
 #' Last state is also
 #' included, for a total length of \eqn{n+1}, but it should not used;
 #' \item \code{k_max} : Numerical value that contains the maximum sojourn
-#' time, meaning the maximum value in \code{`soj_times`};
+#' time, meaning the maximum value in \code{soj_times};
 #' \item \code{initial_dist} : Numerical vector that contains an estimation
-#' for the initial distribution of the realized states in \code{`sequence`};
+#' for the initial distribution of the realized states in \code{sequence};
 #' \item \code{model_size} : Integer value that contains the length of the
-#' model This is equal to \code{length(seq) - 1}, for \code{`seq`} as defined
+#' model This is equal to \code{length(seq) - 1}, for \code{seq} as defined
 #' above. \item \code{states} : Character vector that contains the realized
-#' states given in the argument \code{`sequence`};
+#' states given in the argument \code{sequence};
 #' \item \code{s} : Integer that contains the length of the state
-#' space \eqn{E} given in the attribute \code{`states`}.
+#' space \eqn{E} given in the attribute \code{states}.
 #' \item \code{degree} : Integer that contains the polynomial degree
 #' \eqn{d} considered for the drifting of the model.
 #' \item \code{f_is_drifting} : Logical. Passing down from the arguments.
@@ -195,11 +193,15 @@
 #' }
 #'
 #' @seealso
+#' For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
+#'
 #' For sequence simulation: \link{simulate.dsmm} and \link{create_sequence}.
 #'
-#' For more theory regarding Drifting Semi-Markov Models:
-#' \link{dsmmR}, \link{get_kernel}, \link{parametric_dsmm},
-#' \link{nonparametric_dsmm}
+#' For Drifting Semi-Markov model specification:
+#' \link{parametric_dsmm}, \link{nonparametric_dsmm}
+#'
+#' For the retrieval of the Drifting Semi-Markov kernel:
+#' \link{get_kernel}.
 #'
 #' @references
 #' V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov

@@ -14,17 +14,18 @@ create_sequence(states, len = 5000L, probs = NULL, seed = NULL)
 equal to 5000L.}
 
 \item{probs}{Optional. Numeric vector with values interpreted as
-probabilities for each of the states in \code{`states`}. Default value
+probabilities for each of the states in \code{states}. Default value
 is equal to 1 over the number of states given, for every state.}
 
 \item{seed}{Optional. Object specifying the initialization of the random
 number generator (see more in \code{\link[base:set.seed]{set.seed}}).}
 }
 \value{
-A character sequence of length \code{`len`}.
+A character sequence of length \code{len}.
 }
 \description{
-This is a wrapper function around \code{`sample()`}.
+This is a wrapper function around \code{sample()}.
+-
 }
 \examples{
 # This is equal to having the argument `probs = c(1/4, 1/4, 1/4, 1/4)`.
@@ -39,10 +40,12 @@ rand_dna_seq2 <- create_sequence(
 table(rand_dna_seq2)
 }
 \seealso{
-For the simulation of a sequence with a Drifting Semi-Markov Kernel
+For the simulation of a sequence with a Drifting Semi-Markov kernel:
 \link{simulate.dsmm}.
 
-The original function \code{\link[base:sample]{sample}} that this function uses.
+The original function: \code{\link[base:sample]{sample}}.
 
 \code{\link[base:RNG]{RNG}} about random number generation in R.
+
+For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
 }

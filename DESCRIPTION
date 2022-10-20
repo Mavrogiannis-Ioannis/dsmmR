@@ -14,13 +14,13 @@ Authors@R: c(
         email = "mavrogiannis.ioa@gmail.com")
         )
 Description: Performs non-parametric estimation and simulation from parametric and 
-    non-parametric model specifications, that concern Drifting Semi Markov processes. 
+    non-parametric model specifications which concern Drifting Semi Markov processes. 
     Three models are considered, regarding the number of transition matrices and sojourn
     time distributions used for the computation of the Semi Markov kernels which characterize
     the Drifting Semi-Markov kernel. For the parametric model specification, several discrete
     distributions are considered for the sojourn times: Uniform, Poisson, Geometric, 
     Discrete Weibull and Negative Binomial. For the non parametric model specification, 
-    assumptions are done on the shape of the sojourn time distributions.
+    no assumptions are done on the shape of the sojourn time distributions.
     Semi-Markov models are described in:
     Barbu, V.S., Limnios, N. (2008) <doi:10.1007/978-0-387-73173-5>.
     Drifting Markov models are described in:
@@ -30,8 +30,7 @@ Imports: DiscreteWeibull
 Suggests: 
     utils,
     knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
+    rmarkdown
 Encoding: UTF-8
 RoxygenNote: 7.2.1
 NeedsCompilation: yes
@@ -40,4 +39,3 @@ Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
   Ioannis Mavrogiannis [aut, cre]
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
 Depends: R (>= 2.10)
-Config/testthat/edition: 3

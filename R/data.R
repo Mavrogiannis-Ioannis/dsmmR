@@ -17,7 +17,14 @@
 #' @keywords datasets
 #'
 #' @seealso \code{\link[utils:data]{data}}
-#'
+#' @references S. Monecke & A. Feßler & S. Burgold-Voigt &
+#'  H. Krüger-Haker & K. Muehldorfer & G. Wibbelt &
+#'  E. Liebler-Tenorio & M. Reinicke & S. Braun &
+#'  D. Hanke & C. Diezel & E. Müller & I. Loncaric &
+#'  S. Schwarz & R. Ehricht (2021).
+#'    Staphylococcus aureus isolates from Eurasian Beavers (Castor fiber) carry a novel
+#'    phage-borne bicomponent leukocidin related to the Panton-Valentine leukocidin.
+#'    Scientific Reports. 11. 10.1038/s41598-021-03823-6.
 #' @examples
 #' data(lambda, package = "dsmmR")
 #' class(lambda)

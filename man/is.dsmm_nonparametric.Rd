@@ -3,21 +3,21 @@
 \name{is.dsmm_nonparametric}
 \alias{is.dsmm_nonparametric}
 \title{Function to check if an object is of class
-\code{`dsmm_nonparametric`}}
+\code{dsmm_nonparametric}}
 \usage{
 is.dsmm_nonparametric(obj)
 }
 \arguments{
-\item{obj}{Arbitrary \code{`R`} object.}
+\item{obj}{Arbitrary \code{R} object.}
 }
 \value{
-`TRUE` or `FALSE`.
+TRUE or FALSE.
 }
 \description{
 It checks for inheritance of the class
-\code{`dsmm_nonparametric`} and also for the validity of
+\code{dsmm_nonparametric} and also for the validity of
 the attributes specified. This class inherits methods from the parent class
-\code{`dsmm`}.
+\code{dsmm}.
 }
 \seealso{
 \link{is.dsmm}, \link{is.dsmm_fit}, \link{is.dsmm_parametric}
