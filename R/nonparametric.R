@@ -13,7 +13,7 @@
 #' @param model_size Positive integer that specifies the length of the
 #' model \eqn{n}.
 #' @param states Character vector representing the state space \eqn{E}
-#' of choice. It has length equal to \eqn{s}.
+#' of choice. It has length equal to \eqn{|E| = s}.
 #' @param initial_dist Numerical vector that represents \eqn{s}
 #' probabilities, specifying the initial distribution for each state in
 #' the state space.
@@ -121,8 +121,10 @@
 #' \item \code{Model} : Character vector. Possible values:
 #' \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
 #' \eqn{p,f} are drifting or not.
-#' \item \code{A_i} : Numerical Matrix. Used for the methods defined for the
-#' object. Is not printed when viewing the object.
+#' \item \code{A_i} : Numerical Matrix. Represents the polynomials
+#' \eqn{A_i(t)} that were used for solving the system \eqn{MJ = P}.
+#' Used for the methods defined for the
+#' object. Not printed when viewing the object.
 #' }
 #'
 #'

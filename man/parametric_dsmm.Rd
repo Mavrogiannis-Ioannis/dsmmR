@@ -23,7 +23,7 @@ parametric_dsmm(
 model \eqn{n}.}
 
 \item{states}{Character vector representing the state space \eqn{E}
-of choice. It has length equal to \eqn{s}.}
+of choice. It has length equal to \eqn{|E| = s}.}
 
 \item{initial_dist}{Numerical vector representing \eqn{s}
 probabilities, specifying the initial distribution for each state in

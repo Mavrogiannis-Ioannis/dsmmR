@@ -30,21 +30,26 @@
 #'     \itemize{
 #'     \item
 #'           \code{"unif"} : the initial probability of each state is
-#'           equal to \eqn{1/s}.
+#'           equal to \eqn{1/s}. (\strong{Default value}).
 #'     \item
 #'           \code{"freq"} : the initial distribution of each state is
 #'           equal to the frequencies of each state in the sequence.
 #'     }
-#' @param estimation Optional. Character vector. Specifies whether the
-#' .    estimation will be nonparametric or parametric.
-#'      Possible values are "nonparametric" or "parametric".
-#' @param f_dist Optional. Can be defined in two ways:
+#' @param estimation Optional. Character Specifies whether the
+#'     estimation will be nonparametric or parametric.
 #'     \itemize{
 #'     \item
-#'          If \code{estimation} is equal to "nonparametric", it is equal to
-#'          \code{NULL}.
+#'         \code{"nonparametric"} : The estimation will be
+#'         non-parametric. (\strong{Default value}).
 #'     \item
-#'         if \code{estimation} is equal to "parametric", it is a
+#'         \code{"parametric"} : The estimation will be
+#'         parametric.
+#'     }
+#' @param f_dist Optional. It Can be defined in two ways:
+#'     \itemize{
+#'     \item If \code{estimation = "nonparametric"}, it is
+#'           equal to \code{NULL}. (\strong{Default value}).
+#'     \item If \code{estimation = "parametric"}, it is a
 #'         character array that specifies the distributions of the sojourn
 #'         times, for every state transition.
 #'         The list of possible values is:
@@ -62,19 +67,25 @@
 #'         It is defined similarly to the attribute \code{f_dist}
 #'         in \link{dsmm_parametric}.
 #'     }
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # @param numerical_est Optional. Logical. Specifies if numerical estimation
 #   under constraint should be used instead of LSE.
 #    \emph{Currently not supported}. Default value is \code{FALSE}.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #'
 #' @details This function estimates a Drifting semi-Markov Model in the
 #'     parametric and non-parametric case.
 #'     The parametric estimation can be achieved by fitting the non-parametric
 #'     estimations of the sojourn time distributions, with regards to the
 #'     distributions chosen by the user in the attribute \code{f_dist}.
-#'     It is possible for three different models to be estimated
-#'     (more about them in \link{dsmmR}).
+#'     It is possible for three different models to be estimated.
 #'     A normalization technique is used in order to correct estimation errors
 #'     from small sequences.
+#'     We will use the exponentials \eqn{(1), (2), (3)} to distinguish between
+#'     the Drifting semi-Markov kernel \eqn{\hat{q}_{\frac{t}{n}}} and the
+#'     semi-Markov kernels \eqn{\hat{q}_\frac{i}{d}} used in
+#'     Model 1, Model 2, Model 3.
+#'     More about the theory of Drifting semi-Markov models in \link{dsmmR}.
 #'
 #' \strong{Non-parametric Estimation}
 #'
@@ -95,37 +106,32 @@
 #'
 #' The semi-Markov kernels
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l), i = 0, \dots, d},
-#' are estimated through Least Squares Estimation and are obtained
-#' after solving the system
-#'
-#' \deqn{MJ = P \iff \\
-#' \left(\begin{array}{cc}
-#'       \sum_{t=1}^{n}1_{u}(t)A_{0}(t)A_{0}(t) & \dots &
-#'       \sum_{t=1}^{n}1_{u}(t)A_{0}(t)A_{d}(t)\\
-#'       \vdots & \ddots & \vdots \\
-#'       \sum_{t=1}^{n}1_{u}(t)A_{d}(t)A_{0}(t) & \dots &
-#'       \sum_{t=1}^{n}1_{u}(t)A_{d}(t)A_{d}(t)
-#'  \end{array}\right)
-#'  \left(\begin{array}{cc}
-#'       \hat{q}_{0}^{(1)}(u,v,l) \\
-#'       \vdots \\
-#'       \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l) \\
-#'       \vdots \\
-#'       \hat{q}_{1}^{(1)}(u,v,l)
-#'  \end{array} \right)
-#'       =
-#'  \left(\begin{array}{cc}
-#'       \sum_{t=1}^{n}1_{uvl}(t)A_{0}(t) \\
-#'       \vdots \\
-#'       \sum_{t=1}^{n}1_{uvl}(t)A_{i}(t) \\
-#'       \vdots \\
-#'       \sum_{t=1}^{n}1_{uvl}(t)A_{d}(t)
-#'  \end{array} \right)}
-#' where
+#' are estimated through Least Squares Estimation (LSE) and are obtained
+#' after solving the following system, \eqn{\forall t \in \{0, \dots, n\}},
+#' \eqn{\forall u, v \in E} and \eqn{\forall l \in \{1, \dots, k_{max}\}}:
+#' \deqn{MJ = P,}
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#  \left(\begin{array}{cc}
+#       \hat{q}_{0}^{(1)}(u,v,l) \\
+#       \vdots \\
+#       \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l) \\
+#       \vdots \\
+#       \hat{q}_{1}^{(1)}(u,v,l)
+#  \end{array} \right)
+#       =
+#  \left(\begin{array}{cc}
+#       \sum_{t=1}^{n}1_{uvl}(t)A_{0}(t) \\
+#       \vdots \\
+#       \sum_{t=1}^{n}1_{uvl}(t)A_{i}(t) \\
+#       \vdots \\
+#       \sum_{t=1}^{n}1_{uvl}(t)A_{d}(t)
+#  \end{array} \right)}
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#' where the matrices are written as:
 #' \itemize{
 #' \item
 #' \eqn{M = (M_{ij})_{i,j \in \{0, \dots, d\} } =
-#' (\sum_{t=1}^{n}1_{u}(t)A_{i}(t)A_{j}(t))_{
+#' \left(\sum_{t=1}^{n}1_{u}(t)A_{i}(t)A_{j}(t)\right)_{
 #' i,j \in \{0, \dots, d\}}}
 #'
 #' \item
@@ -136,57 +142,74 @@
 #'
 #' \item
 #' \eqn{P=(P_i)_{i\in \{0, \dots, d\} }=
-#' (\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t))_{
+#' \left(\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t)\right)_{
 #' i \in \{0, \dots, d\}}
 #' }
+#'
 #' }
-#' where we use the indicator functions:
-#' \deqn{1_{u}(t) =
-#' \begin{cases}
-#'   1  & \text{if at } t \text{ the previous state is } u, \\
-#'   0  & \text{otherwise}.
-#' \end{cases}
+#' and we use the following indicator functions:
+#' \itemize{
+#' \item
+#'     \eqn{1_{u}(t) = 1}, if at \eqn{t} the previous state is \eqn{u},
+#'     \eqn{0} otherwise.
+#' \item
+#'     \eqn{1_{uvl}(t) = 1}, if at \eqn{t} the previous state is \eqn{u}
+#'     with sojourn time \eqn{l} and next state \eqn{v}, \eqn{0} otherwise.
 #' }
-#' and
-#' \deqn{1_{uvl}(t) =
-#' \begin{cases}
-#'  1  & \text{if at } t \text{ the previous state is } u
-#'  \text{, with sojourn
-#'  time } l \text{ and next state } v, \\
-#'  0  & \text{otherwise}.
-#' \end{cases}
-#' }
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # This was the previous way that `build_manual()` cannot handle...
+# \begin{cases}
+#   1  & \text{if at } t \text{ the previous state is } u, \\
+#   0  & \text{otherwise}.
+# \end{cases}
+# }
+# and
+# \deqn{1_{uvl}(t) =
+# \begin{cases}
+#  1  & \text{if at } t \text{ the previous state is } u
+#  \text{, with sojourn
+#  time } l \text{ and next state } v, \\
+#  0  & \text{otherwise}.
+# \end{cases}
+# }
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #'
 #' In order to obtain the estimations of \eqn{\hat{p}_{\frac{i}{d}}(u,v)}
-#' and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, we use the following estimations:
+#' and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, we use the following formulas:
 #'
 #' \deqn{\hat{p}_{\frac{i}{d}}(u,v) =
-#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
+#'     \sum_{l = 1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
 #' \deqn{\hat{f}_{\frac{i}{d}}(u,v,l) =
 #'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
-#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
+#'          \sum_{l = 1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #'
 #' \strong{\emph{Model 2}}
 #'
 #' In this case, \eqn{p} is drifting and \eqn{f} is not drifting. Therefore,
 #' the estimated Drifting semi-Markov kernel will be given by:
+#'
 #' \deqn{\hat{q}_{\frac{t}{n}}^{(2)}(u,v,l) =
-#' \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l),}
+#' \sum_{i=0}^{d} A_{i}(t) \hat{q}_{\frac{i}{d}}^{(2)}(u,v,l),}
+#'
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
-#' \forall l\in \{0,\dots, k_{max} \}},
-#' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-#' \eqn{d} (see \link{dsmmR}). Since \eqn{p} is drifting,
-#' we define the estimation of \eqn{p} the same way as we did in Model 1.
-#' Therefore,
-#' \eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}},
-#' we have the following estimations:
+#' \forall l\in \{1,\dots, k_{max} \}}, where \eqn{k_{max}} is the maximum
+#' sojourn time that was observed in the sequence and
+#' \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
+#' \eqn{d} (see \link{dsmmR}).
+#' Since it is difficult to obtain the LSE for Model 2, we make use of the
+#' estimated semi-Markov kernels \eqn{\hat{q}_{\frac{i}{d}}^{(1)}}
+#' from Model 1.
+#' Since \eqn{p} is drifting, we define the estimation of \eqn{p}
+#' the same way as we did in Model 1.
+#' In total, we have the following estimations,
+#' \eqn{\forall u,v \in E, \forall l \in \{1,\dots, k_{max} \}}:
 #'
 #' \deqn{\hat{p}_{\frac{i}{d}}(u,v) =
-#'     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
+#'     \sum_{l = 1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
 #' \deqn{\hat{f}(u,v,l) =
 #'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
-#'        \sum_{i = 0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)},}
+#'     \sum_{i=0}^{d}\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #' Thus, the \emph{estimated} semi-Markov kernels for Model 2,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) =
@@ -205,21 +228,25 @@
 #' In this case, \eqn{f} is drifting and \eqn{p} is not drifting. Therefore,
 #' the estimated Drifting semi-Markov kernel will be given by:
 #' \deqn{\hat{q}_{\frac{t}{n}}^{(3)}(u,v,l) =
-#' \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l),}
+#' \sum_{i=0}^{d} A_{i}(t) \hat{q}_{\frac{i}{d}}^{(3)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
-#' \forall l\in \{0,\dots, k_{max} \}},
-#' where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-#' \eqn{d} (see \link{dsmmR}). Since \eqn{f} is drifting,
+#' \forall l\in \{1,\dots, k_{max} \}}, where \eqn{k_{max}} is the maximum
+#' sojourn time that was observed in the sequence and
+#' \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
+#' \eqn{d} (see \link{dsmmR}).
+#' Since it is difficult to obtain the LSE for Model 3, we make use of the
+#' estimated semi-Markov kernels \eqn{\hat{q}_{\frac{i}{d}}^{(1)}}
+#' from Model 1. Since \eqn{f} is drifting,
 #' we define the estimation of \eqn{f} the same way as we did in Model 1.
-#' Therefore,
-#' \eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}},
-#' we have the following estimations:
+#' In total, we have the following estimations,
+#' \eqn{\forall u,v \in E, \forall l \in \{1,\dots, k_{max} \}}:
 #'
 #' \deqn{\hat{p}(u,v) =
-#' \frac{\sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{d+1}}
+#' \frac{\sum_{i=0}^{d}\sum_{l=1}^{k_{max}}
+#' \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{d+1},}
 #' \deqn{\hat{f}_{\frac{i}{d}}(u,v,l) =
 #'     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
-#'          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
+#'          \sum_{l = 1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 #'
 #' Thus, the \emph{estimated} semi-Markov kernels for Model 3,
 #' \eqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) =
@@ -229,8 +256,71 @@
 #'
 #' \deqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) = \frac{
 #' \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)
-#' \sum_{i=0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}
+#' \sum_{i=0}^{d}\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}
 #' {(d+1)\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
+#'
+#'
+#' \strong{Parametric Estimation}
+#'
+#' In this package, the parametric estimation of the sojourn time distributions
+#' defined in the attribute \code{dsmm_fit} is achieved as follows:
+#' \enumerate{
+#'     \item
+#'          We obtain the non-parametric LSE of the sojourn time distributions
+#'          \eqn{f}.
+#'     \item
+#'         We fit the probabilities \eqn{f(x;i,j), x = 1, \dots, k_{max}},
+#'         \eqn{i, j \in E}, for the distributions defined in \code{dsmm_fit}.
+#' }
+#'
+#' The available distributions for the modeling of the
+#' conditional sojourn times of the Drifting semi-Markov model, used through
+#' the argument \code{f_dist}, are the following:
+#' \itemize{
+#' \item Uniform: \eqn{f(x) = 1/n} for \eqn{a \le x \le b},
+#'     with \eqn{n = b-a+1}.
+#'     This can be specified through the following:
+#'     \itemize{
+#'     \item \code{f_dist = "unif"}
+#'     \item \code{f_dist_params} = (\eqn{n}, \code{NA})
+#'     (\eqn{n} as defined here)
+#'     }
+#' \item Geometric: \eqn{f(x) = \theta (1-\theta)^x} for
+#'     \eqn{x = 0, 1, 2,\ldots,n}, \eqn{0 < \theta < 1}, with
+#'     \eqn{n > 0} and \eqn{\theta} is the probability of success;
+#'     This can be specified through the following:
+#'     \itemize{
+#'     \item \code{f_dist} = \code{"geom"}
+#'     \item \code{f_dist_params} = (\eqn{\theta}, \code{NA})
+#'     }
+#' \item Poisson: \eqn{f(x) = \frac{\lambda^x exp(-\lambda)}{x!}} for
+#'     \eqn{x = 0, 1, 2,\ldots,n}, with \eqn{n > 0} and \eqn{\lambda > 0};
+#'     This can be specified through the following:
+#'     \itemize{
+#'     \item \code{f_dist} = \code{"pois"}
+#'     \item \code{f_dist_params} = (\eqn{\lambda}, \code{NA})
+#'     }
+#' \item Discrete Weibull of type 1:
+#'     \eqn{f(x)=q^{(x-1)^{\beta}}-q^{x^{\beta}}, x=1,2,3,\ldots,n}, with
+#'     \eqn{n > 0}, \eqn{q} is the first parameter (probability) and
+#'     \eqn{\beta} is the second parameter;
+#'     This can be specified through the following:
+#'     \itemize{
+#'     \item \code{f_dist} = \code{"dweibull"}
+#'     \item \code{f_dist_params} = (\eqn{q, \beta})
+#'     (\eqn{q} as defined here)
+#'     }
+#' \item Negative binomial:
+#'     \eqn{f(x)=\frac{\Gamma(x+\alpha)}{\Gamma(\alpha)x!}p^{\alpha}(1-p)^x},
+#'     for \eqn{x = 0, 1, 2,\ldots,n}. \eqn{\Gamma} is the Gamma function,
+#'     \eqn{\alpha} is the parameter of overdispersion and \eqn{p} is the
+#'     probability of success, \eqn{0 < p < 1};
+#'     \itemize{
+#'     \item \code{f_dist} = \code{"nbinom"}
+#'     \item \code{f_dist_params} = (\eqn{\alpha, p})
+#'     (\eqn{p} as defined here)
+#'     }
+#' }
 #'
 #'
 #' @return Returns an object of S3 class \code{(dsmm_fit_nonparametric, dsmm)} or
@@ -238,40 +328,46 @@
 #' It has the following attributes:
 #' \itemize{
 #' \item \code{dist} : List that contains the \emph{p} and \emph{f}
-#' estimated distributions from the sequence, given in the argument
-#' \code{sequence};
+#'     estimated distributions from the sequence, given in the argument
+#'     \code{sequence};
 #' \item \code{seq} : Character vector that contains the
-#' \strong{state jumps of the original sequence}. It is this attribute of the
-#' object that describes the length of the model \eqn{n}. Last state is also
-#' included, for a total length of \eqn{n+1}, but it should not used;
+#'    \strong{state jumps of the original sequence}. It is this attribute of the
+#'    object that describes the length of the model \eqn{n}. Last state is also
+#'    included, for a total length of \eqn{n+1}, but it should not used;
 #' \item \code{soj_times} : Numerical vector that contains the sojourn times
-#' spent for each state in \code{seq} before the jump to the next state;
-#' Last state is also
-#' included, for a total length of \eqn{n+1}, but it should not used;
+#'   spent for each state in \code{seq} before the jump to the next state;
+#'   Last state is also
+#'   included, for a total length of \eqn{n+1}, but it should not used;
 #' \item \code{k_max} : Numerical value that contains the maximum sojourn
-#' time, meaning the maximum value in \code{soj_times};
+#'   time, meaning the maximum value in \code{soj_times};
 #' \item \code{initial_dist} : Numerical vector that contains an estimation
-#' for the initial distribution of the realized states in \code{sequence};
+#'   for the initial distribution of the realized states in \code{sequence};
 #' \item \code{model_size} : Integer value that contains the length of the
-#' model This is equal to \code{length(seq) - 1}, for \code{seq} as defined
-#' above. \item \code{states} : Character vector that contains the realized
-#' states given in the argument \code{sequence};
+#'   model This is equal to \code{length(seq) - 1}, for \code{seq} as defined
+#'   above. \item \code{states} : Character vector that contains the realized
+#'   states given in the argument \code{sequence};
 #' \item \code{s} : Integer that contains the length of the state
-#' space \eqn{E} given in the attribute \code{states}.
+#'   space \eqn{E} given in the attribute \code{states}.
 #' \item \code{degree} : Integer that contains the polynomial degree
 #' \eqn{d} considered for the drifting of the model.
 #' \item \code{f_is_drifting} : Logical. Passing down from the arguments.
 #' \item \code{p_is_drifting} : Logical. Passing down from the arguments.
-# \item \code{numerical_est} : Logical. Passing down from the arguments.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#    \item \code{numerical_est} : Logical. Passing down from the arguments.
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #' \item \code{Model} : Character vector. Possible values:
-#' \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
-#' \eqn{p,f} are drifting or not.
+#'     \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
+#'     \eqn{p,f} are drifting or not.
 #' \item \code{estimation} : Character vector. Specifies whether parametric or
-#' nonparametric estimation was used.
-#' \item \code{A_i} : Numerical Matrix. Used for the methods defined for the
-#' object. Is not printed when viewing the object.
-#' \item \code{Ji} : Numerical Array. Used for the methods defined for the
-#' object. Is not printed when viewing the object.
+#'     nonparametric estimation was used.
+#' \item \code{A_i} : Numerical Matrix. Represents the polynomials
+#'     \eqn{A_i(t)} that were used for solving the system \eqn{MJ = P}.
+#'     Used for the methods defined for the
+#'     object. Not printed when viewing the object.
+#' \item \code{Ji} : Numerical Array. Represents the estimated semi-Markov
+#'     kernels \eqn{J = (J_i)_{i \in \{0, \dots, d\} }} that were obtained after
+#'     solving the system \eqn{MJ = P}. Used for the methods defined for the
+#'     object. Not printed when viewing the object.
 #' }
 #'
 #' @seealso

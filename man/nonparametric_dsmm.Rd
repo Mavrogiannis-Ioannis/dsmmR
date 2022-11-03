@@ -23,7 +23,7 @@ nonparametric_dsmm(
 model \eqn{n}.}
 
 \item{states}{Character vector representing the state space \eqn{E}
-of choice. It has length equal to \eqn{s}.}
+of choice. It has length equal to \eqn{|E| = s}.}
 
 \item{initial_dist}{Numerical vector that represents \eqn{s}
 probabilities, specifying the initial distribution for each state in
@@ -94,7 +94,9 @@ time, meaning the maximum value in \code{soj_times};
 \item \code{Model} : Character vector. Possible values:
 \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
 \eqn{p,f} are drifting or not.
-\item \code{A_i} : Numerical Matrix. Used for the methods defined for the
+\item \code{A_i} : Numerical Matrix. Represents the polynomials
+\eqn{A_i(t)} that were used for solving the system \eqn{MJ = P}.
+Used for the methods defined for the
 object. Is not printed when viewing the object.
 }
 }
