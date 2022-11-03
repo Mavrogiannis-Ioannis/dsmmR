@@ -1,52 +1,60 @@
 # '''
-#    1. This file concerns itself with the creation and definition of the
-#    parametric drifting Semi-Markov model. It is a child class of `dsmm`.
+#    This file concerns itself with the creation and definition of the
+#    parametric drifting semi-Markov model. It is a child class of `dsmm`.
 # '''
-
-#' @title Parametric Drifting Semi-Markov Model specification
+#
+#' @title Parametric Drifting semi-Markov Model specification
 #' @aliases dsmm_parametric parametric
 #' @description Creates a parametric model specification for a Drifting
-#' Semi-Markov model. Returns an object of class \code{dsmm_parametric}.
+#' semi-Markov model. Returns an object of class \code{dsmm_parametric}.
 #'
 #' @param model_size Positive integer specifying the length of the
-#' model \eqn{n}.
+#'     model \eqn{n}.
 #' @param states Character vector representing the state space \eqn{E}
-#' of choice. It has length equal to \eqn{s}.
+#'     of choice. It has length equal to \eqn{s}.
 #' @param initial_dist Numerical vector representing \eqn{s}
-#' probabilities, specifying the initial distribution for each state in
-#' the state space.
+#'     probabilities, specifying the initial distribution for each state in
+#'     the state space.
 #' @param degree Positive integer specifying the polynomial degree \eqn{d}
-#' for the Drifting Semi-Markov model.
+#'     for the Drifting semi-Markov model.
 #' @param p_dist Numerical array, representing the probabilities of the
-#' transition matrix \eqn{p} of the embedded Markov chain (it is defined
-#' the same way in the \link{nonparametric_dsmm} function).
-#' It can be defined in two ways:
+#'    transition matrix \eqn{p} of the embedded Markov chain (it is defined
+#'    the same way in the \link{nonparametric_dsmm} function).
+#'    It can be defined in two ways:
 #' \itemize{
-#' \item If \eqn{p} \strong{is not} drifting, it has dimensions of \eqn{(s,s)};
-#' \item If \eqn{p} \strong{is} drifting, it has dimensions of \eqn{(s,s,d+1)}
-#' (see more in \emph{Details, Defined Arguments}.)}
+#'  \item
+#'      If \eqn{p} \strong{is not} drifting, it has dimensions of
+#'      \eqn{(s \times s)};
+#'  \item
+#'      If \eqn{p} \strong{is} drifting, it has dimensions of
+#'      \eqn{(s \times s \times d+1)}
+#'  (see more in \emph{Details, Defined Arguments}.)}
 #' @param f_dist Character array, representing the discrete sojourn time
-#' distribution \eqn{f} of our choice.
-#' \code{NA} is allowed for state transitions
-#' that we do not wish to have a sojourn time distribution
-#' (e.g. all state transition to the same state should have \code{NA}
-#' as their value). The list of possible values is:
-#' \code{["unif", "geom", "pois", "dweibull", "nbinom", NA]}.
-#' It can be defined in two ways:
-#' \itemize{
-#' \item If \eqn{f} \strong{is not} drifting, it has dimensions of \eqn{(s,s)};
-#' \item If \eqn{f} \strong{is} drifting, it has dimensions of \eqn{(s,s,d+1)}
-#' (see more in \emph{Details, Defined Arguments}.)}
+#'     distribution \eqn{f} of our choice.
+#'     \code{NA} is allowed for state transitions
+#'     that we do not wish to have a sojourn time distribution
+#'     (e.g. all state transition to the same state should have \code{NA}
+#'     as their value). The list of possible values is:
+#'    \code{["unif", "geom", "pois", "dweibull", "nbinom", NA]}.
+#'    It can be defined in two ways:
+#'    \itemize{
+#'    \item
+#'         If \eqn{f} \strong{is not} drifting, it has dimensions of
+#'         \eqn{(s \times s)};
+#'    \item
+#'        If \eqn{f} \strong{is} drifting, it has dimensions of
+#'        \eqn{(s \times s \times d+1)}
+#'    (see more in \emph{Details, Defined Arguments}.)}
 #' @param f_dist_params Numerical array, specifying the parameters of the
 #' sojourn time distributions given in \code{f_dist}. \code{NA} is allowed,
 #' in the case that the distribution of our choice does not require
 #' a parameter. It can be defined in two ways:
 #' \itemize{
 #' \item If \eqn{f} \strong{is not} drifting, it has dimensions of
-#'     \eqn{(s,s,2)}, specifying \strong{two} possible parameters required
-#'     for the discrete distributions.
+#'     \eqn{(s \times s \times 2)}, specifying \strong{two} possible
+#'     parameters required for the discrete distributions.
 #' \item If \eqn{f} \strong{is} drifting, it has dimensions of
-#'     \eqn{(s,s,2,d+1)},
+#'     \eqn{(s \times s \times 2 \times d+1)},
 #'     specifying \strong{two} possible parameters required for the discrete
 #'     distributions, but for every single one of the \eqn{i = 0, \dots, d}
 #'     sojourn time distributions \eqn{f_{\frac{i}{d}}} that are required.
@@ -64,13 +72,13 @@
 #' \itemize{
 #' \item If \eqn{p} \strong{is not drifting}, it contains the values:
 #'     \deqn{p(u,v), \forall u, v \in E,}
-#'     given in an array with dimensions of \eqn{(s, s)},
+#'     given in an array with dimensions of \eqn{(s \times s)},
 #'     where the first dimension corresponds to the previous state \eqn{u} and
 #'     the second dimension corresponds to the current state \eqn{v};
 #' \item If \eqn{p} \strong{is drifting}, for \eqn{i \in \{ 0,\dots,d \}},
 #'     it contains the values:
 #'     \deqn{p_{\frac{i}{d}}(u,v), \forall u, v \in E,}
-#'     given in an array with dimensions of \eqn{(s, s, d + 1)},
+#'     given in an array with dimensions of \eqn{(s \times s \times d + 1)},
 #'     where the first and second dimensions are defined as in the non-drifting
 #'     case, and the third dimension corresponds to the \eqn{d+1} different
 #'     matrices \eqn{p_{\frac{i}{d}}.}
@@ -80,12 +88,12 @@
 #' \itemize{
 #' \item If \eqn{f} \strong{is not drifting}, it contains the discrete
 #'     distribution \emph{names} (as characters or \code{NA}), given in an
-#'     array with dimensions of \eqn{(s, s)},
+#'     array with dimensions of \eqn{(s \times s)},
 #'     where the first dimension corresponds to the previous state \eqn{u},
 #'     the second dimension corresponds to the current state \eqn{v};
 #' \item If \eqn{f} \strong{is drifting}, it contains the discrete
 #'     distribution \emph{names} (as characters or \code{NA}) given in an
-#'     array with dimensions of \eqn{(s, s, d + 1)},
+#'     array with dimensions of \eqn{(s \times s \times d + 1)},
 #'     where the first and second dimensions are defined as in the
 #'     non-drifting case, and the third dimension corresponds to the
 #'     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
@@ -96,13 +104,13 @@
 #' \item If \eqn{f} \strong{is not drifting}, it contains the
 #'     \emph{numerical values} (or \code{NA}) of the corresponding
 #'     distributions defined in \code{f_dist}, given in
-#'     an array with dimensions of \eqn{(s, s)},
+#'     an array with dimensions of \eqn{(s \times s)},
 #'     where the first dimension corresponds to the previous state \eqn{u},
 #'     the second dimension corresponds to the current state \eqn{v};
 #' \item If \eqn{f} \strong{is drifting}, it contains the
 #'     \emph{numerical values} (or \code{NA}) of the corresponding
 #'     distributions defined in \code{f_dist}, given in an array
-#'     with dimensions of \eqn{(s, s, d + 1)},
+#'     with dimensions of \eqn{(s \times s \times d + 1)},
 #'     where the first and second dimensions are defined as in the
 #'     non-drifting case, and the third dimension corresponds to the
 #'     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
@@ -112,7 +120,7 @@
 #' \strong{Sojourn time distributions}
 #'
 #' In this package, the available distributions for the modeling of the
-#' conditional sojourn times, of the Drifting Semi-Markov model, used through
+#' conditional sojourn times, of the Drifting semi-Markov model, used through
 #' the argument \code{f_dist}, are the following:
 #' \itemize{
 #' \item Uniform: \eqn{f(x) = 1/n} for \eqn{a \le x \le b},
@@ -162,9 +170,10 @@
 #'
 #' From these discrete distributions, by using \code{"dweibull", "nbinom"}
 #' we require two parameters. It's for this reason that the attribute
-#' \code{f_dist_params} is an array of dimensions \eqn{(s,s,2)} if \eqn{f}
-#' \strong{is not drifting} or \eqn{(s,s,2,d+1)} if \eqn{f}
-#' \strong{is drifting}.
+#' \code{f_dist_params} is an array of dimensions
+#' \eqn{(s \times s \times 2)} if \eqn{f}
+#' \strong{is not drifting} or \eqn{(s \times s \times 2 \times d+1)}
+#' if \eqn{f} \strong{is drifting}.
 #'
 #' @return Returns an object of the S3 class \code{dsmm_parametric, dsmm}.
 #' It has the following attributes:
@@ -202,13 +211,13 @@
 #' @seealso
 #' Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
 #'
-#' For the non-parametric Drifting Semi-Markov model specification:
+#' For the non-parametric Drifting semi-Markov model specification:
 #' \link{nonparametric_dsmm}.
 #'
-#' For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+#' For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 #'
 #' @references
-#' V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov
+#' V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov
 #' Models Toward Applications - Their Use in Reliability and DNA Analysis.
 #' New York: Lecture Notes in Statistics, vol. 191, Springer.
 #'
@@ -217,12 +226,18 @@
 #' @examples
 #' # Setup.
 #' # We can define states in a flexible way, including spaces.
-#' states <- c("Dollar $", " /1'2'3/ ", " Z E T A ", "O_M_E_G_A")
+# states <- c("Dollar $", " /1'2'3/ ", " Z E T A ", "O_M_E_G_A")
+#' states <- c("A", "B", "C", "G")
 #' s <- length(states)
 #' d <- 1
 #'
 #' # ===========================================================================
-#' # Defining distributions for Model 1 - both p and f are drifting.
+#' # Defining parametric drifting semi-Markov models.
+#' # ===========================================================================
+#'
+#' # ---------------------------------------------------------------------------
+#' # Defining the drifting distributions for Model 1.
+#' # ---------------------------------------------------------------------------
 #'
 #' # `p_dist` has dimensions of: (s, s, d + 1).
 #' # Sums over v must be 1 for all u and i = 0, ..., d.
@@ -300,8 +315,10 @@
 #'                                  f_dist_2_pars_1, f_dist_2_pars_2),
 #'                                dim = c(s, s, 2, d + 1))
 #'
-#' # ===========================================================================
+#' # ---------------------------------------------------------------------------
 #' # Parametric object for Model 1.
+#' # ---------------------------------------------------------------------------
+#'
 #' obj_par_model_1 <- parametric_dsmm(
 #'     model_size = 10000,
 #'     states = states,
@@ -327,9 +344,10 @@
 #' f_dist_pars_drift
 #'
 #'
-#' # ===========================================================================
+#' # ---------------------------------------------------------------------------
 #' # Defining Model 2 - p is drifting, f is not drifting.
-#' #
+#' # ---------------------------------------------------------------------------
+#'
 #' # `p_dist` has the same dimensions as in Model 1: (s, s, d + 1).
 #' # Sums over v must be 1 for all u and i = 0, ..., d.
 #' p_dist_model_2 <- array(c(p_dist_1, p_dist_2), dim = c(s, s, d + 1))
@@ -375,22 +393,10 @@
 #'     f_is_drifting = FALSE
 #' )
 #'
-#' # p drifting array.
-#' p_drift <- obj_par_model_2$dist$p_drift
-#' p_drift
-#'
-#' # f distribution.
-#' f_dist_notdrift <- obj_par_model_2$dist$f_notdrift_parametric
-#' f_dist_notdrift
-#'
-#' # parameters for the f distribution.
-#' f_dist_pars_notdrift <- obj_par_model_2$dist$f_notdrift_parameters
-#' f_dist_pars_notdrift
-#'
-#'
-#'
-#' # ===========================================================================
+#' # ---------------------------------------------------------------------------
 #' # Defining Model 3.
+#' # ---------------------------------------------------------------------------
+#'
 #' # `p_dist` has dimensions of: (s, s).
 #' # Sums over v must be 1 for all u.
 #' # Rows correspond to u, columns to v.
@@ -421,27 +427,122 @@
 #'     f_is_drifting = TRUE
 #' )
 #'
-#' # p distribution matrix.
-#' p_notdrift <- obj_par_model_3$dist$p_notdrift
-#' p_notdrift
-#'
-#' # f distribution array.
-#' f_dist_drift <- obj_par_model_3$dist$f_drift_parametric
-#' f_dist_drift
-#'
-#' # parameters for the f distribution array.
-#' f_dist_pars_drift <- obj_par_model_3$dist$f_drift_parameters
-#' f_dist_pars_drift
-#'
-#'
 #'
 #' # ===========================================================================
-#' # Using some methods for parametric objects.
-#' kernel_parametric <- get_kernel(obj = obj_par_model_1, klim = 80)
-#' str(kernel_parametric)
+#' # Parametric estimation using methods corresponding to an object
+#' #     which inherits from the class `dsmm_parametric`.
+#' # ===========================================================================
+#' ### Comments
+#' ### 1.  Using a larger `klim` and a larger `model_size` will increase the
+#' ###     accuracy of the model, with the need of larger memory requirements
+#' ###     and computational cost.
+#' ### 2.  For the parametric estimation it is recommended to use a common set
+#' ###     of distributions while only the parameters are drifting. This results
+#' ###     in higher accuracy.#'
 #'
-#' sim_seq_par <- simulate(obj_par_model_3, nsim = 50, klim = 50)
-#' str(sim_seq_par)
+#'
+#' # ---------------------------------------------------------------------------
+#' # Defining the distributions.
+#' # ---------------------------------------------------------------------------
+#'
+#' # `p_dist` has dimensions of: (s, s, d + 1).
+#' # Sums over v must be 1 for all u and i = 0, ..., d.
+#' # Rows correspond to u, columns to v.
+#' # First matrix.
+#' p_dist_1 <- matrix(c(0,   0.2, 0.4, 0.4,
+#'                      0.5, 0,   0.3, 0.2,
+#'                      0.3, 0.4, 0,   0.3,
+#'                      0.5, 0.3, 0.2, 0),
+#'                    ncol = s, byrow = TRUE)
+#' # Second matrix.
+#' p_dist_2 <- matrix(c(0,   0.3, 0.5, 0.2,
+#'                      0.3, 0,   0.4, 0.3,
+#'                      0.5, 0.3, 0,   0.2,
+#'                      0.2, 0.3, 0.5, 0),
+#'                    ncol = s, byrow = TRUE)
+#' # get `p_dist` as an array of p_dist_1 and p_dist_2.
+#' p_dist_model_1 <- array(c(p_dist_1, p_dist_2), dim = c(s, s, d + 1))
+#'
+#' # `f_dist` has dimensions of: (s, s, d + 1).
+#' # Rows correspond to u, columns to v.
+#' # We will use the same distributions for both
+#' f_dist_1 <- matrix(c(NA,         "unif",  "dweibull", "nbinom",
+#'                      "geom",      NA,     "pois",     "dweibull",
+#'                      "dweibull", "pois",   NA,        "geom",
+#'                      "pois",     'nbinom', "geom",     NA),
+#'                    nrow = s, ncol = s, byrow = TRUE)
+#'
+#' # get `f_dist`
+#' f_dist_model_1 <- array(f_dist_1, dim = c(s, s, d + 1))
+#'
+#' # `f_dist_params` has dimensions of: (s, s, 2, d + 1).
+#' # Rows correspond to u, columns to v.
+#'
+#' # First array of coefficients, corresponding to `f_dist_1`.
+#' # First matrix.
+#' f_dist_1_pars_1 <- matrix(c(NA,  10,  0.4, 4,
+#'                             0.7, NA, 5,   0.6,
+#'                             0.2, 3,  NA,  0.6,
+#'                             4,   7,  0.4, NA),
+#'                           nrow = s, ncol = s, byrow = TRUE)
+#' # Second matrix.
+#' f_dist_1_pars_2 <- matrix(c(NA,  NA,  0.2, 0.6,
+#'                             NA,  NA,  NA,  0.8,
+#'                             0.6, NA,  NA,  NA,
+#'                             NA,  0.4, NA,  NA),
+#'                           nrow = s, ncol = s, byrow = TRUE)
+#'
+#' # Second array of coefficients, corresponding to `f_dist_2`.
+#' # First matrix.
+#' f_dist_2_pars_1 <- matrix(c(NA,  6,  0.5, 3,
+#'                             0.5, NA, 4,   0.5,
+#'                             0.4, 5,  NA,  0.7,
+#'                             6,   5,  0.7, NA),
+#'                           nrow = s, ncol = s, byrow = TRUE)
+#' # Second matrix.
+#' f_dist_2_pars_2 <- matrix(c(NA,  NA,  0.4, 0.5,
+#'                             NA,  NA,  NA,  0.6,
+#'                             0.5, NA,  NA,  NA,
+#'                             NA,  0.3, NA,  NA),
+#'                           nrow = s, ncol = s, byrow = TRUE)
+#' # Get `f_dist_params`.
+#' f_dist_params_model_1 <- array(c(f_dist_1_pars_1, f_dist_1_pars_2,
+#'                                  f_dist_2_pars_1, f_dist_2_pars_2),
+#'                                dim = c(s, s, 2, d + 1))
+#'
+#' # ---------------------------------------------------------------------------
+#' # Defining the parametric object.
+#' # ---------------------------------------------------------------------------
+#'
+#' obj_par_model_1 <- parametric_dsmm(
+#'     model_size = 5000,
+#'     states = states,
+#'     initial_dist = c(0.8, 0.1, 0.1, 0),
+#'     degree = d,
+#'     p_dist = p_dist_model_1,
+#'     f_dist = f_dist_model_1,
+#'     f_dist_params = f_dist_params_model_1,
+#'     p_is_drifting = TRUE,
+#'     f_is_drifting = TRUE
+#' )
+#' cat("The object has class of (",
+#'      paste0(class(obj_par_model_1),
+#'             collapse = ', '), ").")
+#'
+#' klim <- 20
+#' sim_seq <- simulate(obj_par_model_1, klim = klim, seed = 1)
+#'
+#' fit_par_model1 <- fit_dsmm(sequence = sim_seq,
+#'                            states = states,
+#'                            degree = d,
+#'                             f_is_drifting = TRUE,
+#'                             p_is_drifting = TRUE,
+#'                            estimation = 'parametric',
+#'                            f_dist = f_dist_model_1)
+#'
+#' cat("\nThe estimated parameters are:\n")
+#' fit_par_model1$dist$f_drift_parameters
+#'
 parametric_dsmm <- function(model_size,
                             states,
                             initial_dist,
@@ -506,7 +607,6 @@ parametric_dsmm <- function(model_size,
     if (missing(f_dist_params)) {
         stop("\nPlease provide the `f_dist_params` array.")
     }
-    # Get `dist`.
     stopifnot(
         is_integer(obj = model_size),
         valid_model(p_is_drifting = p_is_drifting,
@@ -522,7 +622,8 @@ parametric_dsmm <- function(model_size,
                                params = f_dist_params,
                                degree = degree,
                                s = s,
-                               f_is_drifting = f_is_drifting)
+                               f_is_drifting = f_is_drifting,
+                               states = states)
     )
     # Assign names for p_dist, f_dist, f_dist_params.
     # Empty the names first so the process works as intended.

@@ -17,6 +17,6 @@ It checks for inheritance of the class \code{dsmm_parametric}
 and also for the validity of the attributes specified.
 }
 \seealso{
-\link{is.dsmm}, \link{is.dsmm_fit},
-\link{is.dsmm_nonparametric}
+\link{is.dsmm}, \link{is.dsmm_fit_parametric},
+\link{is.dsmm_fit_nonparametric}, \link{is.dsmm_nonparametric}
 }

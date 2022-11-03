@@ -4,7 +4,7 @@
 \alias{nonparametric_dsmm}
 \alias{dsmm_nonparametric}
 \alias{nonparametric}
-\title{Non-parametric Drifting Semi-Markov Model specification}
+\title{Non-parametric Drifting semi-Markov Model specification}
 \usage{
 nonparametric_dsmm(
   model_size,
@@ -30,10 +30,10 @@ probabilities, specifying the initial distribution for each state in
 the state space.}
 
 \item{degree}{Positive integer that specifies the polynomial degree
-\eqn{d} for the Drifting Semi-Markov model.}
+\eqn{d} for the Drifting semi-Markov model.}
 
 \item{k_max}{Positive integer that specifies the maximum sojourn time
-of the Drifting Semi-Markov model.}
+of the Drifting semi-Markov model.}
 
 \item{p_dist}{Numerical array, representing the probabilities of the
 Transition Matrix \eqn{p} of the embedded Markov chain (it is defined
@@ -100,7 +100,7 @@ object. Is not printed when viewing the object.
 }
 \description{
 Creates a non-parametric model specification for a Drifting
-Semi-Markov model. Returns an object of class
+semi-Markov model. Returns an object of class
 \code{dsmm_nonparametric}.
 }
 \details{
@@ -330,15 +330,15 @@ sim_seq_par <- simulate(obj_nonpar_model_3, nsim = 50)
 str(sim_seq_par)
 }
 \references{
-V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov
+V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov
 Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
 }
 \seealso{
 Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
 
-For the parametric Drifting Semi-Markov model specification:
+For the parametric Drifting semi-Markov model specification:
 \link{parametric_dsmm}.
 
-For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 }

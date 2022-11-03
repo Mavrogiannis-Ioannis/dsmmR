@@ -296,19 +296,21 @@ valid_initial_dist_char <- function(obj) {
 }
 
 
-valid_model <- function(p_is_drifting, f_is_drifting, alt_est) {
+valid_model <- function(p_is_drifting, f_is_drifting
+                        # , numerical_est
+                        ) {
     # '''
     #    Intended for use in `is.dsmm_fit` & `fit_dsmm`, as well as
     #    `dsmm_parametric`, `dsmm_nonparametric`,
     #    `is.dsmm_parametric` and `is.dsmm_nonparametric`
     #    No export.
-    #    Can be used without `alt_est` for the parametric and the
+    #    Can be used without `numerical_est` for the parametric and the
     #    nonparametric models.
     #    Checks whether the choice of model is in accordance to the theory.
     #    Model 1 : both p and f are drifting.
     #    Model 2 : p is drifting, f is not.
     #    Model 3 : f is drifting, p is not.
-    #    In the alternative estimation `alt_est` for Models 2 and 3,
+    #    In the alternative estimation `numerical_est` for Models 2 and 3,
     #       ONLY one of p or f should be drifting.
     #    Finally, if neither are drifting, we cannot use a
     #    Drifting Semi Markov Model.
@@ -316,19 +318,48 @@ valid_model <- function(p_is_drifting, f_is_drifting, alt_est) {
     if (!p_is_drifting && !f_is_drifting) {
         # Neither p or f are drifting.
         stop("\nAt least p OR f should be drifting to use a Drifting",
-             "Semi-Markov Model",
-             " for the estimation. Otherwise, a Semi-Markov Model",
+             "semi-Markov Model",
+             " for the estimation. Otherwise, a semi-Markov Model",
              "should be used.")
     }
-    if (!missing(alt_est)){
-        # The missing case is intended for use in
-        # `is.dsmm_nonparametric()`and `is.dsmm_parametric()`.
-        if (alt_est && p_is_drifting && f_is_drifting) {
-            # Alternative Estimation shouldn't be valid for Model 1.
-            stop("\nThe alternative estimation defined in the",
-                 "logical parameter `alt_est` can only be TRUE ",
-                 "only when f OR p is drifting.")
+    # This is outdated... numerical estimate could work for any model!
+    # # if (!missing(numerical_est)){
+    # #     # The missing case is intended for use in
+    # #     # `is.dsmm_nonparametric()`and `is.dsmm_parametric()`.
+    # #     if (numerical_est && p_is_drifting && f_is_drifting) {
+    # #         # Alternative Estimation shouldn't be valid for Model 1.
+    # #         stop("\nThe alternative estimation defined in the",
+    # #              "logical parameter `numerical_est` can only be TRUE ",
+    # #              "only when f OR p is drifting.")
+    # #     }
+    # # }
+    TRUE
+}
+
+
+valid_estimation <- function(estimation, fpar, s, f_is_drifting, degree,
+                             states) {
+    # '''
+    #    This function is used in `fit_dsmm` with the purpose of
+    #    checking whether the attributes `estimation` and `fpar`
+    #    correspond to either "nonparametric" and NULL
+    #    or to "nonparametric" and `f_parametric`.
+    # '''
+    if (!is.character(estimation) ||
+        (estimation != "nonparametric" && estimation != "parametric")) {
+        stop('`estimation` attribute should be either "nonparametric" for the',
+             ' non-parametric estimation or "parametric" for the parametric',
+             ' estimation.')
+    }
+    if (estimation == "nonparametric") {
+        if (!is.null(fpar)) {
+            stop('When `estimation = "nonparametric"`, attribute `fpar` ',
+                 'should be NULL')
         }
+    } else if (estimation == "parametric") {
+        stopifnot(valid_fdist_parametric(fdist = fpar, params = NULL, s = s,
+                                         f_is_drifting = f_is_drifting,
+                                         degree = degree, states = states))
     }
     TRUE
 }
@@ -387,7 +418,7 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
             stop("\nArray `p_drift` contains values that are not ",
                  "probabilities:\n",
                  paste0(p_dist[non_prob], collapse = ", "))
-        } else if (!identical((dimension <- dim(p_dist)), c(s, s))) {
+        } else if (!all((dimension <- dim(p_dist)) == c(s, s))) {
             stop("\nSince `p_is_drifting` = FALSE, `p_dist` should be",
                  " a square matrix with dimensions: \n(s, s) = (",
                  paste(c(s,s), collapse = ', '),
@@ -432,8 +463,7 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             stop("\nArray `f_drift` contains values that are not ",
                  "probabilities:\n",
                  paste0(f_dist[non_prob], collapse = ", "))
-        } else if (!identical((dimension <- dim(f_dist)),
-                              c(s, s, k_max, D))) {
+        } else if (!all((dimension <- dim(f_dist)) == c(s, s, k_max, D))) {
             stop("\nSince `f_is_drifting` is TRUE, the `f_dist` should be an ",
                  "array with dimensions:\n(s, s, k_max, degree + 1) = (",
                  paste(c(s, s, k_max, D), collapse = ', '),
@@ -443,9 +473,8 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
                  " should correspond to previous states `u`,",
                  " current states `v`,\n",
                  "maximum sojourn time of `k_max` and degree + 1.")
-        } else if (!identical(
-            sum(f_dist *
-                array(diag(s), dim = c(s, s, k_max, D))), 0)) {
+        } else if (!sum(f_dist * array(diag(s),
+                                       dim = c(s, s, k_max, D))) ==  0) {
             # Diagonal values are not equal to 0.
             stop("\nThe diagonal values of `f_dist` should all be equal to 0.")
         } else if (!all_equal_numeric(
@@ -480,7 +509,7 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             stop("\nArray `f_drift` contains values that are not ",
                  "probabilities:\n",
                  paste0(f_dist[non_prob], collapse = ", "))
-        } else if (!identical((dimension <- dim(f_dist)), c(s, s, k_max))) {
+        } else if (!all((dimension <- dim(f_dist)) == c(s, s, k_max))) {
             stop("\nSince `f_is_drifting` is FALSE, the `f_dist` should be",
                  " an array with dimensions:\n",
                  "(s, s, k_max) = (", paste(c(s, s, k_max), collapse = ', '),
@@ -515,10 +544,15 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
 
 # Specific to the parametric object. -------------------------------------------
 # Check the validity of the fdistribution given.
-valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting) {
+valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
+                                   states) {
     # '''
-    #    To be used in `dsmm_parametric` as a check for valid parameters given.
-    #    This is used before `get_fdist_parametric`.
+    #    * To be used in `dsmm_parametric` as a check for valid parameters given.
+    #    * This is used before `get_fdist_parametric`.
+    #    * Also used in `fit_dsmm()` for the parametric estimation, for which
+    #       we define a special case when `params` attribute is equal to NULL.
+    #       In this case, we check specifically for when `fdist` is a character
+    #       array.
     # '''
     # fdist check.
     # both drift & nondrift cases.
@@ -534,19 +568,9 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting) {
              paste0(dist_vector, collapse = '", "'), '", when it contains:\n',
              unqf)
     }
-    # drift and nondrift params check.
-    if (!is_double_array(params)) {
-        stop("\n`f_dist_parameters` should be a array with double ",
-             "and NA values.")
-    }  else if (all(is.na(params))) {
-        stop("\n`f_dist_parameters` should not have all if its values",
-             "equal to NA.")
-    }
-    # drifting case check
+    # Checking f.
     if (f_is_drifting) {
-        # f distributions
-        if (!identical((tmp_d <- dim(fdist)),
-                               (real_dim <- c(s, s, D)))) {
+        if (!all((tmp_d <- dim(fdist)) == (real_dim <- c(s, s, D)))) {
             stop("\nSince `f_is_drifting` = TRUE, `f_dist` should have ",
                  "dimensions: \n(s, s, degree + 1) = (",
                  paste(real_dim, collapse = ', '),
@@ -556,9 +580,33 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting) {
             all(is.na(diag(matrix_uv)))))) {
             stop("\n`f_dist` should have all the diagonal values equal to NA.")
         }
-        # distribution parameters
-        if (!identical((par_tmp_d <- dim(params)),
-                      (par_real_d <- c(s, s, 2L, D)))) {
+    } else {
+        if (!all((tmp_d <- dim(fdist)) == (real_dim <- c(s, s)))) {
+            stop("\nSince `f_is_drifting` = FALSE,",
+                 " `f_dist` should be a square matrix",
+                 " with dimensions: \n(s, s) = (",
+                 paste(real_dim, collapse = ', '),
+                 ') when it has dimensions: \n(',
+                 paste(tmp_d, collapse = ', '), ").")
+        } else if (!all(is.na(diag(fdist)))) {
+            stop("\n`f_dist` should have all the diagonal values equal to NA.")
+        }
+    }
+    # Parametric ESTIMATION case   -   `fit_dsmm()`.
+    if (is.null(params)) {
+        return(TRUE) # checks for parameters don't happen.
+    }
+    # Parametric OBJECT case   -   `parametric_dsmm()`.
+    if (!is_double_array(params)) {
+        stop("\n`f_dist_parameters` should be a array with double ",
+             "and NA values.")
+    }  else if (all(is.na(params))) {
+        stop("\n`f_dist_parameters` should not have all if its values",
+             "equal to NA.")
+    }
+    # Checking parameters
+    if (f_is_drifting) {
+        if (!all((par_tmp_d <- dim(params)) == (par_real_d <- c(s, s, 2L, D)))) {
             stop("\nSince `f_is_drifting` = TRUE, `f_dist_parameters`",
                  " should have dimensions:",
                  "\n(s, s, 2, degree + 1) = (",
@@ -570,22 +618,22 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting) {
             stop("\n`f_dist_parameters` should have all the diagonal",
                  " values equal to NA.")
         }
-        param_matrix <- matrix(c(fdist, params[,,1,], params[,,2,]), ncol = 3)
-    } else { # not drifting check
-        # f dist
-        if (!identical((tmp_d <- dim(fdist)), (real_dim <- c(s, s)))) {
-            stop("\nSince `f_is_drifting` = FALSE,",
-                 " `f_dist` should be a square matrix",
-                 " with dimensions: \n(s, s) = (",
-                 paste(real_dim, collapse = ', '),
-                 ') when it has dimensions: \n(',
-                 paste(tmp_d, collapse = ', '), ").")
-        } else if (!all(is.na(diag(fdist)))) {
-            stop("\n`f_dist` should have all the diagonal values equal to NA.")
-        }
-        # f dist parameters
-        if (!identical((par_tmp_d <- dim(params)),
-                               (par_real_d <- c(s, s, 2L)))) {
+        # Check for the validity of the parameters, for every i, j, d.
+        is_valid_f_param <- sapply(1:D, function(d) {
+            dist_ij <- fdist[,,d]
+            params_ij <- params[,,,d]
+            sapply(1:s, function(j) {
+                dist_i <- dist_ij[,j]
+                params_i <- params_ij[,j,]
+                sapply(1:s, function(i) {
+                    row <- c(dist_i[i], params_i[i,])
+                    valid_parameters(row = row, i = i, j = j, d = d,
+                                     degree = degree, states = states)
+                })
+            })
+        })
+    } else {
+        if (!all((par_tmp_d <- dim(params)) == (par_real_d <- c(s, s, 2L)))) {
             stop("\nSince `f_is_drifting` = FALSE, ",
                  "`f_dist_parameters` should be an ",
                  "array with dimensions: \n(s, s, 2) = (",
@@ -598,64 +646,85 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting) {
             stop("\n`f_dist_parameters` should have all the diagonal",
                  " values equal to NA.")
         }
-        param_matrix <- matrix(c(fdist, params[,,1], params[,,2]), ncol = 3)
-        # this matrix contains rows with the values (e.g.) "unif", "2", "NA".
+        is_valid_f_param <- sapply(1:s, function(j) {
+            dist_i <- fdist[,j]
+            params_i <- params[,j,]
+            sapply(1:s, function(i) {
+                row <- c(dist_i[i], params_i[i,])
+                valid_parameters(row = row, i = i, j = j, d = 0,
+                                 degree = degree, states = states)
+            })
+        })
     }
-    # return `params` value matching.
-    all(apply(param_matrix, c(1), function(row) valid_parameters(row)))
+    all(is_valid_f_param)
 }
 
-# These functions are used in conjuction, therefore they are packed together.
+# These functions are used in conjunction, therefore they are packed together.
 # Check the ''row'' values.
-valid_parameters <- function(row) {
+valid_parameters <- function(row, i, j, d, degree, states) {
     # '''
     #    This is to be used in function `valid_fdist_parametric`.
     #    `row` argument is supposed to have 3 values:
-    #    The first one : a string in ('dweibull', 'geom', 'pois', 'nbinom', 'unif')
-    #    The second & third one : a numeric value to be given to the corrresponding
-    #    distributions.
+    #    The first one : a string in ('dweibull', 'geom', 'pois', 'nbinom',
+    #    'unif').
+    #    The second & third one : a numeric value to be given to the
+    #    corrresponding distributions.
     # '''
     if (all(is.na(row))) return(TRUE)
     distr <- row[1]
     p1 <- as.numeric(row[2])
     p2 <- as.numeric(row[3])
-    msg <- paste0("\nCurrently, the first parameter is equal to ", p1,
+    msg <- paste0("\nCurrently for the sojourn time distribution ",
+                  names_i_d(d = degree, kernel_name = "f")[d],
+                  ", for the previous state u = ", states[i],
+                  " and the next state v = ", states[j],
+                  ", we have that the first parameter is equal to ", p1,
                   " and the second parameter is equal to ", p2, ".")
     if (distr == "unif") {
         if (is.na(p1) || !(is.na(p2))) {
-            stop("\nFor Uniform distributions, only the first parameter must be specified.", msg)
+            stop("\nFor Uniform distributions, only the first parameter",
+                 " must be specified.", msg)
         } else if (!((p1 > 0) && ((p1 %% 1) == 0))) {
-            stop("\nFor Uniform distributions, the value of the parameter must be a positive integer.", msg)
+            stop("\nFor Uniform distributions, the value of the parameter",
+                 " must be a positive integer.", msg)
         }
     } else if (distr == "geom") {
         if (is.na(p1) || !(is.na(p2))) {
-            stop("\nFor Geometric distributions, the first parameter must be specified ",
+            stop("\nFor Geometric distributions, the first parameter must",
+                 " be specified ",
                  "and the second parameter must be NA.", msg)
         } else if (p1 <= 0 || p1 >= 1) {
-            stop("\nFor Geometric distributions, the value of the parameter must be ",
-                 "between [0, 1] (the parameter is the probability of success).", msg)
+            stop("\nFor Geometric distributions, the value of the parameter",
+                 " must be between [0, 1] (probability of success).", msg)
         }
     } else if (distr == "pois") {
         if (is.na(p1) || !(is.na(p2))) {
-            stop("\nFor Poisson distributions, the first parameter must be specified ",
-                 " and the second parameter must be NA.", msg)
+            stop("\nFor Poisson distributions, the first parameter must",
+                 " be specified and the second parameter must be NA.", msg)
         } else if (p1 <= 0) {
-            stop("\nFor Poisson distributions, the first parameter specified must be a positive number.", msg)
+            stop("\nFor Poisson distributions, the first parameter ",
+                 "specified must be a positive number.", msg)
         }
     } else if (distr == "dweibull") {
         if (anyNA(c(p1, p2))) {
-            stop("\nFor Discrete Weibull distributions, both parameters must be specified.", msg)
+            stop("\nFor Discrete Weibull distributions, both ",
+                 "parameters must be specified.", msg)
         } else if (p1 <= 0 || p1 >= 1 || p2 <= 0) {
-            stop("\nFor Discrete Weibull distributions, the value of the first parameter must be between [0, 1],",
-                 " and the second parameter must be a positive number.", msg)
+            stop("\nFor Discrete Weibull distributions, the value ",
+                 "of the first parameter must be between [0, 1],",
+                 " and the second parameter must be a positive number.",
+                 msg)
         }
     } else if (distr == "nbinom") {
         if (anyNA(c(p1, p2))) {
-            stop("\nFor Negative Binomial distributions, both parameters must be specified.", msg)
+            stop("\nFor Negative Binomial distributions, both parameters ",
+                 "must be specified.", msg)
         } else if (p1 <= 0 || p2 <= 0 || p2 >= 1) {
-            stop("\nFor Negative Binomial distributions, the first parameter must be a positive number",
-                 " (parameter of overdispersion), and the value of the second parameter must",
-                 "be between [0, 1] (the parameter is the probability of success).", msg)
+            stop("\nFor Negative Binomial distributions, the first parameter ",
+                 "must be a positive number (parameter of overdispersion), ",
+                 "and the value of the second parameter must ",
+                 "be between [0, 1] ",
+                 "(the parameter is the probability of success).", msg)
         }
     }
     TRUE
@@ -671,7 +740,8 @@ get_fdist_parametric <- function(fdist, params, klim) {
     m <- matrix(c(fdist, params[,,1,], params[,,2,]), ncol = 3)
     # No `nrow` given, because by not defining the number of rows,
     # we simultaneously define the drifting & non-drifting cases.
-    ans <- apply(m, c(1), function(row, klim) get_dist_param(row, klim), k = klim)
+    ans <- apply(m, c(1), function(row, klim) get_dist_param(row, klim),
+                 k = klim)
     return(ans)
 }
 
@@ -683,22 +753,64 @@ get_dist_param <- function(row, k) {
     if (all(is.na(row))) return(rep(0, k))
     dist <- row[1]
     par1 <- as.numeric(row[2])
-    par2 <- as.numeric(row[3]) # if it is NA, it is not given to a function as a parameter.
-    if (dist == 'dweibull') {
-        return(DiscreteWeibull::ddweibull(1:k, q = par1, beta = par2, zero = TRUE))
+    par2 <- as.numeric(row[3]) # if it is NA, it is not given as a parameter.
+    if (dist == 'unif') {
+        distklim <- sapply(1:k, function(x) if (x <= par1) 1/par1 else 0)
     } else if (dist == 'geom') {
-        return(dgeom(0:(k - 1), prob = par1))
-    } else if (dist == 'nbinom') {
-        return(dnbinom(0:(k - 1), size = par1, prob = par2))
+        distklim <- dgeom(0:(k - 1), prob = par1)
     } else if (dist == 'pois') {
-        return(dpois(0:(k-1), lambda = par1))
-    } else if (dist == 'unif') {
-        return(sapply(1:k, function(x) if (x <= par1) 1/par1 else 0))
+        distklim <- dpois(0:(k - 1), lambda = par1)
+    } else if (dist == 'nbinom') {
+        distklim <- dnbinom(0:(k - 1), size = par1, prob = par2)
+    } else if (dist == 'dweibull') {
+        distklim <- DiscreteWeibull::ddweibull(1:k, q = par1,
+                                               beta = par2,
+                                               zero = FALSE)
+        # We keep zero = false because of the parametric estimation.
     }
-    warning("\n\nThis should never happen. `dist` was not as intended.")
+    if ((sumd <- sum(distklim)) < 1) {
+        distklim[k] <- 1 - sumd
+    }
+    distklim
 }
 
-# Regarding the drifting kernels. ----
+valid_estimation_fit <- function(estimation, degree, states, s, k_max,
+                                 p_is_drifting, f_is_drifting, fdist, pdist) {
+    # '''
+    #    This function is acting on the OBJECT `dsmm_fit_nonparametric` and
+    #    `dsmm_fit_parametric`. Specifically, it is used for `check_attributes()`
+    #    in order to prevent someone from defining their own object in a vile manner.
+    # '''
+    if (estimation != 'nonparametric' && estimation != 'parametric') {
+        stop("`estimation` attribute should be either 'nonparametric' or ",
+             " 'parametric'.")
+    }
+    stopifnot(valid_p_dist(p_dist = pdist,
+                           states = states,
+                           s = s, degree = degree,
+                           p_is_drifting = p_is_drifting))
+    if (estimation == 'nonparametric') {
+        stopifnot(valid_fdist_nonparametric(f_dist = fdist,
+                                            states = states,
+                                            s = s,
+                                            degree = degree,
+                                            f_is_drifting = f_is_drifting,
+                                            k_max = k_max))
+    } else {
+        stopifnot(valid_estimation(estimation = estimation,
+                                   fpar = fdist, s = s,
+                                   f_is_drifting = f_is_drifting,
+                                   degree = degree, states = states),
+                  valid_fdist_parametric(fdist = fdist,
+                                         params = NULL,
+                                         s = s, degree = degree,
+                                         f_is_drifting = f_is_drifting))
+    }
+    TRUE
+}
+
+# ------------------------------------------------------------------------------
+# Regarding the drifting kernels.
 poly_coeff <- function(degree) {
     # '''
     #    Returns a matrix with the coefficients of the polynomials `A_i`.
@@ -726,16 +838,15 @@ names_i_d <- function(d, kernel_name = "q") {
     kernel_name <- paste0(kernel_name, "_")
     kernel_0 <- paste0(kernel_name, "0")
     kernel_1 <- paste0(kernel_name, "1")
-    if (d > 1 & is.integer(d)) {
-        return(c( paste0(kernel_name, "0"),
-                  paste0(kernel_name, "(", seq(1, d-1), "/", d, ")"),
-                  paste0(kernel_name, "1"))
+    if (is_integer(d) && d > 1) {
+        return(c(paste0(kernel_name, "0"),
+                 paste0(kernel_name, "(", seq(1, d-1), "/", d, ")"),
+                 paste0(kernel_name, "1"))
         )
     } else if (d == 1) {
         return(c(kernel_0, kernel_1))
-    } else {
-        # This warning is perhaps unnecessary... ----
-        warning("At the function `names_i_d`, d was not an integer >= 1")
+    } else if (d == 0) {
+        return(kernel_name)
     }
 }
 
@@ -824,7 +935,7 @@ get_vl <- function(t, u, vl_names, kernel, states) {
 
 get_A_i <- function(degree, model_size) {
     # '''
-    #    For intended use in ``
+    #    For intended use in `fit_dsmm` and `get_kernel`.
     # '''
     n <- model_size
     coeff <- poly_coeff(degree = degree)
@@ -877,11 +988,11 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 # Random sequence creation
 #' @title Simulate a sequence for states of choice.
 #' @description This is a wrapper function around \code{sample()}.
-#'-
+#'
 #' @param states Character vector of unique values. If given the value
 #' "DNA" the values c("a", "c", "g", "t") are given instead.
 #' @param len Optional. Positive integer with the default value
-#' equal to 5000L.
+#' equal to 5000.
 #' @param probs Optional. Numeric vector with values interpreted as
 #' probabilities for each of the states in \code{states}. Default value
 #' is equal to 1 over the number of states given, for every state.
@@ -889,14 +1000,14 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 #' number generator (see more in \code{\link[base:set.seed]{set.seed}}).
 #'
 #' @seealso
-#' For the simulation of a sequence with a Drifting Semi-Markov kernel:
+#' For the simulation of a sequence with a Drifting semi-Markov kernel:
 #' \link{simulate.dsmm}.
 #'
 #' The original function: \code{\link[base:sample]{sample}}.
 #'
 #' \code{\link[base:RNG]{RNG}} about random number generation in R.
 #'
-#' For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+#' For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 #'
 #' @return A character sequence of length \code{len}.
 #' @export
@@ -909,9 +1020,9 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 #' rand_dna_seq2 <- create_sequence(
 #'     states = random_letters,
 #'     probs = c(0.6, 0.3, 0.05, 0.025, 0.025),
-#'     len = 10000L)
+#'     len = 10000)
 #' table(rand_dna_seq2)
-create_sequence <- function(states, len = 5000L, probs = NULL, seed = NULL) {
+create_sequence <- function(states, len = 5000, probs = NULL, seed = NULL) {
     # '''
     #    This is a convenience function intended for fast sequence simulation.
     # '''

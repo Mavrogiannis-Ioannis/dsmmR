@@ -4,14 +4,14 @@
 \alias{create_sequence}
 \title{Simulate a sequence for states of choice.}
 \usage{
-create_sequence(states, len = 5000L, probs = NULL, seed = NULL)
+create_sequence(states, len = 5000, probs = NULL, seed = NULL)
 }
 \arguments{
 \item{states}{Character vector of unique values. If given the value
 "DNA" the values c("a", "c", "g", "t") are given instead.}
 
 \item{len}{Optional. Positive integer with the default value
-equal to 5000L.}
+equal to 5000.}
 
 \item{probs}{Optional. Numeric vector with values interpreted as
 probabilities for each of the states in \code{states}. Default value
@@ -25,7 +25,6 @@ A character sequence of length \code{len}.
 }
 \description{
 This is a wrapper function around \code{sample()}.
--
 }
 \examples{
 # This is equal to having the argument `probs = c(1/4, 1/4, 1/4, 1/4)`.
@@ -36,16 +35,16 @@ random_letters <- sample(letters, size = 5, replace = FALSE)
 rand_dna_seq2 <- create_sequence(
     states = random_letters,
     probs = c(0.6, 0.3, 0.05, 0.025, 0.025),
-    len = 10000L)
+    len = 10000)
 table(rand_dna_seq2)
 }
 \seealso{
-For the simulation of a sequence with a Drifting Semi-Markov kernel:
+For the simulation of a sequence with a Drifting semi-Markov kernel:
 \link{simulate.dsmm}.
 
 The original function: \code{\link[base:sample]{sample}}.
 
 \code{\link[base:RNG]{RNG}} about random number generation in R.
 
-For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 }

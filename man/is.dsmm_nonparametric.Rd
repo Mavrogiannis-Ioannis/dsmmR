@@ -20,5 +20,6 @@ the attributes specified. This class inherits methods from the parent class
 \code{dsmm}.
 }
 \seealso{
-\link{is.dsmm}, \link{is.dsmm_fit}, \link{is.dsmm_parametric}
+#' \link{is.dsmm}, \link{is.dsmm_fit_nonparametric},
+\link{is.dsmm_fit_parametric}, \link{is.dsmm_parametric}
 }

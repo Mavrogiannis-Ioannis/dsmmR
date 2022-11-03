@@ -19,10 +19,10 @@
 # Checking the validity of the attributes passed into the functions.
 # ______________________________________________________________________________
 check_attributes <- function(obj) UseMethod('check_attributes', obj)
-check_attributes.dsmm_fit <- function(obj) {
+check_attributes.dsmm_fit_nonparametric <- function(obj) {
     # Check for names of the object.
     # Check whether `f_is_drifting`, `p_is_drifting` and
-    # `alt_est`, are correctly used.
+    # `numerical_est`, are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
         stop("\nThe logical parameter `f_is_drifting` ",
              "should be either TRUE or FALSE.")
@@ -31,11 +31,11 @@ check_attributes.dsmm_fit <- function(obj) {
         stop("\nThe logical parameter `p_is_drifting` ",
     "should be either TRUE or FALSE.")
     }
-    # alt_est
-    if (!is_logical(alt_est <- obj$alt_est)) {
-        stop("\nThe logical parameter `alt_est` should ",
-             "be either TRUE or FALSE.")
-    }
+    # # numerical_est
+    # if (!is_logical(numerical_est <- obj$numerical_est)) {
+    #     stop("\nThe logical parameter `numerical_est` should ",
+    #          "be either TRUE or FALSE.")
+    # }
     # Check names of `dist`, in order for `obj$dist[[ i ]]`
     # to work in the next section of `stopifnot`.
     pname <- if (p_is_drifting) 'p_drift' else 'p_notdrift'
@@ -49,21 +49,95 @@ check_attributes.dsmm_fit <- function(obj) {
              paste0(1:2, ". ", names_tmp, collapse = ', '))
     }
     stopifnot(
+        valid_model(p_is_drifting = p_is_drifting,
+                    f_is_drifting = f_is_drifting
+                    # ,
+                    # numerical_est = numerical_est
+                    ),
         valid_seq(seq = (seq <- obj$seq)),
         valid_model_size(model_size = obj$model_size,
                          length_seq = (l <- length(seq))),
         valid_soj_times(soj_times = (soj_times <- obj$soj_times),
                         length_seq = l),
-        valid_k_max(k_max = obj$k_max, soj_times = soj_times),
+        valid_k_max(k_max = (k_max <- obj$k_max), soj_times = soj_times),
         valid_states(states = (states <- obj$states)),
-        valid_length_states(s = obj$s, states = states),
-        valid_degree(degree = obj$degree),
-        valid_model(p_is_drifting = p_is_drifting,
-                    f_is_drifting = f_is_drifting,
-                    alt_est = alt_est)
+        valid_length_states(s = (s <- obj$s), states = states),
+        valid_initial_dist(obj$initial_dist, s),
+        valid_degree(degree = (degree <- obj$degree)),
+        valid_estimation_fit(estimation = obj$estimation,
+                             degree = degree,
+                             states = states,
+                             s = s,
+                             k_max = k_max,
+                             f_is_drifting = f_is_drifting,
+                             p_is_drifting = p_is_drifting,
+                             pdist = obj$dist[[1]],
+                             fdist = obj$dist[[2]]
+        )
     )
     TRUE
 }
+
+check_attributes.dsmm_fit_parametric <- function(obj) {
+    # Check for names of the object.
+    # Check whether `f_is_drifting`, `p_is_drifting` and
+    # `numerical_est`, are correctly used.
+    if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
+        stop("\nThe logical parameter `f_is_drifting` ",
+             "should be either TRUE or FALSE.")
+    }
+    if (!is_logical(p_is_drifting <- obj$p_is_drifting)) {
+        stop("\nThe logical parameter `p_is_drifting` ",
+    "should be either TRUE or FALSE.")
+    }
+    # # numerical_est
+    # if (!is_logical(numerical_est <- obj$numerical_est)) {
+    #     stop("\nThe logical parameter `numerical_est` should ",
+    #          "be either TRUE or FALSE.")
+    # }
+    # Check names of `dist`, in order for `obj$dist[[ i ]]`
+    # to work in the next section of `stopifnot`.
+    pname <- if (p_is_drifting) 'p_drift' else 'p_notdrift'
+    fname <- if (f_is_drifting) 'f_drift_parametric' else 'f_notdrift_parametric'
+    fparname <-
+        if (f_is_drifting) 'f_drift_parameters' else 'f_notdrift_parameters'
+    if (any((names_tmp <- names(obj$dist)) !=
+            (names_real <- c(pname, fname, fparname)))) {
+        stop('\n`', paste0(substitute(obj), '$dist`'),
+             ' should have the named distributions in order, as in: \n',
+             paste0(1:2, ". ", names_real, collapse = ', '),
+             ', when it has :\n',
+             paste0(1:2, ". ", names_tmp, collapse = ', '))
+    }
+    stopifnot(
+        valid_model(p_is_drifting = p_is_drifting,
+                    f_is_drifting = f_is_drifting
+                    #,numerical_est = numerical_est
+                    ),
+        valid_seq(seq = (seq <- obj$seq)),
+        valid_model_size(model_size = obj$model_size,
+                         length_seq = (l <- length(seq))),
+        valid_soj_times(soj_times = (soj_times <- obj$soj_times),
+                        length_seq = l),
+        valid_k_max(k_max = (k_max <- obj$k_max), soj_times = soj_times),
+        valid_states(states = (states <- obj$states)),
+        valid_length_states(s = (s <- obj$s), states = states),
+        valid_initial_dist(obj$initial_dist, s),
+        valid_degree(degree = (degree <- obj$degree)),
+        valid_estimation_fit(estimation = obj$estimation,
+                             degree = degree,
+                             states = states,
+                             s = s,
+                             k_max = k_max,
+                             f_is_drifting = f_is_drifting,
+                             p_is_drifting = p_is_drifting,
+                             pdist = obj$dist[[1]],
+                             fdist = obj$dist[[2]]
+        )
+    )
+    TRUE
+}
+
 check_attributes.dsmm_nonparametric <- function(obj) {
     # Check for names of the object.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
@@ -130,7 +204,7 @@ check_attributes.dsmm_parametric <- function(obj) {
              ', when it has :\n',
              paste0(1:2, ". ", names_tmp, collapse = ', '))
     }
-    # Check whether `alt_est`, `f_is_drifting` and `p_is_drifting`
+    # Check whether `numerical_est`, `f_is_drifting` and `p_is_drifting`
     # are correctly used.
     stopifnot(is_integer(obj = obj$model_size),
               valid_model(p_is_drifting, f_is_drifting),
@@ -146,6 +220,7 @@ check_attributes.dsmm_parametric <- function(obj) {
               valid_fdist_parametric(fdist = obj$dist[[2]],
                                      params = obj$dist[[3]],
                                      s = s, degree = degree,
+                                     states = states,
                                      f_is_drifting = f_is_drifting)
     )
     TRUE
@@ -158,17 +233,13 @@ check_attributes.dsmm_parametric <- function(obj) {
 # ______________________________________________________________________________
 
 #' @title Function to check if an object is of class \code{dsmm}
-#'
 #' @description It checks for inheritance of the class \code{dsmm} and
 #' also for the validity of the attributes specified. This class acts like
-#' a parent class for the classes \code{dsmm_fit, dsmm_parametric,
-#' dsmm_nonparametric}.
-#'
+#' a parent class for the classes \code{dsmm_fit_nonparametric,}
+#' \code{dsmm_fit_parametric, dsmm_parametric} and \code{dsmm_nonparametric}.
 #' @param obj Arbitrary \code{R} object.
-
-#' @seealso \link{is.dsmm_fit}, \link{is.dsmm_parametric},
-#' \link{is.dsmm_nonparametric}
-#'
+#' @seealso \link{is.dsmm_fit_nonparametric}, \link{is.dsmm_fit_nonparametric},
+#' \link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
 #' @return TRUE or FALSE.
 #'
 #' @export
@@ -176,43 +247,82 @@ is.dsmm <- function(obj) {
     # Check for missing object, `obj`.
     if (missing(obj)) {
         stop("\nPlease input the `obj` parameter of class `dsmm`. ",
-             "This can be done through the functions\n `fit_dsmm`,",
-             "`dsmm_parametric`")
+             "This can be done through the functions\n `fit_dsmm()`,",
+             "`dsmm_parametric()` and `dsmm_nonparametric()`.")
     }
     # Check for class of object.
     if (!inherits(obj, 'dsmm')) {
-        cat("\n`obj` is not of class `dsmm_fit`.")
-        return()
+        stop("\n`obj` needs to be of class `dsmm`.",
+             " This can be done automatically through the functions\n",
+             "`fit_dsmm()`, `dsmm_parametric()` and `dsmm_nonparametric()`.")
     }
     check_attributes(obj)
 }
 
-#' @title Function to check if an object is of class \code{dsmm_fit}
+
+#' @title Function to check if an object is of class
+#' \code{dsmm_fit_nonparametric}
 #'
-#' @description It checks for inheritance of the class \code{dsmm_fit} and
-#' also for the validity of the attributes specified.
+#' @description It checks for inheritance of the class
+#' \code{dsmm_fit_nonparametric} and also for the validity of
+#' the attributes specified.
 #'
 #' @param obj Arbitrary \code{R} object.
 #'
-#' @seealso \link{is.dsmm}, \link{is.dsmm_parametric},
-#' \link{is.dsmm_nonparametric}
+#' @seealso \link{is.dsmm}, \link{is.dsmm_fit_parametric},
+#' \link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
 #'
 #' @return TRUE or FALSE.
 #'
 #' @export
-is.dsmm_fit <- function(obj) {
+is.dsmm_fit_nonparametric <- function(obj) {
     # Check for missing object, `obj`.
     if (missing(obj)) {
-        stop("\nPlease input the `obj` parameter of class `dsmm_fit`.\n",
-             "This can be done through the function `fit_dsmm`.")
+        stop("\nPlease input the `obj` parameter of class ",
+             "`dsmm_fit_nonparametric`.",
+             "\nThis can be done automatically through",
+             " the function `fit_dsmm()` when `estimation` = 'nonparametric'.")
     }
     # Check for class of object.
-    if (!inherits(obj, 'dsmm_fit')) {
-        cat("\n`obj` is not of class `dsmm_fit`.")
-        return()
+    if (!inherits(obj, c('dsmm_fit_nonparametric', 'dsmm'))) {
+        stop("\n`obj` needs to be of class ('dsmm_fit_nonparametric', 'dsmm').",
+             "\nThis can be done automatically through",
+             " the function `fit_dsmm()` when `estimation` = 'nonparametric'.")
     }
     check_attributes(obj)
 }
+
+#' @title Function to check if an object is of class \code{dsmm_fit_parametric}
+#'
+#' @description It checks for inheritance of the class
+#' \code{dsmm_fit_parametric} and
+#' also for the validity of the attributes specified.
+#'
+#' @param obj Arbitrary \code{R} object.
+#'
+#' @seealso \link{is.dsmm}, \link{is.dsmm_fit_nonparametric},
+#' \link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
+#'
+#' @return TRUE or FALSE.
+#'
+#' @export
+is.dsmm_fit_parametric <- function(obj) {
+    # Check for missing object, `obj`.
+    if (missing(obj)) {
+        stop("\nPlease input the `obj` parameter of class ",
+             "`dsmm_fit_parametric`.\n",
+             "This can be done automatically through",
+             " the function `fit_dsmm()` when `estimation` = 'parametric'.")
+    }
+    # Check for class of object.
+    if (!inherits(obj, c('dsmm_fit_parametric', 'dsmm'))) {
+        stop("\n`obj` needs to be of class ('dsmm_fit_parametric', 'dsmm').",
+             "\nThis can be done automatically through",
+             " the function `fit_dsmm()` when `estimation` = 'parametric'.")
+    }
+    check_attributes(obj)
+}
+
 
 #' @title Function to check if an object is of class
 #' \code{dsmm_nonparametric}
@@ -222,7 +332,8 @@ is.dsmm_fit <- function(obj) {
 #' the attributes specified. This class inherits methods from the parent class
 #' \code{dsmm}.
 #'
-#' @seealso \link{is.dsmm}, \link{is.dsmm_fit}, \link{is.dsmm_parametric}
+#' @seealso #' \link{is.dsmm}, \link{is.dsmm_fit_nonparametric},
+#' \link{is.dsmm_fit_parametric}, \link{is.dsmm_parametric}
 #'
 #' @param obj Arbitrary \code{R} object.
 #'
@@ -232,12 +343,15 @@ is.dsmm_fit <- function(obj) {
 is.dsmm_nonparametric <- function(obj) {
     # Check for missing object, `obj`.
     if (missing(obj)) {
-        stop("\nPlease input the `obj` parameter of class `dsmm`,",
-             "`fit_dsmm`, `dsmm_parametric`, or `dsmm_nonparametric`.")
+        stop("\nPlease input the `obj` parameter of class `dsmm_nonparametric`.",
+             "\nThis can be done automatically ",
+             "through the function `nonparametric_dsmm()`.")
     }
     # Check for class of object.
     if (!inherits(obj, c('dsmm_nonparametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class `dsmm_nonparametric`.")
+        stop("\n`obj` needs to be of class ('dsmm_nonparametric', 'dsmm').",
+             "\nThis can be done automatically ",
+             "through the function `nonparametric_dsmm()`.")
     }
     check_attributes(obj)
 }
@@ -249,8 +363,8 @@ is.dsmm_nonparametric <- function(obj) {
 #'
 #' @param obj Arbitrary \code{R} object.
 #'
-#' @seealso \link{is.dsmm}, \link{is.dsmm_fit},
-#' \link{is.dsmm_nonparametric}
+#' @seealso \link{is.dsmm}, \link{is.dsmm_fit_parametric},
+#' \link{is.dsmm_fit_nonparametric}, \link{is.dsmm_nonparametric}
 #'
 #' @return TRUE or FALSE.
 #'
@@ -258,12 +372,14 @@ is.dsmm_nonparametric <- function(obj) {
 is.dsmm_parametric <- function(obj) {
     if (missing(obj)) {
         stop("\nPlease input the `obj` parameter of class `dsmm_parametric`.",
-             " This can be done through the function `dsmm_parametric`.")
+             " This can be done automatically ",
+             "through the function `parametric_dsmm()`.")
     }
     # Check for class of object.
     if (!inherits(obj, c('dsmm_parametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class `dsmm_parametric`. ",
-             "This can be done through the function `dsmm_parametric`.")
+        stop("\n`obj` needs to be of class ('dsmm_parametric', 'dsmm'). ",
+             "This can be done automatically ",
+             "through the function `parametric_dsmm()`.")
     }
     check_attributes(obj)
 }
@@ -274,13 +390,13 @@ is.dsmm_parametric <- function(obj) {
 # Get the kernel q_(t/n) (u,v,l) that is necessary for the `simulate` function.
 # ______________________________________________________________________________
 
-#' @title Obtain the Drifting Semi-Markov kernel
+#' @title Obtain the Drifting semi-Markov kernel
 #' @description
 #' This is a generic method that computes and returns the Drifting
-#' Semi-Markov kernel as a numerical array of dimensions (s, s, k_max, n + 1).
+#' semi-Markov kernel as a numerical array of dimensions (s, s, k_max, n + 1).
 #'
 #' @details
-#' The Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} describes
+#' The Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} describes
 #' the probability to jump to the current state \eqn{v} when the previous
 #' state \eqn{u} had a sojourn time of \eqn{l}, for every point \eqn{t} of a
 #' model with length \eqn{n}.
@@ -299,9 +415,9 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' In this case, both \eqn{p} and \eqn{f} are "drifting" between \eqn{d + 1}
 #' fixed points of the model, hence the "drifting" in
-#' Drifting Semi-Markov Models. Therefore, we denote specifically this kernel,
-#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(1)}} and
-#' the corresponding Semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(1)}}.
+#' Drifting semi-Markov Models. Therefore, we denote specifically this kernel,
+#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(1)}}
+#' and the corresponding semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(1)}}.
 #' \deqn{q_{\frac{i}{d}}^{(1)}(u,v,l)=
 #'      {p_{\frac{i}{d}}(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
 #' where for \eqn{i = 0, \dots, d} we have \eqn{d + 1} Markov
@@ -309,7 +425,7 @@ is.dsmm_parametric <- function(obj) {
 #' and \eqn{d + 1} Sojourn Time Distributions
 #' \eqn{f_{\frac{i}{d}}(u,v,l)}, where \eqn{d} is the polynomial degree.
 #'
-#' Thus, the Drifting Semi-Markov kernel will be equal to:
+#' Thus, the Drifting semi-Markov kernel will be equal to:
 #'
 #' \deqn{q_{\frac{t}{n}}^{(1)}(u,v,l) =
 #'   \sum_{i = 0}^{d} A_i(t)q_{\frac{i}{d}}^{(1)}(u,v,l) =
@@ -321,11 +437,11 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' In this case, \eqn{p} is drifting and \eqn{f} \strong{is not drifting}.
 #' Therefore, we denote specifically this kernel,
-#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(2)}} and
-#' the corresponding Semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(2)}}.
+#' resulting from \eqn{d + 1} \eqn{p} and \eqn{f} with \eqn{q_{\frac{t}{n}}^{(2)}}
+#' and the corresponding semi-Markov kernels with \eqn{q_{\frac{i}{d}}^{(2)}}.
 #' \deqn{q_{\frac{i}{d}}^{(2)}(u,v,l)={p_{\frac{i}{d}}(u,v)}{f(u,v,l)},}
 #' where the \eqn{f(u,v,l)} is constant, not drifting alongside the point
-#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting Semi-Markov kernel
+#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting semi-Markov kernel
 #'  will be equal to:
 #'
 #' \deqn{q_{\frac{t}{n}}^{(2)}(u,v,l) =
@@ -340,8 +456,8 @@ is.dsmm_parametric <- function(obj) {
 #' Therefore, the Markov kernel is now described as:
 #' \deqn{q_{\frac{i}{d}}^{(3)}(u,v,l)={p(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
 #' where \eqn{p(u,v)} is constant, not drifting alongside the point
-#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting Semi-Markov kernel
-#'  will be equal to:
+#' \eqn{t} of the model with length \eqn{n}. Thus, the Drifting semi-Markov
+#'  kernel will be equal to:
 #'
 #' \deqn{q_{\frac{t}{n}}^{(3)}(u,v,l) =
 #'   \sum_{i = 0}^{d} A_i(t)q_{\frac{i}{d}}^{(3)}(u,v,l) =
@@ -365,14 +481,14 @@ is.dsmm_parametric <- function(obj) {
 #' Used only for the S3 class \code{dsmm_parametric}.
 #' Specifies the time horizon used to approximate the \eqn{d + 1}
 #' (or 1, if \eqn{f} is \emph{not drifting}) sojourn time distributions.
-#' Default value is 80L. A larger value will result in a considerably larger
+#' Default value is 80. A larger value will result in a considerably larger
 #' kernel (which has dimensions of \eqn{(s, s, klim, n + 1)}), that will
 #' require more memory and will slow down considerably the
 #' \code{simulate.dsmm()} method.
 #' (\link{dsmm_parametric}, \link{simulate.dsmm})
 #'
 #' @return An array with dimensions of \eqn{(n+1, s, s, k_{max})}, giving the
-#' value of the Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} for
+#' value of the Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} for
 #' the corresponding \eqn{(t,u,v,l)}. If any of \eqn{t,u,v,} or \eqn{l} were
 #' specified, their dimension in the array becomes 1.
 #'
@@ -380,12 +496,12 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' @seealso
 #' This kernel can be a result either from the estimation using: \link{fit_dsmm},
-#' or through the functions defining a Drifting Semi-Markov model specification:
+#' or through the functions defining a Drifting semi-Markov model specification:
 #' \link{parametric_dsmm}, \link{nonparametric_dsmm}.
 #'
 #' For sequence simulation through this kernel: \link{simulate.dsmm}.
 #'
-#' For the theoretical background of Drifting Semi-Markov models: \link{dsmmR}.
+#' For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 #'
 #' @examples
 #' # Setup.
@@ -437,7 +553,7 @@ is.dsmm_parametric <- function(obj) {
 #' ))
 #'
 #' # It is possible to ask for any valid combination of `u`, `v`, `l` and `t`.
-get_kernel <- function(obj, t, u, v, l, klim = 80L) {
+get_kernel <- function(obj, t, u, v, l, klim = 100) {
     # Check for missing values & the validity of the attributes given.
     if (missing(obj)) {
         stop("\nPlease provide the object `obj`.")
@@ -486,8 +602,10 @@ get_kernel <- function(obj, t, u, v, l, klim = 80L) {
         stop("\nAttribute `klim` should be a positive integer.")
     } else if (klim > 200) {
         warning("\nAttribute `klim` = ", klim, " will result in",
-                " considerable memory requirements for a larger model size.")
+                " considerably expensive memory requirements for",
+                " a larger model size.")
     }
+    obj$k_max <- klim
     # Possible defined parameters are passed down to `UseMethod`.
     UseMethod(generic = 'get_kernel', object = obj)
 }
@@ -496,7 +614,8 @@ get_kernel <- function(obj, t, u, v, l, klim = 80L) {
 get_kernel.dsmm <- function(obj, t, u, v, l, ...) {
     # =========================================================================.
     # '''
-    #    This function is valid for both `dsmm_fit` AND `dsmm_nonparametric`.
+    #    This function is valid for both `dsmm_fit_nonparametric`
+    #    AND `dsmm_nonparametric`.
     # '''
     # =========================================================================.
     # Get the correct distributions `dist`.
@@ -534,13 +653,14 @@ get_kernel.dsmm <- function(obj, t, u, v, l, ...) {
     #   as.list(names_i_d(degree, "q"))
     # )
     kernel <- get_valid_kernel(Ji, Ai, s, n, k_max, states)
+    if (!is_prob(kernel)) stop("\nThe final kernel is not stochastic.")
     kernel[u, v, l, t]
 }
 
 #' @export
-get_kernel.dsmm_parametric <- function(obj, t, u, v, l, klim = 80L) {
+get_kernel.dsmm_parametric <- function(obj, t, u, v, l, klim = 100) {
     # '''
-    #    This function returns the kernel q_(t/n) with variables (t, u, v, l)!
+    #    This function returns the kernel q_(t/n) with variables (t, u, v, l).
     # '''
     # Does not need missing() case, since there is only one argument
     # and it needs to be passed down from the generic function.
@@ -552,29 +672,53 @@ get_kernel.dsmm_parametric <- function(obj, t, u, v, l, klim = 80L) {
     #  A large klim will create an abnormaly large
     #  kernel and also will slow down the computation for the method
     # `simulate.dsmm()` considerably.
-    f_vector <- get_fdist_parametric(fdist, fpar, klim)
-    f_vector[which(f_vector < 1e-10)] <- 0
+    f_vector <- get_fdist_parametric(fdist = fdist,
+                                     params = fpar,
+                                     klim = klim)
+    # f_vector[which(f_vector < 1e-10)] <- 0
     p_vector <- rep(pdist, each = klim)
     Ji <- f_vector * p_vector
     degree <- obj$degree
     D <- degree + 1
-    dim(Ji) <- c(klim,
-                 s <- obj$s,
-                 s,
-                 D)
+    dim(Ji) <- c(klim, s <- obj$s, s, D)
     Ji <- aperm(Ji, c(2, 3, 1, 4))
     dim(Ji) <- c(s * s * klim, D)
     Ai <- get_A_i(degree, n <- obj$model_size)
     kernel <- Ji %*% Ai
-    dim(kernel) <- c(s, s, klim, n + 1)
+    dim(kernel) <- c(s, s, klim, (N <- n + 1))
+    # dimnames(kernel) <- list(
+    #     as.list(states <- obj$states),
+    #     as.list(states),
+    #     as.list(paste0('l = ', 1:klim)),
+    #     as.list(paste0('t = ', 0:n))
+    # )
+    kernel <- apply(kernel, c(1,4), function(vl_values) {
+        if (any(vl_values < 0)) {
+            return(get_f(vl_values))
+        } else {
+            return(vl_values)
+        }
+    })
+    dim(kernel) <- c(s, klim, s, N)
+    kernel <- aperm(kernel, c(3,1,2,4))
     dimnames(kernel) <- list(
         as.list(states <- obj$states),
         as.list(states),
         as.list(paste0('l = ', 1:klim)),
         as.list(paste0('t = ', 0:n))
     )
-    if (!is_prob(kernel)) stop("\nThe final kernel is not a probability.")
     kernel[u, v, l, t]
+}
+
+#' @export
+get_kernel.dsmm_fit_parametric <- function(obj, t, u, v, l, klim = 100) {
+    # '''
+    #    This function returns the kernel q_(t/n) with variables (t, u, v, l).
+    #    The same technique is used as in `get_kernel.dsmm_parametric()`
+    # '''
+    # Does not need missing() case, since there is only one argument
+    # and it needs to be passed down from the generic function.
+    get_kernel.dsmm_parametric(obj, t, u, v, l, klim)
 }
 
 
@@ -582,9 +726,11 @@ get_kernel.dsmm_parametric <- function(obj, t, u, v, l, klim = 80L) {
 # Printing methods for each of the child classes.
 # ______________________________________________________________________________
 #' @export
-print.dsmm_fit <- function(x, ...) {
+print.dsmm <- function(x, ...) {
     # '''
-    #    This function was made for the purpose of NOT printing certain
+    #    This function acts on both classes of `dsmm_fit_parametric` and
+    #    `dsmm_fit_nonparametric`.
+    #    It was made for the purpose of NOT printing certain
     #    parameters. For example, the polynomials `A_i` are too long
     #    and would obscure the printing of the object.
     # '''
@@ -596,12 +742,12 @@ print.dsmm_fit <- function(x, ...) {
             if (nm[i] %in% c('k_max', 'model_size', 's',
                              'degree', 'states',
                              'f_is_drifting', 'p_is_drifting',
-                             'alt_est', 'Model')) {
+                             'numerical_est', 'Model', 'estimation')) {
                 cat(x[[i]], "\n")
             } else {
                 print(x[[i]])
             }
-        } else if (nm[i] == 'dist') {
+        }  else if (nm[i] == 'dist') {
             nd <- names(x$dist)
             for (j in seq_along(nd)) {
                 cat(paste0("\n\n\n$dist$", nd[j], "\n\n"))
@@ -665,9 +811,10 @@ print.dsmm_parametric <- function(x, ...) {
                 cat(paste0("\n\n\n$dist$", nd[j], "\n\n"))
                 print(x$dist[[j]])
             }
-        } else if (nm[i] == 'f_distribution_parameters') {
-            print(x$f_distribution_parameters)
         }
+        # else if (nm[i] == 'f_distribution_parameters') {
+        #     print(x$f_distribution_parameters)
+        # }
     }
     cat("\n\nClass:", paste0(class(x), collapse = ", "))
 }
@@ -675,9 +822,9 @@ print.dsmm_parametric <- function(x, ...) {
 # ______________________________________________________________________________
 # Simulate a sequence from any `dsmm` object.
 # ______________________________________________________________________________
-#' @title Simulate a sequence under a Drifting Semi-Markov kernel.
+#' @title Simulate a sequence under a Drifting semi-Markov kernel.
 #' @description Generic function that simulates a number of states \code{nsim}
-#' under the rule of a Drifting Semi-Markov kernel, which is retrieved from the
+#' under the rule of a Drifting semi-Markov kernel, which is retrieved from the
 #' object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
 #'
 #' @param object An object of S3 class \code{dsmm,dsmm_fit}
@@ -701,14 +848,14 @@ print.dsmm_parametric <- function(x, ...) {
 #'
 #' Fitting a model through a sequence from this function: \link{fit_dsmm}.
 #'
-#' For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
+#' For the theoretical background of Drifting semi-Markov Models: \link{dsmmR}.
 #'
 #' @return A character vector based on \code{nsim} simulations, with a
 #' maximum length of \code{seq_length}.
 #' @export
 #' @examples
 #' # Setup.
-#' seq <- create_sequence("DNA", len = 1000L)
+#' seq <- create_sequence("DNA", len = 1000)
 #' states <- sort(unique(seq))
 #' d <- 1
 #' obj_model_3 <- fit_dsmm(sequence = seq,
@@ -725,7 +872,7 @@ print.dsmm_parametric <- function(x, ...) {
 #' str(short_sim)
 #' str(cut_sim)
 simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
-                          seq_length = NULL, klim = 80L, ...) {
+                          seq_length = NULL, klim = 80, ...) {
     # Parameters Setup.
     if (missing(object)) {
         stop("\nPlease provide an objectect of class `dsmm`.")

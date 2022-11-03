@@ -16,18 +16,21 @@ data(lambda, package = "dsmmR")
 data("lambda", package = "dsmmR")
 }
 \description{
-Complete data from phage genome [WT71] of length 48502. (needs a citation...)
+Staphylococcus aureus is a widespread and versatile bacterium
+that can infect humans as well as animals.
+It can also lead to some life-threatening diseases like pneumonia.
+The following is the complete DNA sequence
+from an isolate of the S. aureus bacterium, with number [WT71],
+that was considered on a study on diseased Eurasian Beavers.
 }
 \examples{
 data(lambda, package = "dsmmR")
 class(lambda)
-# > "SeqFastadna"
 sequence <- c(lambda) # Convert to "character" class
 str(sequence)
-# > chr [1:48502] "g" "g" "g" "c" "g" "g" "c" "g" "a" "c" "c" "t" ...
 }
 \references{
-S. Monecke & A. Feßler & S. Burgold-Voigt &
+S. Monecke & A. Feßler & S.Eurasian Beavers ( Burgold-Voigt &
  H. Krüger-Haker & K. Muehldorfer & G. Wibbelt &
  E. Liebler-Tenorio & M. Reinicke & S. Braun &
  D. Hanke & C. Diezel & E. Müller & I. Loncaric &

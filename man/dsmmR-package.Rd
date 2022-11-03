@@ -6,12 +6,13 @@
 \alias{dsmmR-package}
 \title{dsmmR : Estimation and Simulation of Drifting Semi-Markov Models}
 \description{
-This package performs non-parametric estimation
-and simulation based upon parametric and non-parametric model
-specifications, for discrete-time Drifting Semi-Markov processes.
-Three possible models are considered, regarding the number of transition
-matrices and sojourn time distributions used for the computation of the
-Semi-Markov kernels which characterize the Drifting Semi-Markov kernel.
+Performs parametric and non-parametric estimation and simulation
+of Drifting semi-Markov processes. Definition of the corresponding model
+specifications is also possible. Furthermore, three different types of Drifting
+semi-Markov models are considered. These models differ in the number of
+transition matrices and sojourn time distributions used for the computation
+of a number of semi-Markov kernels, which in turn characterize the Drifting
+semi-Markov kernel.
 }
 \details{
 \strong{Introduction}
@@ -19,185 +20,211 @@ Semi-Markov kernels which characterize the Drifting Semi-Markov kernel.
 The difference between the Markov models and the semi-Markov models concerns
 the modeling of the sojourn time distributions.
 The Markov Models (in discrete time) are modeled by a sojourn time
-following the Geometric distribution. The Semi-Markov models
+following the Geometric distribution. The semi-Markov models
 are able to have a sojourn time distribution of arbitrary shape.
-The further difference with a \emph{Drifting Semi-Markov model},
+The further difference with a \emph{Drifting} semi-Markov model,
 is that we have \eqn{d + 1} (arbitrary) sojourn time distributions
 and \eqn{d + 1} Transition Matrices (Model 1),
 where \eqn{d} is defined as the polynomial degree.
-Through them, we compute \eqn{d + 1} Semi-Markov kernels.
+Through them, we compute \eqn{d + 1} semi-Markov kernels.
 In this work, we also consider the possibility for obtaining these
-Semi-Markov kernels with \eqn{d + 1} transition matrices and \eqn{1}
+semi-Markov kernels with \eqn{d + 1} transition matrices and \eqn{1}
 sojourn time distribution (Model 2) or \eqn{d + 1} sojourn time
 distributions and \eqn{1} transition matrix (Model 3).
 
 \strong{Definition}
 
-Drifting Semi-Markov processes are particular non-homogeneous Markov
-chains for which the Drifting Semi-Markov kernel
-\eqn{q_{\frac{t}{n}}^{(1)}(u,v,l)} is defined as
-the probability of passing from the previous state \eqn{u} to the current
-state \eqn{v} with a sojourn time of \eqn{l} at the instant \eqn{t}:
-\deqn{q_{\frac{t}{n}}^{(1)}(u,v,l)=P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
+Drifting semi-Markov processes are particular non-homogeneous Markov
+chains for which the Drifting semi-Markov kernel
+\eqn{q_{\frac{t}{n}}(u,v,l)} is defined as
+the probability that, given the previous state at the instance \eqn{t}
+is \eqn{u}, the next state state \eqn{v} will be reached
+with a sojourn time of \eqn{l}:
+\deqn{q_{\frac{t}{n}}(u,v,l)
+= P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
 where \eqn{n} is the model size, defined as the length of the
 embedded Markov chain and \eqn{X_{t}=S_{t}-S_{t-1}}
 is the sojourn time at the instant \eqn{t}.
 
+The Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}}
+is a linear combination of the product of \eqn{d + 1} semi-Markov kernels
+\eqn{q_{\frac{i}{d}}}, where every semi-Markov kernel is the product of
+a transition matrix \eqn{p} and a sojourn time distribution
+\eqn{f}.
+We define the situation when both \eqn{p} and
+\eqn{f} are "drifting"
+between \eqn{d + 1} fixed points of the model
+as Model 1, and thus we will use the exponential \eqn{(1)} as a way to
+refer to the Drifting semi-Markov kernel
+\eqn{q_{\frac{t}{n}}^{(1)}} and corresponding
+semi-Markov kernels \eqn{q_{\frac{i}{d}}^{(1)}} in this case.
+For Model 2, we allow the transition matrix \eqn{p} to drift
+but not the sojourn time distributions \eqn{f}, and for Model 3 we allow the sojourn time
+distributions \eqn{f} to drift but not the transition matrix
+\eqn{p}.
+The exponential \eqn{(2)} or \eqn{(3)} will be used for signifying
+Model 2 or Model 3, respectively.
+In the general case an exponential will not be used.
 
-The Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}^{(1)}(u,v,l)} is a
-linear combination of the product of \eqn{d + 1} Semi-Markov kernels:
-\deqn{q_{\frac{i}{d}}^{(1)}(u,v,l)={p_{\frac{i}{d}}(u,v,l)}{f_{\frac{i}{d}}(u,v,l)},}
-where for \eqn{i = 0,\dots,d} we have \eqn{d + 1} markov transition matrices
-of the embedded Markov chain
-\eqn{p_{\frac{i}{d}}(u,v,l)} and \eqn{d + 1} sojourn time distributions
-\eqn{f_{\frac{i}{d}}(u,v,l)}.
-This is the case where both \eqn{p} and \eqn{f}
-are "drifting" between \eqn{d + 1} fixed points of the model, hence the
-naming of "Drifting" Semi-Markov models. We define the situation when
-both \code{p} and \code{f} are drifting as Model 1.
 
 \strong{\emph{Model 1}}
 
-Both \eqn{p} and \eqn{f} are drifting and the Drifting Semi-Markov kernel
+
+Both \eqn{p} and \eqn{f} are drifting in this case.
+Thus, the Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}^{(1)}} is a
+linear combination of the product of \eqn{d + 1} semi-Markov kernels
+\eqn{q_{\frac{i}{d}}^{(1)}}, which are given by:
+\deqn{q_{\frac{i}{d}}^{(1)}(u,v,l)=
+{p_{\frac{i}{d}}(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
+where for \eqn{i = 0,\dots,d} we have \eqn{d + 1} Markov transition matrices
+of the embedded Markov chain
+\eqn{p_{\frac{i}{d}}(u,v)} and \eqn{d + 1} sojourn time distributions
+\eqn{f_{\frac{i}{d}}(u,v,l)}. Therefore, the Drifting semi-Markov kernel
 is described as:
-\deqn{q_{\frac{t}{n}}^{(1)}(u,v,l) = \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(1)}(u,v,l) =
-\sum_{i = 0}^{d}A_{i}(t){p_{\frac{i}{d}}(u,v,l)}{f_{\frac{i}{d}}(u,v,l)},} where
-\eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree \eqn{d},
-that satisfy the conditions:
-\deqn{\sum_{i=0}^{d}A_{i}(t) = 1}
-\deqn{A_i(t)(\frac{nj}{d})= 1_{\{i=j\}},}
-with \eqn{1_{\{i=j\}}} the function that is \eqn{1} when
- \eqn{i = j} and \eqn{0} otherwise.
+\deqn{q_{\frac{t}{n}}^{(1)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(1)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l),}
+where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
+\eqn{d}, which satisfy the conditions:
+\deqn{\sum_{i=0}^{d}A_{i}(t) = 1,}
+\deqn{A_i \left(\frac{nj}{d} \right)= 1_{\{i=j\}},}
+where \eqn{1_{\{i=j\}}} is the indicator function that is \eqn{1} when
+\eqn{i = j} and \eqn{0} otherwise.
 
 \strong{\emph{Model 2}}
 
-In this case, \eqn{p} is drifting and \eqn{f} is \strong{not drifting}.
-Therefore, the Drifting Semi-Markov kernel is now described as:
-\deqn{q_{\frac{t}{n}}^{(1)}(u,v,l) = \sum_{i = 0}^{d}A_{i}q_{\frac{i}{d}}^{(1)}(u,v,l)
-= \sum_{i = 0}^{d}A_{i}{p_{\frac{i}{d}}(u,v,l)}{f(u,v,l)},}
-where \eqn{f(u,v,l)} remains constant for all instances \eqn{t}
-alongside the embedded Markov chain with length \eqn{n}.
+In this case, \eqn{p} is drifting and \eqn{f} is not drifting.
+Therefore, the Drifting semi-Markov kernel is now described as:
+\deqn{q_{\frac{t}{n}}^{(2)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(2)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)p_{\frac{i}{d}}(u,v)f(u,v,l).}
 
 \strong{\emph{Model 3}}
 
-In this case, \eqn{f} is drifting and \eqn{p} is \strong{not drifting}.
-Therefore, the Markov Kernel is now described as:
-\deqn{q_{\frac{t}{n}}^{(1)}(u,v,l) = \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(1)}(u,v,l)
-= \sum_{i = 0}^{d}A_{i}(t){p(u,v,l)}{f_{\frac{i}{d}}(u,v,l)},}
-where \eqn{p(u,v)} remains constant for all instances \eqn{t}
-alongside the embedded Markov chain with length \eqn{n}.
+In this case, \eqn{f} is drifting and \eqn{p} is not drifting.
+Therefore, the Drifting semi-Markov Kernel is now described as:
+\deqn{q_{\frac{t}{n}}^{(3)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(3)}(u,v,l)
+= \sum_{i = 0}^{d}A_{i}(t)p(u,v)f_{\frac{i}{d}}(u,v,l).}
 
 
 \strong{Parametric and Non-parametric model specifications}
 
 In this package, we can define parametric and non-parametric Drifting
-Semi-Markov models.
+semi-Markov models.
 
 For the \emph{parametric} case, several discrete distributions are
 considered for the modeling of the sojourn times:
 Uniform, Geometric, Poisson, Discrete Weibull and Negative Binomial.
 They can be specified through the function
 \code{parametric_dsmm} that returns an object with the
-S3 class (\code{dsmm}, \code{dsmm_parametric}).
+S3 class (\code{dsmm_parametric}, \code{dsmm}).
 
 The \emph{non-parametric} model specification concerns the sojourn
-time distributions when \strong{no assumptions} are done about the
+time distributions when no assumptions are done about the
 shape of the distributions. This is done through the function called
 \code{nonparametric_dsmm()}, that returns an object of class
-(\code{dsmm}, \code{dsmm_nonparametric}).
+(\code{dsmm_nonparametric}, \code{dsmm}).
 
-It is also possible to proceed with a non-parametric estimation
-for a model on an existing sequence, through the function
+It is also possible to proceed with a parametric or non-parametric
+estimation for a model on an existing sequence, through the function
 \code{fit_dsmm()}, which returns an object with the S3 class
-(\code{dsmm}, \code{dsmm_fit}).
+(\code{dsmm_fit_parametric}, \code{dsmm}) or
+(\code{dsmm_fit_nonparametric}, \code{dsmm}), respectivelly.
 
-
-Based on an \code{dsmm} object, it is possible to use the following methods:
-\itemize{
-  \item Simulate a sequence through the function \code{simulate.dsmm()};
-  \item Get the Drifting Semi-Markov kernel, \eqn{q_{\frac{t}{n}}^{(1)}(u,v,l)}
-   through the generic function \code{get_kernel()}.
-}
-
-These are further specified when necessary, depending on the classes
-\code{dsmm_fit}, \code{dsmm_parametric} and \code{dsmm_nonparametric}.
-In summary, the \code{dsmm} class acts like a wrapper class
-for Drifting Semi-Markov model specifications, while the classes
-\code{dsmm_parametric}, \code{dsmm_nonparametric} and \code{dsmm_fit}
+Therefore, the \code{dsmm} class acts like a wrapper class
+for Drifting semi-Markov model specifications, while the classes
+\code{dsmm_fit_parametric}, \code{dsmm_fit_nonparametric},
+\code{dsmm_parametric} and \code{dsmm_nonparametric}
 are exclusive to the functions that create the corresponding models,
 and inherit methods from the \code{dsmm} class.
+
+In summary, based on an \code{dsmm} object
+it is possible to use the following methods:
+\itemize{
+  \item Simulate a sequence through the function \code{simulate.dsmm()};
+  \item Get the Drifting semi-Markov kernel
+   \eqn{q_{\frac{t}{n}}(u,v,l)}, for any choice of \eqn{u,v,l} or \eqn{t},
+   through the function \code{get_kernel()}.
+}
+
 
 \strong{Restrictions}
 
 The following restrictions must be satisfied for every
-Drifting Semi-Markov model:
+Drifting semi-Markov model:
 \itemize{
-\item The Drifting Semi-Markov kernel \eqn{q_{\frac{t}{n}}^{(1)}(u,v,l)},
+\item The Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)},
   for every \eqn{t \in \{ 0, \dots, n \}} and \eqn{u \in E}, has its sums
-  over \eqn{v \in E} and over \eqn{l \in \{0, \dots, k_{max} \} }, where
-  \eqn{k_{max}} here is the (theoretical) maximum sojourn time (in practice
-  we always have this value), equal to \eqn{1}:
-  \deqn{{\sum_{v \in E}{\sum_{l = 1}^{k_{max}}q_{\frac{t}{n}}^{(1)}(u,v,l)}} =
-   \sum_{i = 0}^{d}\sum_{t=0}^{n}A_{i}(t)q_{\frac{i}{d}}^{(1)}(u,v,l) = 1.}
+  over \eqn{v} and \eqn{l}, equal to \eqn{1}:
+
+  \deqn{
+  \sum_{v \in E}\sum_{l = 1}^{+\infty}q_{\frac{t}{n}}(u,v,l)
+  = \sum_{v \in E}\sum_{l = 1}^{+\infty}A_{i}(t)q_{\frac{i}{d}}(u,v,l)
+  = 1.}
 
 \item Therefore, we also get that for every \eqn{i \in \{0, \dots, d\}} and
-  \eqn{u \in E}, the Semi-Markov kernel \eqn{q_{\frac{i}{d}}^{(1)}(u,v,l)} has its sums
-  over \eqn{v} and over \eqn{l} equal to \eqn{1}:
-  \deqn{\sum_{v \in E}\sum_{l = 1}^{k_{max}}q_{\frac{i}{d}}^{(1)}(u,v,l) = 1.}
+  \eqn{u \in E}, the semi-Markov kernel \eqn{q_{\frac{i}{d}}(u,v,l)}
+  has its sums over \eqn{v} and \eqn{l} equal to \eqn{1}:
+  \deqn{\sum_{v \in E}\sum_{l = 1}^{+\infty}q_{\frac{i}{d}}(u,v,l)
+  = 1.}
 
-\item Lastly, like in Semi-Markov models, we do not allow sojourn times equal to \eqn{0}
-or passing into the same state:
+\item Lastly, like in semi-Markov models, we do not allow sojourn times
+equal to \eqn{0} or passing into the same state:
 \deqn{q_{\frac{t}{n}}(u,v,0) = 0,}
 \deqn{q_{\frac{t}{n}}(u,u,l) = 0.}
 }
 
 \strong{Model specification restrictions}
 
-When we define a Drifting Semi-Markov model specification through the functions
+When we define a Drifting semi-Markov model specification through the functions
 \code{parametric_dsmm} or \code{nonparametric_dsmm}, the following restrictions
 need to be satisfied.
 
 \strong{\emph{Model 1}}
 
-The Semi-Markov kernels are equal to \eqn{q_{\frac{i}{d}}^{(1)}(u,v,l) =
-  p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l)}. Therefore,
- \eqn{\forall t \in \{ 0, \dots, n \}} and \eqn{\forall u \in E}, the sums
-  of \eqn{p_{\frac{i}{d}}(u,v)} over \eqn{v\in E}, and the sums of
-  \eqn{f_{\frac{i}{d}}(u,v,l)} over \eqn{l\in \{0,\dots,k_{max} \}}, must be
-  equal to 1:
-  \deqn{\sum_{v \in E} p_{\frac{i}{d}}(u,v) = 1,}
-  \deqn{\sum_{l = 1}^{k_{max}}f_{\frac{i}{d}}(u,v,l) = 1.}
+The semi-Markov kernels are equal to
+\eqn{q_{\frac{i}{d}}^{(1)}(u,v,l) =
+p_{\frac{i}{d}}(u,v)f_{\frac{i}{d}}(u,v,l)}. Therefore,
+\eqn{\forall u \in E} the sums
+of \eqn{p_{\frac{i}{d}}(u,v)} over \eqn{v} and the sums of
+\eqn{f_{\frac{i}{d}}(u,v,l)} over \eqn{l} must be
+equal to 1:
+\deqn{\sum_{v \in E} p_{\frac{i}{d}}(u,v) = 1,}
+\deqn{\sum_{l = 1}^{+\infty }f_{\frac{i}{d}}(u,v,l) = 1.}
 
 \strong{\emph{Model 2}}
 
-The Semi-Markov kernels are equal to \eqn{q_{\frac{i}{d}}^{(1)}(u,v,l) =
-  p_{\frac{i}{d}}(u,v)f(u,v,l)}. Therefore,
-  \eqn{\forall t \in \{ 0, \dots, n \}} and \eqn{\forall u \in E}, the sums
-  of \eqn{p_{\frac{i}{d}}(u,v)} over \eqn{v\in E}, and the sums of
-  \eqn{f(u,v,l)} over \eqn{l\in\{0,\dots,k_{max}\}}, must be
-  equal to 1:
+The semi-Markov kernels are equal to \eqn{q_{\frac{i}{d}}^{(2)}(u,v,l) =
+  p_{\frac{i}{d}}(u,v)f(u,v,l)}. Therefore, \eqn{\forall u \in E}
+  the sums of \eqn{p_{\frac{i}{d}}(u,v)} over \eqn{v} and
+  the sums of \eqn{f(u,v,l)} over \eqn{l} must be equal to 1:
   \deqn{\sum_{v \in E} p_{\frac{i}{d}}(u,v) = 1,}
-  \deqn{\sum_{l = 1}^{k_{max}}f(u,v,l) = 1.}
+  \deqn{\sum_{l = 1}^{+\infty }f(u,v,l) = 1.}
 
 \strong{\emph{Model 3}}
 
-The Semi-Markov kernels are equal to \eqn{q_{\frac{i}{d}}^{(1)}(u,v,l) =
+The semi-Markov kernels are equal to \eqn{q_{\frac{i}{d}}^{(3)}(u,v,l) =
   p(u,v)f_{\frac{i}{d}}(u,v,l)}. Therefore,
-  \eqn{\forall t \in \{ 0, \dots, n \}} and \eqn{\forall u \in E}, the sums
-  of \eqn{p(u,v)} over \eqn{v\in E}, and the sums of
-  \eqn{f_{\frac{i}{d}}(u,v,l)} over \eqn{l\in\{0,\dots,k_{max}\}}, must be
+  \eqn{\forall u \in E} the sums
+  of \eqn{p(u,v)} over \eqn{v} and the sums of
+  \eqn{f_{\frac{i}{d}}(u,v,l)} over \eqn{l} must be
   equal to 1:
   \deqn{\sum_{v \in E}p(u,v) = 1,}
-  \deqn{\sum_{l = 1}^{k_{max}}f_{\frac{i}{d}}(u,v,l) = 1.}
+  \deqn{\sum_{l = 1}^{+\infty }f_{\frac{i}{d}}(u,v,l) = 1.}
 }
 \references{
-V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov
+Barbu, V. S., Limnios, N. (2008). Semi-Markov Chains and Hidden Semi-Markov
 Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
 
-N. Vergne. (2008). Drifting Markov Models with Polynomial Drift and
+Vergne, N. (2008). Drifting Markov Models with Polynomial Drift and
 Applications to DNA Sequences. Statistical Applications in Genetics
 Molecular Biology 7 (1).
+
+Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
+drifting Markov models: modeling and estimation.
+Methodology and Computing in Applied Probability, 21(4), 1407-1429.
 
 T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.
 IEEE Transactions on Reliability, R-24, 300-301.
@@ -207,22 +234,22 @@ IEEE Transactions on Reliability, R-24, 300-301.
  E. Liebler-Tenorio & M. Reinicke & S. Braun &
  D. Hanke & C. Diezel & E. Müller & I. Loncaric &
  S. Schwarz & R. Ehricht (2021).
- Staphylococcus aureus isolates from Eurasian Beavers (Castor fiber) carry a novel
- phage-borne bicomponent leukocidin related to the Panton-Valentine leukocidin.
- Scientific Reports. 11. 10.1038/s41598-021-03823-6.
+ Staphylococcus aureus isolates from Eurasian Beavers (Castor fiber) carry a
+ novel phage-borne bicomponent leukocidin related to the Panton-Valentine
+ leukocidin. Scientific Reports. 11.
 }
 \seealso{
-For the estimation of a Drifting Semi-Markov model given a sequence:
+For the estimation of a Drifting semi-Markov model given a sequence:
 \link{fit_dsmm}.
 
-For a Drifting Semi-Markov model specification:
+For Drifting semi-Markov model specifications:
 \link{parametric_dsmm}, \link{nonparametric_dsmm}.
 
 For the simulation of sequences:
 \link{simulate.dsmm}, \link{create_sequence}.
 
-For the retrieval of the Drifting Semi-Markov kernel through a
-\code{dsmm} object \link{get_kernel}.
+For the retrieval of the Drifting semi-Markov kernel through a
+\code{dsmm} object: \link{get_kernel}.
 }
 \author{
 \strong{Maintainer}: Ioannis Mavrogiannis \email{mavrogiannis.ioa@gmail.com}
@@ -235,6 +262,6 @@ Authors:
 
 }
 \keyword{Drifting}
-\keyword{Semi-Markov}
 \keyword{estimation}
+\keyword{semi-Markov}
 \keyword{simulation}

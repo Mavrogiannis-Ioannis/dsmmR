@@ -2,9 +2,9 @@
 % Please edit documentation in R/generic_functions.R
 \name{simulate.dsmm}
 \alias{simulate.dsmm}
-\title{Simulate a sequence under a Drifting Semi-Markov kernel.}
+\title{Simulate a sequence under a Drifting semi-Markov kernel.}
 \usage{
-\method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 80L, ...)
+\method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 80, ...)
 }
 \arguments{
 \item{object}{An object of S3 class \code{dsmm,dsmm_fit}
@@ -34,12 +34,12 @@ maximum length of \code{seq_length}.
 }
 \description{
 Generic function that simulates a number of states \code{nsim}
-under the rule of a Drifting Semi-Markov kernel, which is retrieved from the
+under the rule of a Drifting semi-Markov kernel, which is retrieved from the
 object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
 }
 \examples{
 # Setup.
-seq <- create_sequence("DNA", len = 1000L)
+seq <- create_sequence("DNA", len = 1000)
 states <- sort(unique(seq))
 d <- 1
 obj_model_3 <- fit_dsmm(sequence = seq,
@@ -61,5 +61,5 @@ About random number generation in R \code{\link[base:RNG]{RNG}}.
 
 Fitting a model through a sequence from this function: \link{fit_dsmm}.
 
-For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
+For the theoretical background of Drifting semi-Markov Models: \link{dsmmR}.
 }

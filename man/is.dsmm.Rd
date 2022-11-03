@@ -15,10 +15,10 @@ TRUE or FALSE.
 \description{
 It checks for inheritance of the class \code{dsmm} and
 also for the validity of the attributes specified. This class acts like
-a parent class for the classes \code{dsmm_fit, dsmm_parametric,
-dsmm_nonparametric}.
+a parent class for the classes \code{dsmm_fit_nonparametric,}
+\code{dsmm_fit_parametric, dsmm_parametric} and \code{dsmm_nonparametric}.
 }
 \seealso{
-\link{is.dsmm_fit}, \link{is.dsmm_parametric},
-\link{is.dsmm_nonparametric}
+\link{is.dsmm_fit_nonparametric}, \link{is.dsmm_fit_nonparametric},
+\link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
 }

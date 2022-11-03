@@ -3,7 +3,9 @@
 \name{fit_dsmm}
 \alias{fit_dsmm}
 \alias{dsmm_fit}
-\title{Least Square Estimation (LSE) of a Drifting Semi-Markov Chain}
+\alias{dsmm_fit_nonparametric}
+\alias{dsmm_fit_parametric}
+\title{Estimation of a Drifting semi-Markov chain}
 \usage{
 fit_dsmm(
   sequence,
@@ -12,7 +14,8 @@ fit_dsmm(
   f_is_drifting,
   p_is_drifting,
   initial_dist = "unif",
-  alt_est = FALSE
+  estimation = "nonparametric",
+  f_dist = NULL
 )
 }
 \arguments{
@@ -20,10 +23,10 @@ fit_dsmm(
 \eqn{E}. States must be characters with \eqn{length \geq 1}.}
 
 \item{states}{Character vector that represents the state space
-\eqn{E} of choice. It has length equal to \eqn{s}.}
+\eqn{E} of choice, with length equal to \eqn{|E| = s}.}
 
 \item{degree}{Positive integer that represents the polynomial degree
-\eqn{d} for the Drifting Semi-Markov Model.}
+\eqn{d} for the Drifting semi-Markov Model.}
 
 \item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
 
@@ -32,18 +35,46 @@ fit_dsmm(
 \item{initial_dist}{Optional. Character that describes the method to
 estimate the initial distribution.
 \itemize{
-    \item \code{"unif"} : the initial probability of each state is
-    equal to \eqn{1/s}.
-    \item \code{"freq"} : the initial distribution of each state is
-    equal to the frequencies of each state in the sequence.
+\item
+      \code{"unif"} : the initial probability of each state is
+      equal to \eqn{1/s}.
+\item
+      \code{"freq"} : the initial distribution of each state is
+      equal to the frequencies of each state in the sequence.
 }}
 
-\item{alt_est}{Logical. Specifies if an alternative estimation
-should be used for Models 2 and 3. \emph{Currently not supported}.
-Default value is \code{FALSE}.}
+\item{estimation}{Optional. Character vector. Specifies whether the
+.    estimation will be nonparametric or parametric.
+     Possible values are "nonparametric" or "parametric".}
+
+\item{f_dist}{Optional. Can be defined in two ways:
+\itemize{
+\item
+     If \code{estimation} is equal to "nonparametric", it is equal to
+     \code{NULL}.
+\item
+    if \code{estimation} is equal to "parametric", it is a
+    character array that specifies the distributions of the sojourn
+    times, for every state transition.
+    The list of possible values is:
+    \code{["unif", "geom", "pois", "dweibull", "nbinom", NA]}.
+    It can be defined in two ways:
+    \itemize{
+        \item
+            If \eqn{f} \strong{is not} drifting, it has dimensions of
+            \eqn{(s \times s)}.
+        \item
+            If \eqn{f} \strong{is} drifting, it has dimensions of
+            \eqn{(s \times s \times d+1)}
+            (see more in \emph{Details, Defined Arguments}.)
+    }
+    It is defined similarly to the attribute \code{f_dist}
+    in \link{dsmm_parametric}.
+}}
 }
 \value{
-Returns an object of S3 class \code{dsmm_fit, dsmmm}.
+Returns an object of S3 class \code{(dsmm_fit_nonparametric, dsmm)} or
+\code{(dsmm_fit_parametric, dsmm)}.
 It has the following attributes:
 \itemize{
 \item \code{dist} : List that contains the \emph{p} and \emph{f}
@@ -71,10 +102,11 @@ space \eqn{E} given in the attribute \code{states}.
 \eqn{d} considered for the drifting of the model.
 \item \code{f_is_drifting} : Logical. Passing down from the arguments.
 \item \code{p_is_drifting} : Logical. Passing down from the arguments.
-\item \code{alt_est} : Logical. Passing down from the arguments.
 \item \code{Model} : Character vector. Possible values:
 \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
 \eqn{p,f} are drifting or not.
+\item \code{estimation} : Character vector. Specifies whether parametric or
+nonparametric estimation was used.
 \item \code{A_i} : Numerical Matrix. Used for the methods defined for the
 object. Is not printed when viewing the object.
 \item \code{Ji} : Numerical Array. Used for the methods defined for the
@@ -82,55 +114,105 @@ object. Is not printed when viewing the object.
 }
 }
 \description{
-Least Square Estimation of a Drifting Semi-Markov chain,
-    given one sequence of states. This estimation is non-parametric and
-    the estimation of three different models is available.
+Least Squares Estimation
+of a Drifting semi-Markov chain, given one sequence of states.
+This estimation can be parametric or non-parametric and is available for
+the three types of Drifting semi-Markov models.
 }
 \details{
-This function estimates a Drifting Semi-Markov Model in the
-    non-parametric case. Three possible models can be estimated.
-    More about the three Models in \link{dsmmR}. A normalization technique
-    is used in order to correct the estimation errors from small sequences.
+This function estimates a Drifting semi-Markov Model in the
+    parametric and non-parametric case.
+    The parametric estimation can be achieved by fitting the non-parametric
+    estimations of the sojourn time distributions, with regards to the
+    distributions chosen by the user in the attribute \code{f_dist}.
+    It is possible for three different models to be estimated
+    (more about them in \link{dsmmR}).
+    A normalization technique is used in order to correct estimation errors
+    from small sequences.
+
+\strong{Non-parametric Estimation}
+
+We try to minimize the value.(maybe not?)
 
 \strong{\emph{Model 1}}
 
 When the transition matrix of the embedded Markov chain \eqn{p} and
 the conditional sojourn time distribution \eqn{f} are both drifting,
-the Drifting Semi-Markov kernel can \strong{estimated} as:
+the Drifting semi-Markov kernel can be estimated as:
 \deqn{\hat{q}_{\frac{t}{n}}^{(1)}(u,v,l) =
-\sum_{i = 0}^{d}A_{i}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
+      \sum_{i = 0}^{d}A_{i}(t)\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
 \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
-\forall l\in \{0,\dots, k_{max} \}},
-where \eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
-\eqn{d} (see \link{dsmmR}). The Semi-Markov kernels
+\forall l \in \{0,\dots, k_{max} \} }, where \eqn{k_{max}} is the maximum
+sojourn time that was observed in the sequence and
+\eqn{A_i, i = 0, \dots, d} are \eqn{d + 1} polynomials with degree
+\eqn{d} (see \link{dsmmR}).
+
+The semi-Markov kernels
 \eqn{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l), i = 0, \dots, d},
-are estimated through Least Square Estimation and are obtained
-after solving the system \deqn{MJ = P,} where
+are estimated through Least Squares Estimation and are obtained
+after solving the system
+
+\deqn{MJ = P \iff \\
+\left(\begin{array}{cc}
+      \sum_{t=1}^{n}1_{u}(t)A_{0}(t)A_{0}(t) & \dots &
+      \sum_{t=1}^{n}1_{u}(t)A_{0}(t)A_{d}(t)\\
+      \vdots & \ddots & \vdots \\
+      \sum_{t=1}^{n}1_{u}(t)A_{d}(t)A_{0}(t) & \dots &
+      \sum_{t=1}^{n}1_{u}(t)A_{d}(t)A_{d}(t)
+ \end{array}\right)
+ \left(\begin{array}{cc}
+      \hat{q}_{0}^{(1)}(u,v,l) \\
+      \vdots \\
+      \hat{q}_{\frac{i}{d}}^{(1)}(u,v,l) \\
+      \vdots \\
+      \hat{q}_{1}^{(1)}(u,v,l)
+ \end{array} \right)
+      =
+ \left(\begin{array}{cc}
+      \sum_{t=1}^{n}1_{uvl}(t)A_{0}(t) \\
+      \vdots \\
+      \sum_{t=1}^{n}1_{uvl}(t)A_{i}(t) \\
+      \vdots \\
+      \sum_{t=1}^{n}1_{uvl}(t)A_{d}(t)
+ \end{array} \right)}
+where
 \itemize{
-\item \eqn{M = (M_{ij})_{i,j \in E} =
-    (\sum_{t=1}^{n}1_{u}(t)A_{i}A_{j})_{i,j \in E}};
-\item \eqn{J = (J_i)_{i\in E}= (\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l))_{i\in E}};
-\item \eqn{P=(P_i)_{i\in E}=(\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t))_{i\in E}},
+\item
+\eqn{M = (M_{ij})_{i,j \in \{0, \dots, d\} } =
+(\sum_{t=1}^{n}1_{u}(t)A_{i}(t)A_{j}(t))_{
+i,j \in \{0, \dots, d\}}}
+
+\item
+\eqn{J = (J_i)_{i \in \{0, \dots, d\} } =
+\left(\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)\right)_{
+i \in \{0, \dots, d\}}
 }
-and \eqn{1_{u}(t)} is the identifier function that has the value 1 if
-at the instance \eqn{t} the previous state on the
-instance \eqn{t-1} was \eqn{u}, and the value 0 otherwise.
-\eqn{1_{uvl}(t)} is defined similarly and it has the value 1, if at
-the instance \eqn{t} the current state is equal to \eqn{v},
-the previous state on the
-instance \eqn{t-1} is equal to \eqn{u} and a sojourn time of \eqn{l}
-was spent on \eqn{u} before jumping to \eqn{v}. It has the value 0 in all
-the other cases.
+
+\item
+\eqn{P=(P_i)_{i\in \{0, \dots, d\} }=
+(\sum_{t=1}^{n}1_{uvl}(t)A_{i}(t))_{
+i \in \{0, \dots, d\}}
+}
+}
+where we use the indicator functions:
+\deqn{1_{u}(t) =
+\begin{cases}
+  1  & \text{if at } t \text{ the previous state is } u, \\
+  0  & \text{otherwise}.
+\end{cases}
+}
+and
+\deqn{1_{uvl}(t) =
+\begin{cases}
+ 1  & \text{if at } t \text{ the previous state is } u
+ \text{, with sojourn
+ time } l \text{ and next state } v, \\
+ 0  & \text{otherwise}.
+\end{cases}
+}
 
 In order to obtain the estimations of \eqn{\hat{p}_{\frac{i}{d}}(u,v)}
-and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, so that the following are satisfied,
-\deqn{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l) =
-    \hat{p}_{\frac{i}{d}}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l),}
-\deqn{\sum_{v \in E}p_{\frac{i}{d}}(u,v) = 1,}
-\deqn{\sum_{l = 1}^{k_{max}}f_{\frac{i}{d}}(u,v,l) = 1,}
-\eqn{\forall u,v \in E, \forall l \in \{0,\dots, k_{max} \}}, where
-\eqn{k_{max}} is the maximum realized sojourn time,
-we use the following estimations:
+and \eqn{\hat{f}_{\frac{i}{d}}(u,v,l)}, we use the following estimations:
 
 \deqn{\hat{p}_{\frac{i}{d}}(u,v) =
     \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l),}
@@ -142,7 +224,7 @@ we use the following estimations:
 \strong{\emph{Model 2}}
 
 In this case, \eqn{p} is drifting and \eqn{f} is not drifting. Therefore,
-the estimated Drifting Semi-Markov kernel will be given by:
+the estimated Drifting semi-Markov kernel will be given by:
 \deqn{\hat{q}_{\frac{t}{n}}^{(2)}(u,v,l) =
 \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l),}
 \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
@@ -160,10 +242,10 @@ we have the following estimations:
     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
        \sum_{i = 0}^{d}\sum_{l=0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)},}
 
-Thus, the \emph{estimated} Semi-Markov kernels for Model 2,
+Thus, the \emph{estimated} semi-Markov kernels for Model 2,
 \eqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) =
 \hat{p}_{\frac{i}{d}}(u,v)\hat{f}(u,v,l)}, can be written with
-regards to the \emph{estimated} Semi-Markov kernels of Model 1,
+regards to the \emph{estimated} semi-Markov kernels of Model 1,
 \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 
 \deqn{\hat{q}_{\frac{i}{d}}^{(2)}(u,v,l) = \frac{
@@ -175,7 +257,7 @@ regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 \strong{\emph{Model 3}}
 
 In this case, \eqn{f} is drifting and \eqn{p} is not drifting. Therefore,
-the estimated Drifting Semi-Markov kernel will be given by:
+the estimated Drifting semi-Markov kernel will be given by:
 \deqn{\hat{q}_{\frac{t}{n}}^{(3)}(u,v,l) =
 \sum_{i=0}^{d}\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l),}
 \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
@@ -193,10 +275,10 @@ we have the following estimations:
     \frac{\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}{
          \sum_{l = 0}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 
-Thus, the \emph{estimated} Semi-Markov kernels for Model 3,
+Thus, the \emph{estimated} semi-Markov kernels for Model 3,
 \eqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) =
 \hat{p}(u,v)\hat{f}_{\frac{i}{d}}(u,v,l)}, can be written with
-regards to the \emph{estimated} Semi-Markov kernels of Model 1,
+regards to the \emph{estimated} semi-Markov kernels of Model 1,
 \eqn{\hat{q}_{\frac{i}{d}}}, as in the following:
 
 \deqn{\hat{q}_{\frac{i}{d}}^{(3)}(u,v,l) = \frac{
@@ -205,91 +287,188 @@ regards to the \emph{estimated} Semi-Markov kernels of Model 1,
 {(d+1)\sum_{l=1}^{k_{max}}\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l)}.}
 }
 \examples{
-# Alternatively, we can use `data("lambda", package = "dsmmR")`
-# to retrieve a sequence.
-sequence <- create_sequence("DNA", len = 1000L)
+# Create a random sequence
+sequence <- create_sequence("DNA", len = 2000, seed = 1)
+# Alternatively, we could use ``
+# Alternatively, we could use `create_sequence("DNA")`
+# to retrieve a randomly generated sequence.
+# > data("lambda", package = "dsmmR")
+# > sequence <- c(lambda)
 states <- sort(unique(sequence))
 degree <- 3
 
-# Fitting the sequence with the *first* model ===============================
+# ===========================================================================
+# Nonparametric Estimation.
+# Fitting the `lambda` genome under distributions of unknown shape.
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Both p and f are drifting - Model 1.
 obj_model_1 <- fit_dsmm(sequence = sequence,
                        states = states,
                        degree = degree,
                        f_is_drifting = TRUE,
                        p_is_drifting = TRUE,
                        initial_dist = "freq",
-                       alt_est = FALSE # this is the default value.
+                       estimation = "nonparametric", # default value
+                       f_dist = NULL # default value
                        )
 cat(paste0(
     "We fitted a sequence with ", obj_model_1$Model, ",\n",
     "model size: n = ", obj_model_1$model_size, ",\n",
     "length of state space: s = ", obj_model_1$s, ",\n",
     "maximum sojourn time: k_max = ", obj_model_1$k_max, " and\n",
-    "polynomial (drifting) Degree: d = ", obj_model_1$degree, "\n"
+    "polynomial (drifting) Degree: d = ", obj_model_1$degree, ".\n"
 ))
 # Get the drifting p and f arrays.
 p_drift <- obj_model_1$dist$p_drift
 f_drift <- obj_model_1$dist$f_drift
 cat(paste0(
     "Dimension of p_drift: (s, s, d + 1) = (",
-    paste(dim(p_drift), collapse = ", "), ");\n",
+    paste(dim(p_drift), collapse = ", "), ").\n",
     "Dimension of f_drift: (s, s, k_max, d + 1) = (",
-    paste(dim(f_drift), collapse = ", "), ")"
+    paste(dim(f_drift), collapse = ", "), ").\n"
 ))
 
-# Fitting the sequence with the *second* model ==============================
+# ---------------------------------------------------------------------------
+# Fitting the sequence when p is drifting and f is not drifting - Model 2.
 obj_model_2 <- fit_dsmm(sequence = sequence,
                        states = states,
                        degree = degree,
                        initial_dist = "unif",
                        f_is_drifting = FALSE,
                        p_is_drifting = TRUE)
-cat("We fitted a sequence with", obj_model_2$Model, "\n")
+cat(paste0("We fitted a sequence with ", obj_model_2$Model, ".\n"))
 # Get the drifting p and non-drifting f arrays.
 p_drift_2 <- obj_model_2$dist$p_drift
 f_notdrift <- obj_model_2$dist$f_notdrift
 all.equal.numeric(p_drift, p_drift_2) # p is the same as in Model 1.
 cat(paste0(
     "Dimension of f_notdrift: (s, s, k_max) = (",
-     paste(dim(f_notdrift), collapse = ", "), ")"
+     paste(dim(f_notdrift), collapse = ", "), ").\n"
 ))
 
-# Fitting the sequence with the *third* model ===============================
+# ---------------------------------------------------------------------------
+# Fitting the sequence when f is drifting and p is not drifting - Model 3.
+# ---------------------------------------------------------------------------
+
 obj_model_3 <- fit_dsmm(sequence = sequence,
                        states = states,
                        degree = degree,
                        f_is_drifting = TRUE,
                        p_is_drifting = FALSE)
-cat("We fitted a sequence with", obj_model_3$Model, "\n")
+cat(paste0("We fitted a sequence with ", obj_model_3$Model, ".\n"))
 # Get the drifting f and non-drifting p arrays.
 p_notdrift <- obj_model_3$dist$p_notdrift
 f_drift_3 <- obj_model_3$dist$f_drift
 all.equal.numeric(f_drift, f_drift_3) # f is the same as in Model 1.
-cat(paste0(
-    "Dimension of f_notdrift: (s, s) = (",
-    paste(dim(p_notdrift), collapse = ", "), ")"
-))
+cat(paste0("Dimension of f_notdrift: (s, s) = (",
+    paste(dim(p_notdrift), collapse = ", "), ").\n"))
 
-# Some methods for the `dsmm_fit` objects.
-k1 <- get_kernel(obj_model_1)
-str(k1)
 
-sim_seq <- simulate(obj_model_1, nsim = 50)
-str(sim_seq)
+# ===========================================================================
+# Parametric Estimation
+# Fitting the `lambda` genome under distributions of known shape.
+# ===========================================================================
+### Comments
+### 1.  For the parametric estimation it is recommended to use a common set
+###     of distributions while only the parameters (of the sojourn times)
+###     are drifting. This results in (generally) higher accuracy.
+### 2.  This process is similar to that used in `dsmm_parametric()`.
+
+s <- length(states)
+# Getting the distributions for the states.
+# Rows correspond to previous state `u`.
+# Columns correspond to next state `v`.
+f_dist_1 <- matrix(c(NA,         "unif",     "dweibull", "nbinom",
+                     "pois",      NA,        "pois",     "dweibull",
+                     "geom",     "pois",      NA,        "geom",
+                     "dweibull", 'geom',     "pois",      NA),
+                   nrow = s, ncol = s, byrow = TRUE)
+f_dist <- array(f_dist_1, dim = c(s, s, degree + 1))
+dim(f_dist)
+
+# ---------------------------------------------------------------------------
+# Both p and f are drifting - Model 1.
+# ---------------------------------------------------------------------------
+
+obj_fit_parametric <- fit_dsmm(sequence = sequence,
+                               states = states,
+                               degree = degree,
+                               f_is_drifting = TRUE,
+                               p_is_drifting = TRUE,
+                               initial_dist = 'unif',
+                               estimation = 'parametric',
+                               f_dist = f_dist)
+cat("The class of `obj_fit_parametric` is : (",
+    paste0(class(obj_fit_parametric), collapse = ', '), ").\n")
+# Estimated parameters.
+f_params <- obj_fit_parametric$dist$f_drift_parameters
+# The drifting sojourn time distribution parameters.
+f_0 <- f_params[,,,1]
+f_1.3 <- f_params[,,,2]
+f_2.3 <- f_params[,,,3]
+f_1 <- f_params[,,,4]
+
+
+params <- paste0('q = ', round(f_params["c", "t", 1, ], 3),
+                 ', beta = ', round(f_params["c", "t", 2, ], 3))
+f_names <- c("f_0", paste0("f_", 1:(degree-1), "/", degree), "f_1")
+all_names <- paste(f_names, ":", params)
+cat("The drifting of the parameters for passing from \n",
+    "`u` = 'c' to `v` = 't' under a discrete Weibull distribution is:",
+    "\n", all_names[1], "\n", all_names[2],
+    "\n", all_names[3], "\n", all_names[4])
+
+# ---------------------------------------------------------------------------
+# f is not drifting, only p is drifting - Model 2.
+# ---------------------------------------------------------------------------
+
+obj_fit_parametric_2 <- fit_dsmm(sequence = sequence,
+                               states = states,
+                               degree = degree,
+                               f_is_drifting = FALSE,
+                               p_is_drifting = TRUE,
+                               initial_dist = 'unif',
+                               estimation = 'parametric',
+                               f_dist = f_dist_1)
+cat("The class of `obj_fit_parametric_2` is : (",
+    paste0(class(obj_fit_parametric_2), collapse = ', '), ").\n")
+# Estimated parameters.
+f_params_2 <- obj_fit_parametric_2$dist$f_notdrift_parameters
+
+
+params_2 <- paste0('q = ', round(f_params_2["c", "t", 1], 3),
+                 ', beta = ', round(f_params_2["c", "t", 2], 3))
+
+cat("Not-drifting parameters for passing from ",
+    "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution is:\n",
+    paste("f :", params_2))
+
+
+# ===========================================================================
+# Some methods for the `dsmm_fit_nonparametric` and
+#  `dsmm_fit_parametric` objects.
+# ===========================================================================
+sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
+str(sim_seq_nonparametric)
+
+kernel_drift_parametric <- get_kernel(obj_fit_parametric, klim = 10)
+str(kernel_drift_parametric)
 }
 \references{
-V. S. Barbu, N. Limnios. (2008). Semi-Markov Chains and Hidden Semi-Markov
+V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov
 Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
 }
 \seealso{
-For the theoretical background of Drifting Semi-Markov Models: \link{dsmmR}.
+For the theoretical background of Drifting semi-Markov Models: \link{dsmmR}.
 
 For sequence simulation: \link{simulate.dsmm} and \link{create_sequence}.
 
-For Drifting Semi-Markov model specification:
+For Drifting semi-Markov model specification:
 \link{parametric_dsmm}, \link{nonparametric_dsmm}
 
-For the retrieval of the Drifting Semi-Markov kernel:
+For the retrieval of the Drifting semi-Markov kernel:
 \link{get_kernel}.
 }
