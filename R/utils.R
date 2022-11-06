@@ -250,14 +250,21 @@ valid_length_states <- function(s, states) {
 }
 
 
-valid_degree <- function(degree) {
+valid_degree <- function(degree, model_size) {
     # '''
     #   This functions checks for correct behavior of the `degree` parameter.
     # '''
-    if (is_integer(degree)) {
-        return(TRUE)
+    if (!is_integer(degree)) {
+        stop("\nThe the polynomial `degree` should be a positive integer.")
     }
-    stop("\nThe the polynomial `degree` should be an integer.")
+    if (!missing(model_size)) {
+        if (degree > model_size) {
+            stop("\nThe polynomial `degree` = ", degree,
+                 " should not be larger than the model size = ",
+                 model_size, ".")
+        }
+    }
+    TRUE
 }
 
 valid_initial_dist <- function(initial_dist, s) {
@@ -407,6 +414,23 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
                  " p_(i/d).\nWhat follows are the cases that violate",
                  " this principle:\n",
                  paste("\n", possible_cases[logical_vector]))
+        } else if (any(same <- sapply(1:D, function(d1) {
+            sapply(1:D, function(d2) {
+                if (d1 != d2) {
+                    return(all_equal(p_dist[, , d1], p_dist[, , d2]))
+                }
+                FALSE
+            })}))) {
+            # case where p is NOT drifting, but given as drifting.
+            which_same <- which(same)
+            arrays <- array(names_i_d(degree, 'p'), dim = c(D, D))
+            same_arrays <- arrays[which_same] # always even in number...
+            odd <- same_arrays[x <- seq(1, length(same_arrays), by = 2)]
+            even <- same_arrays[x + 1]
+            same_pairs <- paste0("\n\n", odd, " and ", even, collapse = ',\n ')
+            stop("\nThe values given in `p_dist`",
+                 " are the same for the arrays:",
+                 same_pairs, ".")
         }
     } else {
         # Case when p is not drifting, a.k.a. `p_is_drifting` = FALSE.
@@ -482,22 +506,36 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             no_diag <- array(array(1, dimension[1:2]) -
                              base::diag(dimension[1]),
                              dim = dimension[-3]))
-        ) { # Sums over v and l are not equal to 1.
+        ) { # Sums over l are not equal to 1.
             array_names <- sapply(
-                names_i_d(as.integer(degree), "f"), function(dd)
+                names_i_d(as.integer(degree), "f"), function(d)
                     sapply(states, function(v)
                         sapply(states, function(u)
                             paste(c(paste("u =", u),
                                     paste("v =", v),
-                                    paste("Array =", dd)),
+                                    paste("Array =", d)),
                                   collapse = ', '))))
             diffs <- sapply(f_drift_l_sum - no_diag, function(diff)
                 !all_equal_numeric(diff, 0))
-            warning(
-                '\nThe sums over l of `f_dist` are not equal to 1 for the ',
+            stop('\nThe sums over l of `f_dist` are not equal to 1 for the ',
                 'following cases of u, v and array:\n',
-                paste0(array_names[diffs], collapse = '\n')
-            )
+                paste0(array_names[diffs], collapse = '\n'))
+        } else if (any(same <- sapply(1:D, function(d1) {
+            sapply(1:D, function(d2) {
+                if (d1 != d2) {
+                    return(all_equal(f_dist[, , , d1], f_dist[, , , d2]))
+                }
+                FALSE
+            })}))) {
+            # case where f is NOT drifting, but given as drifting.
+            which_same <- which(same)
+            arrays <- array(names_i_d(degree, 'f'), dim = c(D, D))
+            same_arrays <- arrays[which_same] # always even in number...
+            odd <- same_arrays[x <- seq(1, length(same_arrays), by = 2)]
+            even <- same_arrays[x + 1]
+            same_pairs <- paste0("\n\n", odd, " and ", even, collapse = ',\n ')
+            stop("\nThe values given in `f_dist` are the same for the arrays:",
+                 same_pairs, ".")
         }
     } else {
         # Case when f is not drifting, a.k.a. `f_is_drifting` = FALSE.
@@ -543,7 +581,7 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
 }
 
 # Specific to the parametric object. -------------------------------------------
-# Check the validity of the fdistribution given.
+# Check the validity of the f distribution given.
 valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
                                    states) {
     # '''
@@ -594,7 +632,7 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
     }
     # Parametric ESTIMATION case   -   `fit_dsmm()`.
     if (is.null(params)) {
-        return(TRUE) # checks for parameters don't happen.
+        return(TRUE) # checks for parameters do not occur.
     }
     # Parametric OBJECT case   -   `parametric_dsmm()`.
     if (!is_double_array(params)) {
@@ -617,6 +655,23 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
             all(is.na(diag(matrix_uvd)))))) {
             stop("\n`f_dist_parameters` should have all the diagonal",
                  " values equal to NA.")
+        } else if (any(same <- sapply(1:D, function(d1) {
+            sapply(1:D, function(d2) {
+                if (d1 != d2) {
+                    return(all_equal(params[, , ,d1], params[, , ,d2]))
+                }
+                FALSE
+            })}))) {
+            # case where f is NOT drifting, but given as drifting.
+            which_same <- which(same)
+            arrays <- array(names_i_d(degree, 'f_pars'), dim = c(D, D))
+            same_arrays <- arrays[which_same] # always even in number...
+            odd <- same_arrays[x <- seq(1, length(same_arrays), by = 2)]
+            even <- same_arrays[x + 1]
+            same_pairs <- paste0("\n\n", odd, " and ", even, collapse = ',\n ')
+            stop("\nThe values given in `f_dist_pars`",
+                 " are the same for the arrays:",
+                 same_pairs, ".")
         }
         # Check for the validity of the parameters, for every i, j, d.
         is_valid_f_param <- sapply(1:D, function(d) {
@@ -850,22 +905,31 @@ names_i_d <- function(d, kernel_name = "q") {
     }
 }
 
+seq_states_to_id <- function(seq, states) {
+    # Transforming a sequence of states into numbers.
+    list_which <- sapply(states, function(u) which(seq == u) )
+    for (i in seq_along(states)) {
+        seq[list_which[[i]]] <- i
+    }
+    seq
+}
+
 # Get different values needed to compute the different distributions. ----------
-get_1_u <- function(seq, l, n, states, s) {
+get_1_u <- function(id_seq, l, n, id_states, s) {
     zero_v <- rep(0, n)
-    vector_1_u <- sapply(states,
+    vector_1_u <- sapply(id_states,
                          function(u, seq_u, zero_v) {
                              zero_v[which(u == seq_u)] <- 1
                              return(zero_v)},
-                         seq_u = seq[-l], # minus the last state
+                         seq_u = id_seq[-l], # minus the last state
                          zero_v = zero_v)
     rownames(vector_1_u) <- paste0("t = ", 1:n)
     vector_1_u
 }
 
-get_1_uv <- function(seq, l, n, states, s) {
-    possible_uv_states <- paste(states, sort(rep(states, s)))
-    seq_uv <- paste(seq[-l], seq[-1])
+get_1_uv <- function(id_seq, l, n, id_states, s) {
+    possible_uv_states <- paste(id_states, sort(rep(id_states, s)))
+    seq_uv <- paste(id_seq[-l], id_seq[-1])
     zero_v <- rep(0, n)
     vector_1_uv <- sapply(possible_uv_states,
                           function(uv, seq_uv, zero_v) {
@@ -876,10 +940,10 @@ get_1_uv <- function(seq, l, n, states, s) {
     vector_1_uv
 }
 
-get_1_uvl <- function(seq, l, n, X, k_max, states, s) {
+get_1_uvl <- function(id_seq, l, n, X, k_max, id_states, s) {
     # `seq` should be defined as `seq <- rle(original_sequence)$values`
-    seq_uvl <- paste(seq[-l], c(seq[-1]), X[-l])
-    Es <- rep(states, s)
+    seq_uvl <- paste(id_seq[-l], c(id_seq[-1]), X[-l])
+    Es <- rep(id_states, s)
     pEs <- paste(Es, sort(Es))
     possible_uvl_states <- paste(rep(pEs, k_max),
                                   sort(rep(1:k_max, s*s)))

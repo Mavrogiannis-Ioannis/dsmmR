@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic_functions.R
 \name{is.dsmm_fit_parametric}
 \alias{is.dsmm_fit_parametric}
-\title{Function to check if an object is of class \code{dsmm_fit_parametric}}
+\title{Check if an object has a valid \code{dsmm_fit_parametric} class}
 \usage{
 is.dsmm_fit_parametric(obj)
 }
@@ -13,11 +13,11 @@ is.dsmm_fit_parametric(obj)
 TRUE or FALSE.
 }
 \description{
-It checks for inheritance of the class
-\code{dsmm_fit_parametric} and
-also for the validity of the attributes specified.
+Checks for the validity of the specified attributes and the
+    inheritance of the S3 class \code{dsmm_fit_parametric}.
+    This class inherits methods from the parent class \code{dsmm}.
 }
 \seealso{
 \link{is.dsmm}, \link{is.dsmm_fit_nonparametric},
-\link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
+   \link{is.dsmm_parametric}, \link{is.dsmm_nonparametric}
 }

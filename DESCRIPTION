@@ -2,7 +2,7 @@ Type: Package
 Package: dsmmR
 Title: Estimation and Simulation of Drifting Semi-Markov Models
 Version: 0.0.94
-Date: 2022-10-04
+Date: 2022-11-7
 Authors@R: c(
     person("Vlad Stefan", "Barbu",
            role = c("aut"),
@@ -14,16 +14,16 @@ Authors@R: c(
            role = c("aut"))
            )
 Description: Performs parametric and non-parametric estimation and simulation 
-    of Drifting semi-Markov processes. Definition of the corresponding model 
+    of Drifting semi-Markov processes. The definition of the corresponding model 
     specifications is also possible. Furthermore, three different types of Drifting
     semi-Markov models are considered. These models differ in the number of 
     transition matrices and sojourn time distributions used for the computation
     of a number of semi-Markov kernels, which in turn characterize the Drifting 
-    semi-Markov kernel. For the parametric model specification, several discrete
-    distributions are considered for the sojourn times: Uniform, Poisson, Geometric,
-    Discrete Weibull and Negative Binomial. The non-parametric model specification
-    makes no assumptions about the shape of the sojourn time distributions.
-    Semi-Markov models are described in:
+    semi-Markov kernel. For the parametric model estimation and specification, 
+    several discrete distributions are considered for the sojourn times: Uniform,
+    Poisson, Geometric, Discrete Weibull and Negative Binomial. The non-parametric
+    model specification makes no assumptions about the shape of the sojourn time
+    distributions. Semi-Markov models are described in:
     Barbu, V.S., Limnios, N. (2008) <doi:10.1007/978-0-387-73173-5>.
     Drifting Markov models are described in:
     Vergne, N. (2008) <doi:10.2202/1544-6115.1326>.

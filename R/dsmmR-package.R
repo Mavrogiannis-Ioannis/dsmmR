@@ -35,20 +35,17 @@
 #' the probability that, given the previous state at the instance \eqn{t}
 #' is \eqn{u}, the next state state \eqn{v} will be reached
 #' with a sojourn time of \eqn{l}:
-#' \deqn{q_{\frac{t}{n}}(u,v,l)
-#' = P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
+#' \deqn{q_{\frac{t}{n}}(u,v,l) = P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
 #' where \eqn{n} is the model size, defined as the length of the
-#' embedded Markov chain and \eqn{X_{t}=S_{t}-S_{t-1}}
-#' is the sojourn time at the instant \eqn{t}.
+#' embedded Markov chain, \eqn{J_t} is the visited state at the instant \eqn{t}
+#' and \eqn{X_{t}=S_{t}-S_{t-1}} is the sojourn time at the instant \eqn{t}.
 #'
 #' The Drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}}
 #' is a linear combination of the product of \eqn{d + 1} semi-Markov kernels
 #' \eqn{q_{\frac{i}{d}}}, where every semi-Markov kernel is the product of
 #' a transition matrix \eqn{p} and a sojourn time distribution
-#' \eqn{f}.
-#' We define the situation when both \eqn{p} and
-#' \eqn{f} are "drifting"
-#' between \eqn{d + 1} fixed points of the model
+#' \eqn{f}. We define the situation when both \eqn{p} and
+#' \eqn{f} are "drifting" between \eqn{d + 1} fixed points of the model
 #' as Model 1, and thus we will use the exponential \eqn{(1)} as a way to
 #' refer to the Drifting semi-Markov kernel
 #' \eqn{q_{\frac{t}{n}}^{(1)}} and corresponding
@@ -103,7 +100,7 @@
 #' = \sum_{i = 0}^{d}A_{i}(t)p(u,v)f_{\frac{i}{d}}(u,v,l).}
 #'
 #'
-#' \strong{Parametric and Non-parametric model specifications}
+#' \strong{Parametric and non-parametric model specifications}
 #'
 #' In this package, we can define parametric and non-parametric Drifting
 #' semi-Markov models.
@@ -125,7 +122,7 @@
 #' estimation for a model on an existing sequence, through the function
 #' \code{fit_dsmm()}, which returns an object with the S3 class
 #' (\code{dsmm_fit_parametric}, \code{dsmm}) or
-#' (\code{dsmm_fit_nonparametric}, \code{dsmm}), respectivelly.
+#' (\code{dsmm_fit_nonparametric}, \code{dsmm}), respectively.
 #'
 #' Therefore, the \code{dsmm} class acts like a wrapper class
 #' for Drifting semi-Markov model specifications, while the classes
@@ -137,7 +134,7 @@
 #' In summary, based on an \code{dsmm} object
 #' it is possible to use the following methods:
 #' \itemize{
-#'   \item Simulate a sequence through the function \code{simulate.dsmm()};
+#'   \item Simulate a sequence through the function \code{simulate.dsmm()}.
 #'   \item Get the Drifting semi-Markov kernel
 #'    \eqn{q_{\frac{t}{n}}(u,v,l)}, for any choice of \eqn{u,v,l} or \eqn{t},
 #'    through the function \code{get_kernel()}.
@@ -166,8 +163,8 @@
 #'
 #' \item Lastly, like in semi-Markov models, we do not allow sojourn times
 #' equal to \eqn{0} or passing into the same state:
-#' \deqn{q_{\frac{t}{n}}(u,v,0) = 0,}
-#' \deqn{q_{\frac{t}{n}}(u,u,l) = 0.}
+#' \deqn{q_{\frac{t}{n}}(u,v,0) = 0, \forall u,v \in E}
+#' \deqn{q_{\frac{t}{n}}(u,u,l) = 0, \forall u\in E,l\in\{1,\dots,+\infty\}.}
 #' }
 #'
 #' \strong{Model specification restrictions}
@@ -239,14 +236,10 @@
 #' T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.
 #' IEEE Transactions on Reliability, R-24, 300-301.
 #'
-#'  S. Monecke & A. Feßler & S. Burgold-Voigt &
-#'  H. Krüger-Haker & K. Muehldorfer & G. Wibbelt &
-#'  E. Liebler-Tenorio & M. Reinicke & S. Braun &
-#'  D. Hanke & C. Diezel & E. Müller & I. Loncaric &
-#'  S. Schwarz & R. Ehricht (2021).
-#'  Staphylococcus aureus isolates from Eurasian Beavers (Castor fiber) carry a
-#'  novel phage-borne bicomponent leukocidin related to the Panton-Valentine
-#'  leukocidin. Scientific Reports. 11.
+#' Sanger, F., Coulson, A. R., Hong, G. F., Hill, D. F., & Petersen, G. B.
+#' (1982). Nucleotide sequence of bacteriophage \eqn{\lambda} DNA.
+#' Journal of molecular biology, 162(4), 729-773.
+#'
 #'
 #' @import stats
 #' @import utils

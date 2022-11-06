@@ -142,6 +142,19 @@ parametric_estimation <- function(lprobs, dist, kmax, i, j, d, degree, states) {
         # theta <- mle$par
         # return(theta)
     } else if (dist == 'dweibull') {
+        if (length(unique(lprobs)) == 1) {
+            stop("The Discrete Weibull is not appropriate for modeling",
+                 " the conditional sojourn time distribution",
+                 " describing the previous state u = ", states[i],
+                 ", the next state v = ", states[j],
+                 " for the sojourn time distribution ",
+                 names_i_d(degree, 'f')[d], ", since the estimation of",
+                 " the second parameter beta is not possible.\n",
+                 "This happens because we only have 1 non-negative value",
+                 " and the estimation of beta requires at least 2 non-negative",
+                 " values, which makes the estimation of beta impossible in",
+                 " this case")
+        }
         qhat <- 1 - lprobs[1]
         cumsumf <- 1 - cumsum(lprobs)
         beta_i <- sapply(2:kmax, function(i)
@@ -154,8 +167,8 @@ parametric_estimation <- function(lprobs, dist, kmax, i, j, d, degree, states) {
                  ", the next state v = ", states[j],
                  " for the sojourn time distribution ",
                  names_i_d(degree, 'f')[d], ",  the estimation of",
-                 " the second parameter beta is not possible.",
-                 " This behaviour, is perhaps accounted to the fact that",
+                 " the second parameter beta is not possible.\n ",
+                 "This behaviour is perhaps accounted to the fact that",
                  " beta > 1, which is generally hard to estimate.")
         }
         return(c(qhat, betahat))

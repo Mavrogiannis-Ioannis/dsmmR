@@ -20,22 +20,22 @@
 #' @param sequence Character vector that represents a sequence of states in
 #'     \eqn{E}. States must be characters with \eqn{length \geq 1}.
 #' @param states Character vector that represents the state space
-#'     \eqn{E} of choice, with length equal to \eqn{|E| = s}.
+#'     \eqn{E} of choice, with length equal to \eqn{s = |E|}.
 #' @param degree Positive integer that represents the polynomial degree
 #'     \eqn{d} for the Drifting semi-Markov Model.
 #' @param f_is_drifting Logical. Specifies if \eqn{f} is drifting or not.
 #' @param p_is_drifting Logical. Specifies if \eqn{p} is drifting or not.
-#' @param initial_dist Optional. Character that describes the method to
+#' @param initial_dist Optional. Character that represents the method to
 #'     estimate the initial distribution.
 #'     \itemize{
 #'     \item
-#'           \code{"unif"} : the initial probability of each state is
+#'           \code{"unif"} : The initial probability of each state is
 #'           equal to \eqn{1/s}. (\strong{Default value}).
 #'     \item
-#'           \code{"freq"} : the initial distribution of each state is
+#'           \code{"freq"} : The initial distribution of each state is
 #'           equal to the frequencies of each state in the sequence.
 #'     }
-#' @param estimation Optional. Character Specifies whether the
+#' @param estimation Optional. Character. Represents whether the
 #'     estimation will be nonparametric or parametric.
 #'     \itemize{
 #'     \item
@@ -45,7 +45,7 @@
 #'         \code{"parametric"} : The estimation will be
 #'         parametric.
 #'     }
-#' @param f_dist Optional. It Can be defined in two ways:
+#' @param f_dist Optional. It can be defined in two ways:
 #'     \itemize{
 #'     \item If \code{estimation = "nonparametric"}, it is
 #'           equal to \code{NULL}. (\strong{Default value}).
@@ -89,9 +89,7 @@
 #'
 #' \strong{Non-parametric Estimation}
 #'
-#' We try to minimize the value.(maybe not?)
-#'
-#' \strong{\emph{Model 1}}
+#'\strong{\emph{Model 1}}
 #'
 #' When the transition matrix of the embedded Markov chain \eqn{p} and
 #' the conditional sojourn time distribution \eqn{f} are both drifting,
@@ -263,111 +261,122 @@
 #' \strong{Parametric Estimation}
 #'
 #' In this package, the parametric estimation of the sojourn time distributions
-#' defined in the attribute \code{dsmm_fit} is achieved as follows:
+#' defined in the attribute \code{f_dist} is achieved as follows:
 #' \enumerate{
 #'     \item
 #'          We obtain the non-parametric LSE of the sojourn time distributions
 #'          \eqn{f}.
 #'     \item
-#'         We fit the probabilities \eqn{f(x;i,j), x = 1, \dots, k_{max}},
-#'         \eqn{i, j \in E}, for the distributions defined in \code{dsmm_fit}.
+#'         We estimate the parameters for the distributions defined in
+#'         \code{f_dist} through the probabilities of \eqn{f}.
 #' }
 #'
-#' The available distributions for the modeling of the
-#' conditional sojourn times of the Drifting semi-Markov model, used through
-#' the argument \code{f_dist}, are the following:
+#' The available distributions for the modeling of the conditional sojourn
+#' times of the Drifting semi-Markov model, defined from
+#' the argument \code{f_dist}, have their parameters estimated through the
+#' following formulas:
 #' \itemize{
-#' \item Uniform: \eqn{f(x) = 1/n} for \eqn{a \le x \le b},
-#'     with \eqn{n = b-a+1}.
-#'     This can be specified through the following:
-#'     \itemize{
-#'     \item \code{f_dist = "unif"}
-#'     \item \code{f_dist_params} = (\eqn{n}, \code{NA})
-#'     (\eqn{n} as defined here)
-#'     }
-#' \item Geometric: \eqn{f(x) = \theta (1-\theta)^x} for
-#'     \eqn{x = 0, 1, 2,\ldots,n}, \eqn{0 < \theta < 1}, with
-#'     \eqn{n > 0} and \eqn{\theta} is the probability of success;
-#'     This can be specified through the following:
-#'     \itemize{
-#'     \item \code{f_dist} = \code{"geom"}
-#'     \item \code{f_dist_params} = (\eqn{\theta}, \code{NA})
-#'     }
-#' \item Poisson: \eqn{f(x) = \frac{\lambda^x exp(-\lambda)}{x!}} for
-#'     \eqn{x = 0, 1, 2,\ldots,n}, with \eqn{n > 0} and \eqn{\lambda > 0};
-#'     This can be specified through the following:
-#'     \itemize{
-#'     \item \code{f_dist} = \code{"pois"}
-#'     \item \code{f_dist_params} = (\eqn{\lambda}, \code{NA})
-#'     }
-#' \item Discrete Weibull of type 1:
-#'     \eqn{f(x)=q^{(x-1)^{\beta}}-q^{x^{\beta}}, x=1,2,3,\ldots,n}, with
-#'     \eqn{n > 0}, \eqn{q} is the first parameter (probability) and
-#'     \eqn{\beta} is the second parameter;
-#'     This can be specified through the following:
-#'     \itemize{
-#'     \item \code{f_dist} = \code{"dweibull"}
-#'     \item \code{f_dist_params} = (\eqn{q, \beta})
-#'     (\eqn{q} as defined here)
-#'     }
+#' \item Geometric: Since \eqn{f(x) = p (1-p)^x} for
+#'     \eqn{x = 0, 1, 2, \dots, N}, with \eqn{N > 0} and \eqn{0 < p < 1}, with
+#'     \eqn{p} is the probability of success, we estimate \eqn{\hat{p}}
+#'     as such:
+#'     \deqn{\hat{p} = \frac{1}{E(X)}}
+#'
+#' \item Poisson: Since \eqn{f(x) = \frac{\lambda^x exp(-\lambda)}{x!}} for
+#'     \eqn{x = 0, 1, 2,\dots, N}, with \eqn{N > 0} and \eqn{\lambda > 0},
+#'     we estimate \eqn{\hat{\lambda}} as such:
+#'     \deqn{\hat{\lambda} = E(X)}
+#'
 #' \item Negative binomial:
-#'     \eqn{f(x)=\frac{\Gamma(x+\alpha)}{\Gamma(\alpha)x!}p^{\alpha}(1-p)^x},
-#'     for \eqn{x = 0, 1, 2,\ldots,n}. \eqn{\Gamma} is the Gamma function,
-#'     \eqn{\alpha} is the parameter of overdispersion and \eqn{p} is the
-#'     probability of success, \eqn{0 < p < 1};
-#'     \itemize{
-#'     \item \code{f_dist} = \code{"nbinom"}
-#'     \item \code{f_dist_params} = (\eqn{\alpha, p})
-#'     (\eqn{p} as defined here)
+#'     Since \eqn{f(x)=\frac{\Gamma(x+\alpha)}{\Gamma(\alpha)x!}
+#'                     p^{\alpha}(1-p)^x},
+#'     for \eqn{x = 0, 1, 2,\ldots, N}, with \eqn{N > 0}.
+#'     \eqn{\Gamma} is the Gamma function, \eqn{\alpha \in (0, +\infty)} is
+#'     the parameter of overdispersion and \eqn{p} is the
+#'     probability of success, \eqn{0 < p < 1}. We estimate them as such:
+#'
+#'     \deqn{\hat{p} = \frac{E(X)}{Var(X)}}
+#'     \deqn{\hat{\alpha} = E(X)\frac{\hat{p}}{1 - \hat{p}} =
+#'     \frac{E(X)^2}{Var(X) - E(X)}}
+#'
+#' \item Discrete Weibull of type 1:
+#'     Since \eqn{f(x)=q^{(x-1)^{\beta}}-q^{x^{\beta}}, x= 1, 2, 3,\dots,N},
+#'     with \eqn{N > 1}, where \eqn{q} is the first parameter,
+#'     \eqn{0 < q < 1} and \eqn{\beta \in (0, +\infty)}
+#'     the second parameter. We estimate them as such:
+#'
+#'     \deqn{\hat{q} = 1 - f(x = 1)}
+#'     \deqn{\hat{\beta} = \sum_{i = 2}^{k_{max}}
+#'     \log_{i}(\log_{\hat{q}}(\sum_{j = 1}^{i}f(x = j)))
 #'     }
+#'
+#' \item Uniform :
+#'     \eqn{f(x) = 1/N} for \eqn{a \le x \le b}, with \eqn{N = b-a+1}.
+#'     We use a numerical method to obtain a better estimator for \eqn{N}
+#'     in this case.
 #' }
 #'
-#'
-#' @return Returns an object of S3 class \code{(dsmm_fit_nonparametric, dsmm)} or
-#' \code{(dsmm_fit_parametric, dsmm)}.
-#' It has the following attributes:
+#' @return Returns an object of S3 class \code{(dsmm_fit_nonparametric, dsmm)}
+#' or \code{(dsmm_fit_parametric, dsmm)}. It has the following attributes:
 #' \itemize{
-#' \item \code{dist} : List that contains the \emph{p} and \emph{f}
-#'     estimated distributions from the sequence, given in the argument
-#'     \code{sequence};
+#' \item \code{dist} : List. Contains 2 arrays:
+#' \itemize{
+#'       \item \code{p_drift} or \code{p_notdrift}, regarding whether
+#'       the transition matrix \eqn{p} is drifting or not.
+#'       \item \code{f_drift} or \code{f_notdrift}, regarding whether
+#'       the sojourn time distribution \eqn{f} is drifting or not.
+#' }
 #' \item \code{seq} : Character vector that contains the
-#'    \strong{state jumps of the original sequence}. It is this attribute of the
-#'    object that describes the length of the model \eqn{n}. Last state is also
-#'    included, for a total length of \eqn{n+1}, but it should not used;
+#'    \strong{visited states of the original sequence}.
+#'    It is this attribute of the object that describes the length of the model
+#'    \eqn{n}. Last state is also included, for a total length of \eqn{n+1},
+#'    but it is not used for any calculation.
 #' \item \code{soj_times} : Numerical vector that contains the sojourn times
-#'   spent for each state in \code{seq} before the jump to the next state;
-#'   Last state is also
-#'   included, for a total length of \eqn{n+1}, but it should not used;
+#'   spent for each state in \code{seq} before the jump to the next state.
+#'   Last state is also included, for a total length of \eqn{n+1},
+#'   but it is not used for any calculation.
 #' \item \code{k_max} : Numerical value that contains the maximum sojourn
-#'   time, meaning the maximum value in \code{soj_times};
+#'   time, which is the maximum value in \code{soj_times}, excluding the last
+#'   state.
 #' \item \code{initial_dist} : Numerical vector that contains an estimation
-#'   for the initial distribution of the realized states in \code{sequence};
-#' \item \code{model_size} : Integer value that contains the length of the
-#'   model This is equal to \code{length(seq) - 1}, for \code{seq} as defined
-#'   above. \item \code{states} : Character vector that contains the realized
-#'   states given in the argument \code{sequence};
-#' \item \code{s} : Integer that contains the length of the state
-#'   space \eqn{E} given in the attribute \code{states}.
-#' \item \code{degree} : Integer that contains the polynomial degree
-#' \eqn{d} considered for the drifting of the model.
+#'   for the initial distribution of the realized states in \code{sequence}.
+#'   It always has values between \eqn{0} and \eqn{1}.
+#' \item \code{model_size} : Positive integer that contains the length of the
+#'   Drifting semi-Markov model \eqn{n},
+#'   which is equal to the number of visited states, minus the last state.
+#'   It has a value of \code{length(seq) - 1}, for \code{seq} as defined above.
+#' \item \code{states} : Character vector. Passing down from the arguments.
+#'   It contains the realized states given in the argument \code{sequence}.
+#' \item \code{s} : Positive integer that contains the length of the character
+#' vector given in the attribute \code{states}, which is equal to \eqn{s = |E|}.
+#' \item \code{degree} : Positive integer. Passing down from the arguments.
+#'   It contains the polynomial degree
+#'   \eqn{d} considered for the drifting of the model.
 #' \item \code{f_is_drifting} : Logical. Passing down from the arguments.
+#' Specifies if \eqn{f} is drifting or not.
 #' \item \code{p_is_drifting} : Logical. Passing down from the arguments.
+#' Specifies if \eqn{p} is drifting or not.
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #    \item \code{numerical_est} : Logical. Passing down from the arguments.
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-#' \item \code{Model} : Character vector. Possible values:
-#'     \code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
-#'     \eqn{p,f} are drifting or not.
-#' \item \code{estimation} : Character vector. Specifies whether parametric or
+#' \item \code{Model} : Character. Possible values:
+#'     \itemize{
+#'         \item \code{"Model_1"} : Both \eqn{p} and \eqn{f} are drifting.
+#'         \item \code{"Model_2"} : \eqn{p} is drifting and \eqn{f} is not drifting.
+#'         \item \code{"Model_3"} : \eqn{f} is drifting and \eqn{p} is not drifting.
+#'     }
+#' \item \code{estimation} : Character. Specifies whether parametric or
 #'     nonparametric estimation was used.
 #' \item \code{A_i} : Numerical Matrix. Represents the polynomials
-#'     \eqn{A_i(t)} that were used for solving the system \eqn{MJ = P}.
-#'     Used for the methods defined for the
+#'     \eqn{A_i(t)} with degree \eqn{d} that are used for solving
+#'     the system \eqn{MJ = P}. Used for the methods defined for the
 #'     object. Not printed when viewing the object.
-#' \item \code{Ji} : Numerical Array. Represents the estimated semi-Markov
-#'     kernels \eqn{J = (J_i)_{i \in \{0, \dots, d\} }} that were obtained after
-#'     solving the system \eqn{MJ = P}. Used for the methods defined for the
-#'     object. Not printed when viewing the object.
+#' \item \code{J_i} : Numerical Array. Represents the estimated semi-Markov
+#'     kernels of the first model
+#'     \eqn{J=(J_i)_{i\in\{0,\dots,d\}}=
+#'     (\hat{q}_{\frac{i}{d}}^{(1)}(u,v,l))_{i\in\{0,\dots,d\}}}
+#'     that were obtained after solving the system \eqn{MJ = P}.
+#'     Not printed when viewing the object.
 #' }
 #'
 #' @seealso
@@ -386,7 +395,16 @@
 #' Models Toward Applications - Their Use in Reliability and DNA Analysis.
 #' New York: Lecture Notes in Statistics, vol. 191, Springer.
 #'
+#' Vergne, N. (2008). Drifting Markov Models with Polynomial Drift and
+#' Applications to DNA Sequences. Statistical Applications in Genetics
+#' Molecular Biology 7 (1).
 #'
+#' Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
+#' drifting Markov models: modeling and estimation.
+#' Methodology and Computing in Applied Probability, 21(4), 1407-1429.
+#'
+#' T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.
+#' IEEE Transactions on Reliability, R-24, 300-301.
 #'
 #' @export
 #'
@@ -401,13 +419,16 @@
 #' states <- sort(unique(sequence))
 #' degree <- 3
 #'
+#'
 #' # ===========================================================================
 #' # Nonparametric Estimation.
 #' # Fitting the `lambda` genome under distributions of unknown shape.
 #' # ===========================================================================
 #'
+#'
 #' # ---------------------------------------------------------------------------
 #' # Both p and f are drifting - Model 1.
+#' # ---------------------------------------------------------------------------
 #' obj_model_1 <- fit_dsmm(sequence = sequence,
 #'                        states = states,
 #'                        degree = degree,
@@ -434,8 +455,11 @@
 #'     paste(dim(f_drift), collapse = ", "), ").\n"
 #' ))
 #'
+#'
 #' # ---------------------------------------------------------------------------
 #' # Fitting the sequence when p is drifting and f is not drifting - Model 2.
+#' # ---------------------------------------------------------------------------
+#'
 #' obj_model_2 <- fit_dsmm(sequence = sequence,
 #'                        states = states,
 #'                        degree = degree,
@@ -451,6 +475,7 @@
 #'     "Dimension of f_notdrift: (s, s, k_max) = (",
 #'      paste(dim(f_notdrift), collapse = ", "), ").\n"
 #' ))
+#'
 #'
 #' # ---------------------------------------------------------------------------
 #' # Fitting the sequence when f is drifting and p is not drifting - Model 3.
@@ -492,6 +517,7 @@
 #' f_dist <- array(f_dist_1, dim = c(s, s, degree + 1))
 #' dim(f_dist)
 #'
+#'
 #' # ---------------------------------------------------------------------------
 #' # Both p and f are drifting - Model 1.
 #' # ---------------------------------------------------------------------------
@@ -514,7 +540,6 @@
 #' f_2.3 <- f_params[,,,3]
 #' f_1 <- f_params[,,,4]
 #'
-#'
 #' params <- paste0('q = ', round(f_params["c", "t", 1, ], 3),
 #'                  ', beta = ', round(f_params["c", "t", 2, ], 3))
 #' f_names <- c("f_0", paste0("f_", 1:(degree-1), "/", degree), "f_1")
@@ -523,6 +548,7 @@
 #'     "`u` = 'c' to `v` = 't' under a discrete Weibull distribution is:",
 #'     "\n", all_names[1], "\n", all_names[2],
 #'     "\n", all_names[3], "\n", all_names[4])
+#'
 #'
 #' # ---------------------------------------------------------------------------
 #' # f is not drifting, only p is drifting - Model 2.
@@ -541,7 +567,6 @@
 #' # Estimated parameters.
 #' f_params_2 <- obj_fit_parametric_2$dist$f_notdrift_parameters
 #'
-#'
 #' params_2 <- paste0('q = ', round(f_params_2["c", "t", 1], 3),
 #'                  ', beta = ', round(f_params_2["c", "t", 2], 3))
 #'
@@ -554,6 +579,7 @@
 #' # Some methods for the `dsmm_fit_nonparametric` and
 #' #  `dsmm_fit_parametric` objects.
 #' # ===========================================================================
+#'
 #' sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
 #' str(sim_seq_nonparametric)
 #'
@@ -622,7 +648,6 @@ fit_dsmm <- function(sequence, states, degree,
               valid_initial_dist_char(initial_dist),
               valid_model(p_is_drifting, f_is_drifting))
     # States
-    states <- sort(states)
     s <- length(states)
     stopifnot(valid_sequence(sequence, s))
     # Estimation
@@ -636,6 +661,7 @@ fit_dsmm <- function(sequence, states, degree,
     seq_encoding <- rle(sequence)
     # Model Size = length(sequence) - 1
     n <- (N <- length(seq <- seq_encoding$values)) - 1
+    stopifnot(valid_degree(degree = degree, model_size = n))
     # k_max
     k_max <- max(X <- seq_encoding$lengths)
     # Check for sojourn times all equal to an integer.
@@ -657,8 +683,10 @@ fit_dsmm <- function(sequence, states, degree,
     model <- get_model(p_is_drifting, f_is_drifting)
     # Estimation
     # Get `vector_1_u`, `vector_1_uvl`.
-    vector_1_u <- get_1_u(seq, N, n, states, s)
-    vector_1_uvl <- get_1_uvl(seq, N, n, X, k_max, states, s)
+    id_seq <- seq_states_to_id(seq = seq, states = states)
+    id_states <- seq_along(states)
+    vector_1_u <- get_1_u(id_seq, N, n, id_states, s)
+    vector_1_uvl <- get_1_uvl(id_seq, N, n, X, k_max, id_states, s)
     # Get `A_i` and the matrix of multiplications, `Aij`.
     Ai <- get_A_i(degree, model_size = n)
     Aij <- apply(Ai, c(1), function(a_i) a_i * t(Ai))
@@ -856,11 +884,14 @@ fit_dsmm <- function(sequence, states, degree,
         dist[[2]] <- f_dist
         dist$f_param <- f_param
         if (model == "Model_1") {
-            names(dist)[2:3] <- c('f_drift_parametric', 'f_drift_parameters')
+            names(dist)[2:3] <- c('f_drift_parametric',
+                                  'f_drift_parameters')
         } else if (model == "Model_2") {
-            names(dist)[2:3] <- c('f_notdrift_parametric', 'f_notdrift_parameters')
+            names(dist)[2:3] <- c('f_notdrift_parametric',
+                                  'f_notdrift_parameters')
         } else if (model == "Model_3") {
-            names(dist)[2:3] <- c('f_drift_parametric', 'f_drift_parameters')
+            names(dist)[2:3] <- c('f_drift_parametric',
+                                  'f_drift_parameters')
         }
     }
     # Get the `dist` parameter.
@@ -880,7 +911,7 @@ fit_dsmm <- function(sequence, states, degree,
         "Model" = model,
         "estimation" = estimation,
         "A_i" = get_A_i(degree, model_size = n), # used in `get_kernel()`.
-        "Ji" = Ji # The semi-markov kernels used for the estimations.
+        "J_i" = Ji # The semi-markov kernels used for the estimations.
     )
     if (estimation == 'nonparametric') {
         class(obj) <- c("dsmm_fit_nonparametric", "dsmm")

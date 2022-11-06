@@ -12,41 +12,46 @@ nonparametric_dsmm(
   initial_dist,
   degree,
   k_max,
-  p_dist,
-  f_dist,
   f_is_drifting,
-  p_is_drifting
+  p_is_drifting,
+  p_dist,
+  f_dist
 )
 }
 \arguments{
-\item{model_size}{Positive integer that specifies the length of the
-model \eqn{n}.}
+\item{model_size}{Positive integer that represents the length of
+the Drifting semi-Markov model \eqn{n}. It is equal to the number
+of the visited states of a sequence, minus the last state.}
 
-\item{states}{Character vector representing the state space \eqn{E}
-of choice. It has length equal to \eqn{|E| = s}.}
+\item{states}{Character vector that represents the state space \eqn{E}
+of choice. It has length equal to \eqn{s = |E|}.}
 
-\item{initial_dist}{Numerical vector that represents \eqn{s}
-probabilities, specifying the initial distribution for each state in
-the state space.}
+\item{initial_dist}{Numerical vector of \eqn{s} probabilities, that
+represents the initial distribution for each state in the state space.}
 
-\item{degree}{Positive integer that specifies the polynomial degree
-\eqn{d} for the Drifting semi-Markov model.}
+\item{degree}{Positive integer that represents the polynomial degree \eqn{d}
+for the Drifting semi-Markov model.}
 
-\item{k_max}{Positive integer that specifies the maximum sojourn time
-of the Drifting semi-Markov model.}
+\item{k_max}{Positive integer that represents the maximum sojourn time of
+choice, for the Drifting semi-Markov model.}
 
-\item{p_dist}{Numerical array, representing the probabilities of the
+\item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
+
+\item{p_is_drifting}{Logical. Specifies if \eqn{p} is drifting or not.}
+
+\item{p_dist}{Numerical array, that represents the probabilities of the
 Transition Matrix \eqn{p} of the embedded Markov chain (it is defined
 the same way in the \link{parametric_dsmm} function).
 It can be defined in two ways:
 \itemize{
 \item If \eqn{p} \strong{is not} drifting, it has dimensions
-of \eqn{(s,s)};
+of \eqn{(s \times s)}.
 \item If \eqn{p} \strong{is} drifting, it has dimensions
-of \eqn{(s,s,d+1)} (see more in \emph{Details, Defined Arguments}.)
+of \eqn{(s \times s \times d+1)}
+(see more in \emph{Details, Defined Arguments}.)
 }}
 
-\item{f_dist}{Numerical array, representing the probabilities of the
+\item{f_dist}{Numerical array, that represents the probabilities of the
 conditional sojourn time distributions \eqn{f}.
 \code{NA} is allowed for state transitions
 that we do not wish to have a sojourn time distribution
@@ -55,55 +60,60 @@ as their value).
 It can be defined in two ways:
 \itemize{
 \item If \eqn{f} \strong{is not} drifting, it has dimensions of
- \eqn{(s,s,k_{max})};
+ \eqn{(s \times s \times k_{max})}.
 \item If \eqn{f} \strong{is} drifting, it has dimensions of
- \eqn{(s,s,k_{max},d+1)}
+ \eqn{(s \times s \times k_{max} \times d+1)}
 (see more in \emph{Details, Defined Arguments}.)
 }}
-
-\item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
-
-\item{p_is_drifting}{Logical. Specifies if \eqn{p} is drifting or not.}
 }
 \value{
 Returns an object of the S3 class
         \code{dsmm_nonparametric,dsmm}.
 \itemize{
-\item \code{dist} : List. Contains 2 arrays:
+\item \code{dist} : List. Contains 2 arrays, passing down from the arguments:
 \itemize{
-\item \code{p_drift} or \code{p_notdrift}, corresponding to the
-defined \eqn{p} transition matrix.
-\item \code{f_drift} or \code{f_notdrift}, corresponding to the
-defined \eqn{f} sojourn time distribution.
+\item \code{p_drift} or \code{p_notdrift}, corresponding to whether the
+defined \eqn{p} transition matrix is drifting or not.
+\item \code{f_drift} or \code{f_notdrift}, corresponding to whether the
+defined \eqn{f} sojourn time distribution is drifting or not.
 }
-\item \code{model_size} : Positive integer that contains the length
-of the model; This is equal to \code{length(seq) - 1}, for \code{seq}
-as defined above.
-\item \code{states} : Character vector that contains the realized states
-given in the argument \code{sequence};
-\item \code{s} : Positive integer that contains the length of the state
-space \eqn{E} given in the attribute \code{states}.
-\item \code{initial_dist} : Numerical vector that contains an estimation
-for the initial distribution of the realized states in \code{sequence};
-\item \code{degree} : Positive integer that contains the polynomial
-degree \eqn{d} considered for the drifting of the model.
-\item \code{k_max} : Numerical value that contains the maximum sojourn
-time, meaning the maximum value in \code{soj_times};
+\item \code{model_size} : Positive integer. Passing down from the arguments.
+It contains the length of the Drifting semi-Markov model \eqn{n},
+which is equal to the number of visited states, minus the last state.
+\item \code{states} : Character vector. Passing down from the arguments.
+It contains the state space \eqn{E} of choice.
+\item \code{s} : Positive integer. It contains the number of states in the
+state space, \eqn{s = |E|}, which is given in the attribute \code{states}.
+\item \code{initial_dist} : Numerical vector. Passing down from the arguments.
+It contains the initial distribution of the Drifting semi-Markov model.
+\item \code{degree} : Positive integer. Passing down from the arguments.
+It contains the polynomial degree \eqn{d} considered for the drifting of
+the model.
+\item \code{k_max} : Numerical value. Passing down from the arguments.
+It contains the maximum sojourn time of choice, for the Drifting semi-Markov
+model.
 \item \code{f_is_drifting} : Logical. Passing down from the arguments.
+Specifies if \eqn{f} is drifting or not.
 \item \code{p_is_drifting} : Logical. Passing down from the arguments.
-\item \code{Model} : Character vector. Possible values:
-\code{["Model 1", "Model 2", "Model 3"]}, corresponding to whether
-\eqn{p,f} are drifting or not.
+Specifies if \eqn{p} is drifting or not.
+\item \code{Model} : Character. Possible values:
+    \itemize{
+        \item \code{"Model_1"} : Both \eqn{p} and \eqn{f} are drifting.
+        \item \code{"Model_2"} : \eqn{p} is drifting and \eqn{f}
+              is not drifting.
+        \item \code{"Model_3"} : \eqn{f} is drifting and \eqn{p}
+              is not drifting.
+    }
 \item \code{A_i} : Numerical Matrix. Represents the polynomials
-\eqn{A_i(t)} that were used for solving the system \eqn{MJ = P}.
-Used for the methods defined for the
-object. Is not printed when viewing the object.
+    \eqn{A_i(t)} with degree \eqn{d} that are used for solving
+    the system \eqn{MJ = P}. Used for the methods defined for the
+    object. Not printed when viewing the object.
 }
 }
 \description{
 Creates a non-parametric model specification for a Drifting
 semi-Markov model. Returns an object of class
-\code{dsmm_nonparametric}.
+\code{(dsmm_nonparametric, dsmm)}.
 }
 \details{
 \strong{Defined Arguments}
@@ -114,14 +124,14 @@ For the non-parametric case, we explicitly define:
 the attribute \code{p_dist}:
 \itemize{
 \item If \eqn{p} \strong{is not drifting}, it contains the values:
-    \deqn{p(u,v), \forall u, v \in E,}
-    given in an array with dimensions of \eqn{(s, s)},
+    \deqn{p(u, v), \forall u, v \in E,}
+    given in an array with dimensions of \eqn{(s \times  s)},
     where the first dimension corresponds to the previous state \eqn{u}
-    and the second dimension corresponds to the current state \eqn{v};
+    and the second dimension corresponds to the current state \eqn{v}.
 \item If \eqn{p} \strong{is drifting} then, for \eqn{i \in\{0,\dots,d\}},
     it contains the values:
     \deqn{p_{\frac{i}{d}}(u,v), \forall u, v \in E,}
-    given in an array with dimensions of \eqn{(s, s, d + 1)},
+    given in an array with dimensions of \eqn{(s \times s \times d + 1)},
     where the first and second dimensions are defined as in the
     non-drifting case, and the third dimension corresponds to the
     \eqn{d+1} different matrices \eqn{p_{\frac{i}{d}}.}
@@ -132,15 +142,16 @@ attribute \code{f_dist}:
 \itemize{
 \item If \eqn{f} \strong{is not drifting}, it contains the values:
     \deqn{f(u,v,l), \forall u,v\in E,\forall l\in \{1,\dots,k_{max}\},}
-    given in an array with dimensions of \eqn{(s,s,k_{max})},
+    given in an array with dimensions of \eqn{(s \times s \times k_{max})},
     where the first dimension corresponds to the previous state \eqn{u},
     the second dimension corresponds to the current state \eqn{v},
-    and the third dimension correspond to the sojourn time \eqn{l};
+    and the third dimension correspond to the sojourn time \eqn{l}.
 \item If \eqn{p} \strong{is drifting} then, for \eqn{i\in \{0,\dots,d\}},
     it contains the values:
     \deqn{f_{\frac{i}{d}}(u,v,l),\forall u,v\in E,
     \forall l\in \{1,\dots,k_{max}\},}
-    given in an array with dimensions of \eqn{(s,s,k_{max}, d + 1)},
+    given in an array with dimensions of
+    \eqn{(s \times s \times k_{max} \times d + 1)},
     where the first, second and third dimensions are defined as in the
     non-drifting case, and the fourth dimension corresponds to the
     \eqn{d+1} different arrays \eqn{f_{\frac{i}{d}}.}
@@ -153,8 +164,10 @@ states <- c("AA", "AC", "CC")
 s <- length(states)
 d <- 2
 k_max <- 3
+
 # ===========================================================================
 # Defining distributions for Model 1 - both p and f are drifting.
+# ===========================================================================
 
 # `p_dist` has dimensions of: (s, s, d + 1).
 # Sums over v must be 1 for all u and i = 0, ..., d.
@@ -236,6 +249,8 @@ f_dist <- array(c(f_dist_1, f_dist_2, f_dist_3),
 
 # ===========================================================================
 # Non-Parametric object for Model 1 - both p and f are drifting.
+# ===========================================================================
+
 obj_nonpar_model_1 <- nonparametric_dsmm(
     model_size = 8000,
     states = states,
@@ -259,7 +274,8 @@ f_drift
 
 # ===========================================================================
 # Defining Model 2 - p is drifting, f is not drifting.
-#
+# ===========================================================================
+
 # p_dist has the same dimensions as in Model 1: (s, s, d + 1).
 # Sums over v must be 1 for every u and i = 0, ..., d.
 p_dist_model_2 <- array(c(p_dist_1, p_dist_2, p_dist_3),
@@ -294,7 +310,9 @@ f_notdrift
 
 
 # ===========================================================================
-# Defining Model 3.
+# Defining Model 3 - f is drifting, p is not drifting.
+# ===========================================================================
+
 # `p_dist` has dimensions of: (s, s, d + 1).
 p_dist_model_3 <- p_dist_3
 
@@ -325,6 +343,8 @@ f_drift
 
 # ===========================================================================
 # Using some methods for non-parametric objects.
+# ===========================================================================
+
 kernel_parametric <- get_kernel(obj = obj_nonpar_model_3)
 str(kernel_parametric)
 
@@ -335,6 +355,14 @@ str(sim_seq_par)
 V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov
 Models Toward Applications - Their Use in Reliability and DNA Analysis.
 New York: Lecture Notes in Statistics, vol. 191, Springer.
+
+Vergne, N. (2008). Drifting Markov Models with Polynomial Drift and
+Applications to DNA Sequences. Statistical Applications in Genetics
+Molecular Biology 7 (1).
+
+Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
+drifting Markov models: modeling and estimation.
+Methodology and Computing in Applied Probability, 21(4), 1407-1429.
 }
 \seealso{
 Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.

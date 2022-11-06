@@ -4,11 +4,12 @@
 \alias{simulate.dsmm}
 \title{Simulate a sequence under a Drifting semi-Markov kernel.}
 \usage{
-\method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 80, ...)
+\method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 100, ...)
 }
 \arguments{
-\item{object}{An object of S3 class \code{dsmm,dsmm_fit}
-\code{dsmm_nonparametric} or \code{dsmm_parametric}.}
+\item{object}{An object of S3 class \code{dsmm},
+\code{dsmm_fit_nonparametric}, \code{dsmm_nonparametric},
+\code{dsmm_fit_parametric} or \code{dsmm_parametric}.}
 
 \item{nsim}{Optional. A positive integer specifying the number of simulations
 that will make up the sequence, with the maximum value being the model size
@@ -23,7 +24,8 @@ sequence will not have a \emph{total length} greater than \code{seq_length}
 \code{seq_length}).}
 
 \item{klim}{Optional. Positive integer. Passed down to \code{get_kernel}
-for the parametric object, with class \code{dsmm_parametric}.}
+for the parametric object, with class \code{dsmm_parametric}.
+Default value is \eqn{100}.}
 
 \item{...}{Attributes passed down from the \code{simulate} method.
 Currently not used.}
@@ -57,7 +59,7 @@ str(short_sim)
 str(cut_sim)
 }
 \seealso{
-About random number generation in R \code{\link[base:RNG]{RNG}}.
+About random number generation in R: \code{\link[base:RNG]{RNG}}.
 
 Fitting a model through a sequence from this function: \link{fit_dsmm}.
 
