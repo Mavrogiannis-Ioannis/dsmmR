@@ -1069,7 +1069,7 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
 #'
 #' The original function: \code{\link[base:sample]{sample}}.
 #'
-#' \code{\link[base:RNG]{RNG}} about random number generation in R.
+#' About random number generation in R: \code{\link[base:RNG]{RNG}}.
 #'
 #' For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 #'

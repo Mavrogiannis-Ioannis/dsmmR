@@ -19,15 +19,16 @@ nonparametric_dsmm(
 )
 }
 \arguments{
-\item{model_size}{Positive integer that represents the length of
-the Drifting semi-Markov model \eqn{n}. It is equal to the number
-of the visited states of a sequence, minus the last state.}
+\item{model_size}{Positive integer that represents the size of
+the Drifting semi-Markov model \eqn{n}. It is equal to the length of a
+theoretical embedded Markov chain, without the last state.}
 
 \item{states}{Character vector that represents the state space \eqn{E}
 of choice. It has length equal to \eqn{s = |E|}.}
 
 \item{initial_dist}{Numerical vector of \eqn{s} probabilities, that
-represents the initial distribution for each state in the state space.}
+represents the initial distribution for each state in the state
+space \eqn{E}.}
 
 \item{degree}{Positive integer that represents the polynomial degree \eqn{d}
 for the Drifting semi-Markov model.}
@@ -53,9 +54,9 @@ of \eqn{(s \times s \times d+1)}
 
 \item{f_dist}{Numerical array, that represents the probabilities of the
 conditional sojourn time distributions \eqn{f}.
-\code{NA} is allowed for state transitions
+\eqn{0} is allowed for state transitions
 that we do not wish to have a sojourn time distribution
-(e.g. all state transition to the same state should have \code{NA}
+(e.g. all state transitions to the same state should have \eqn{0}
 as their value).
 It can be defined in two ways:
 \itemize{
@@ -78,8 +79,8 @@ defined \eqn{p} transition matrix is drifting or not.
 defined \eqn{f} sojourn time distribution is drifting or not.
 }
 \item \code{model_size} : Positive integer. Passing down from the arguments.
-It contains the length of the Drifting semi-Markov model \eqn{n},
-which is equal to the number of visited states, minus the last state.
+It contains the size of the Drifting semi-Markov model \eqn{n}, which
+represents the length of the embedded Markov chain, without the last state.
 \item \code{states} : Character vector. Passing down from the arguments.
 It contains the state space \eqn{E} of choice.
 \item \code{s} : Positive integer. It contains the number of states in the
@@ -171,18 +172,18 @@ k_max <- 3
 
 # `p_dist` has dimensions of: (s, s, d + 1).
 # Sums over v must be 1 for all u and i = 0, ..., d.
-p_dist_1 <- matrix(c(0, 0.1, 0.9,
-                     0.5, 0, 0.5,
+p_dist_1 <- matrix(c(0,   0.1, 0.9,
+                     0.5, 0,   0.5,
                      0.3, 0.7, 0),
                    ncol = s, byrow = TRUE)
 
-p_dist_2 <- matrix(c(0, 0.6, 0.4,
-                     0.7, 0, 0.3,
+p_dist_2 <- matrix(c(0,   0.6, 0.4,
+                     0.7, 0,   0.3,
                      0.6, 0.4, 0),
                    ncol = s, byrow = TRUE)
 
-p_dist_3 <- matrix(c(0, 0.2, 0.8,
-                     0.6, 0, 0.4,
+p_dist_3 <- matrix(c(0,   0.2, 0.8,
+                     0.6, 0,   0.4,
                      0.7, 0.3, 0),
                    ncol = s, byrow = TRUE)
 
@@ -193,16 +194,16 @@ p_dist <- array(c(p_dist_1, p_dist_2, p_dist_3),
 # `f_dist` has dimensions of: (s, s, k_max, d + 1).
 # First f distribution. Dimensions: (s, s, k_max).
 # Sums over l must be 1, for every u, v and i = 0, ..., d.
-f_dist_1_l_1 <- matrix(c(0, 0.2, 0.7,
-                         0.3, 0, 0.4,
+f_dist_1_l_1 <- matrix(c(0,   0.2, 0.7,
+                         0.3, 0,   0.4,
                          0.2, 0.8, 0),
                        ncol = s, byrow = TRUE)
-f_dist_1_l_2 <- matrix(c(0, 0.3, 0.2,
-                         0.2, 0, 0.5,
+f_dist_1_l_2 <- matrix(c(0,   0.3,  0.2,
+                         0.2, 0,    0.5,
                          0.1, 0.15, 0),
                        ncol = s, byrow = TRUE)
-f_dist_1_l_3 <- matrix(c(0, 0.5, 0.1,
-                         0.5, 0, 0.1,
+f_dist_1_l_3 <- matrix(c(0,   0.5,  0.1,
+                         0.5, 0,    0.1,
                          0.7, 0.05, 0),
                        ncol = s, byrow = TRUE)
 # Get f_dist_1
@@ -210,42 +211,48 @@ f_dist_1 <- array(c(f_dist_1_l_1, f_dist_1_l_2, f_dist_1_l_3),
                   dim = c(s, s, k_max))
 
 # Second f distribution. Dimensions: (s, s, k_max)
-f_dist_2_l_1 <- matrix(c(0, 1/3, 0.4,
-                         0.3, 0, 0.4,
+f_dist_2_l_1 <- matrix(c(0,   1/3, 0.4,
+                         0.3, 0,   0.4,
                          0.2, 0.1, 0),
                        ncol = s, byrow = TRUE)
-f_dist_2_l_2 <- matrix(c(0, 1/3, 0.4,
-                         0.4, 0, 0.2,
+
+f_dist_2_l_2 <- matrix(c(0,   1/3, 0.4,
+                         0.4, 0,   0.2,
                          0.3, 0.4, 0),
                        ncol = s, byrow = TRUE)
-f_dist_2_l_3 <- matrix(c(0, 1/3, 0.2,
-                         0.3, 0, 0.4,
+
+f_dist_2_l_3 <- matrix(c(0,   1/3, 0.2,
+                         0.3, 0,   0.4,
                          0.5, 0.5, 0),
                        ncol = s, byrow = TRUE)
+
 # Get f_dist_2
 f_dist_2 <- array(c(f_dist_2_l_1, f_dist_2_l_2, f_dist_2_l_3),
                   dim = c(s, s, k_max))
 
 # Third f distribution. Dimensions: (s, s, k_max)
-f_dist_3_l_1 <- matrix(c(0, 0.3, 0.3,
-                         0.3, 0, 0.5,
+f_dist_3_l_1 <- matrix(c(0,    0.3, 0.3,
+                         0.3,  0,   0.5,
                          0.05, 0.1, 0),
                        ncol = s, byrow = TRUE)
-f_dist_3_l_2 <- matrix(c(0, 0.2, 0.6,
-                         0.3, 0, 0.35,
+
+f_dist_3_l_2 <- matrix(c(0,   0.2, 0.6,
+                         0.3, 0,   0.35,
                          0.9, 0.2, 0),
                        ncol = s, byrow = TRUE)
-f_dist_3_l_3 <- matrix(c(0, 0.5, 0.1,
-                         0.4, 0, 0.15,
+
+f_dist_3_l_3 <- matrix(c(0,    0.5, 0.1,
+                         0.4,  0,   0.15,
                          0.05, 0.7, 0),
                        ncol = s, byrow = TRUE)
+
 # Get f_dist_3
 f_dist_3 <- array(c(f_dist_3_l_1, f_dist_3_l_2, f_dist_3_l_3),
                   dim = c(s, s, k_max))
 
 # Get f_dist as an array of f_dist_1, f_dist_2 and f_dist_3.
 f_dist <- array(c(f_dist_1, f_dist_2, f_dist_3),
-                  dim = c(s, s, k_max, d + 1))
+                dim = c(s, s, k_max, d + 1))
 
 # ===========================================================================
 # Non-Parametric object for Model 1 - both p and f are drifting.
@@ -350,6 +357,7 @@ str(kernel_parametric)
 
 sim_seq_par <- simulate(obj_nonpar_model_3, nsim = 50)
 str(sim_seq_par)
+
 }
 \references{
 V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov

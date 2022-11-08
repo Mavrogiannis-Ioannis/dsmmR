@@ -2,18 +2,18 @@
 #'
 #' @description Performs parametric and non-parametric estimation and simulation
 #' of Drifting semi-Markov processes. Definition of the corresponding model
-#' specifications is also possible. Furthermore, three different types of Drifting
-#' semi-Markov models are considered. These models differ in the number of
-#' transition matrices and sojourn time distributions used for the computation
-#' of a number of semi-Markov kernels, which in turn characterize the Drifting
-#' semi-Markov kernel.
+#' specifications is also possible. Furthermore, three different types of
+#' Drifting semi-Markov models are considered. These models differ in the
+#' number of transition matrices and sojourn time distributions used for the
+#' computation of a number of semi-Markov kernels, which in turn characterize
+#' the Drifting semi-Markov kernel.
 #'
 #' @details
 #'
 #' \strong{Introduction}
 #'
-#' The difference between the Markov models and the semi-Markov models concerns
-#' the modeling of the sojourn time distributions.
+#' The difference between the Markov models and the semi-Markov models
+#' concerns the modeling of the sojourn time distributions.
 #' The Markov Models (in discrete time) are modeled by a sojourn time
 #' following the Geometric distribution. The semi-Markov models
 #' are able to have a sojourn time distribution of arbitrary shape.
@@ -32,8 +32,8 @@
 #' Drifting semi-Markov processes are particular non-homogeneous Markov
 #' chains for which the Drifting semi-Markov kernel
 #' \eqn{q_{\frac{t}{n}}(u,v,l)} is defined as
-#' the probability that, given the previous state at the instance \eqn{t}
-#' is \eqn{u}, the next state state \eqn{v} will be reached
+#' the probability that, given at the instance \eqn{t} the previous
+#' state is \eqn{u}, the next state state \eqn{v} will be reached
 #' with a sojourn time of \eqn{l}:
 #' \deqn{q_{\frac{t}{n}}(u,v,l) = P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
 #' where \eqn{n} is the model size, defined as the length of the
@@ -85,7 +85,7 @@
 #'
 #' \strong{\emph{Model 2}}
 #'
-#' In this case, \eqn{p} is drifting and \eqn{f} is not drifting.
+#' In this case, \eqn{p} is drifting and \eqn{f} \strong{is not drifting}.
 #' Therefore, the Drifting semi-Markov kernel is now described as:
 #' \deqn{q_{\frac{t}{n}}^{(2)}(u,v,l)
 #' = \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(2)}(u,v,l)
@@ -93,7 +93,7 @@
 #'
 #' \strong{\emph{Model 3}}
 #'
-#' In this case, \eqn{f} is drifting and \eqn{p} is not drifting.
+#' In this case, \eqn{f} is drifting and \eqn{p} \strong{is not drifting}.
 #' Therefore, the Drifting semi-Markov Kernel is now described as:
 #' \deqn{q_{\frac{t}{n}}^{(3)}(u,v,l)
 #' = \sum_{i = 0}^{d}A_{i}(t)q_{\frac{i}{d}}^{(3)}(u,v,l)
@@ -163,7 +163,7 @@
 #'
 #' \item Lastly, like in semi-Markov models, we do not allow sojourn times
 #' equal to \eqn{0} or passing into the same state:
-#' \deqn{q_{\frac{t}{n}}(u,v,0) = 0, \forall u,v \in E}
+#' \deqn{q_{\frac{t}{n}}(u,v,0) = 0, \forall u,v \in E,}
 #' \deqn{q_{\frac{t}{n}}(u,u,l) = 0, \forall u\in E,l\in\{1,\dots,+\infty\}.}
 #' }
 #'

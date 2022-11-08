@@ -252,9 +252,11 @@ is.dsmm <- function(obj) {
     }
     # Check for class of object.
     if (!inherits(obj, 'dsmm')) {
-        stop("\n`obj` needs to be of class `dsmm`.",
-             " This can be done automatically through the functions\n",
-             "`fit_dsmm()`, `dsmm_parametric()` and `dsmm_nonparametric()`.")
+        message("\n`obj` needs to be of class `dsmm`.",
+                "\nThis can be done automatically through the functions:\n",
+                "`fit_dsmm()`, `dsmm_parametric()` ",
+                "and `dsmm_nonparametric()`.")
+        return(FALSE)
     }
     check_attributes(obj)
 }
@@ -274,13 +276,17 @@ is.dsmm_fit_nonparametric <- function(obj) {
         stop("\nPlease input the `obj` parameter of class ",
              "`dsmm_fit_nonparametric`.",
              "\nThis can be done automatically through",
-             " the function `fit_dsmm()` when `estimation` = 'nonparametric'.")
+             " the function\n`fit_dsmm()`, when ",
+             "`estimation` = 'nonparametric'.")
     }
     # Check for class of object.
-    if (!inherits(obj, c('dsmm_fit_nonparametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class ('dsmm_fit_nonparametric', 'dsmm').",
-             "\nThis can be done automatically through",
-             " the function `fit_dsmm()` when `estimation` = 'nonparametric'.")
+    if (!inherits(obj, c('dsmm_fit_nonparametric'))) {
+        message("\n`obj` does not have the class ",
+                "('dsmm_fit_nonparametric', 'dsmm').",
+                "\nThis can be done automatically through",
+                " the function\n`fit_dsmm()`, when ",
+                "`estimation` = 'nonparametric'.")
+        return(FALSE)
     }
     check_attributes(obj)
 }
@@ -300,13 +306,17 @@ is.dsmm_fit_parametric <- function(obj) {
         stop("\nPlease input the `obj` parameter of class ",
              "`dsmm_fit_parametric`.\n",
              "This can be done automatically through",
-             " the function `fit_dsmm()` when `estimation` = 'parametric'.")
+             " the function\n`fit_dsmm()`, when ",
+             "`estimation` = 'parametric'.")
     }
     # Check for class of object.
-    if (!inherits(obj, c('dsmm_fit_parametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class ('dsmm_fit_parametric', 'dsmm').",
-             "\nThis can be done automatically through",
-             " the function `fit_dsmm()` when `estimation` = 'parametric'.")
+    if (!inherits(obj, c('dsmm_fit_parametric'))) {
+        message("\n`obj` does not have the class ",
+                "('dsmm_fit_parametric', 'dsmm').",
+                "\nThis can be done automatically through",
+                " the function\n`fit_dsmm()`, when ",
+                "`estimation` = 'parametric'.")
+        return(FALSE)
     }
     check_attributes(obj)
 }
@@ -328,10 +338,11 @@ is.dsmm_nonparametric <- function(obj) {
              "through the function `nonparametric_dsmm()`.")
     }
     # Check for class of object.
-    if (!inherits(obj, c('dsmm_nonparametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class ('dsmm_nonparametric', 'dsmm').",
-             "\nThis can be done automatically ",
-             "through the function `nonparametric_dsmm()`.")
+    if (!inherits(obj, c('dsmm_nonparametric'))) {
+        message("\n`obj` does not have the class ('dsmm_nonparametric', 'dsmm').",
+                "\nThis can be done automatically ",
+                "through the function `nonparametric_dsmm()`.")
+        return(FALSE)
     }
     check_attributes(obj)
 }
@@ -352,10 +363,11 @@ is.dsmm_parametric <- function(obj) {
              "through the function `parametric_dsmm()`.")
     }
     # Check for class of object.
-    if (!inherits(obj, c('dsmm_parametric', 'dsmm'))) {
-        stop("\n`obj` needs to be of class ('dsmm_parametric', 'dsmm'). ",
-             "This can be done automatically ",
-             "through the function `parametric_dsmm()`.")
+    if (!inherits(obj, c('dsmm_parametric'))) {
+        message("\n`obj` does not have the class ('dsmm_parametric', 'dsmm').",
+                "\nThis can be done automatically ",
+                "through the function `parametric_dsmm()`.")
+        return(FALSE)
     }
     check_attributes(obj)
 }
@@ -373,8 +385,10 @@ is.dsmm_parametric <- function(obj) {
 #' \eqn{(s \times s \times k_{max} \times n + 1)}.
 #'
 #' @param obj An object that inherits from the S3
-#' classes \code{dsmm, dsmm_fit_parametric, dsmm_fit_nonparametric,
-#' dsmm_nonparametric} or \code{dsmm_parametric}.
+#' classes \code{dsmm},
+#' \code{dsmm_fit_parametric}, or
+#' \code{dsmm_fit_nonparametric},
+#' \code{dsmm_nonparametric} or \code{dsmm_parametric}.
 #' @param t Optional, but recommended. Positive integer specifying
 #' the instance \eqn{t} of the visited states.
 #' @param u Optional. Can be either of the two options below:
@@ -410,7 +424,7 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' @details
 #' The Drifting semi-Markov kernel is given as the probability that,
-#' given the previous state at the instance \eqn{t}
+#' given at the instance \eqn{t} the previous state
 #' is \eqn{u}, the next state state \eqn{v} will be reached
 #' with a sojourn time of \eqn{l}:
 #' \deqn{q_{\frac{t}{n}}(u,v,l) = P(J_{t}=v,X_{t}=l|J_{t-1}=u),}
@@ -441,7 +455,7 @@ is.dsmm_parametric <- function(obj) {
 #'      {p_{\frac{i}{d}}(u,v)}{f_{\frac{i}{d}}(u,v,l)},}
 #'
 #' where for \eqn{i = 0, \dots, d} we have \eqn{d + 1} Markov Transition
-#' matrices \eqn{p_{\frac{i}{d}}(u,v,l)}, and \eqn{d + 1} sojourn time
+#' matrices \eqn{p_{\frac{i}{d}}(u,v)}, and \eqn{d + 1} sojourn time
 #' distributions \eqn{f_{\frac{i}{d}}(u,v,l)}, where \eqn{d} is the
 #' polynomial degree.
 #'
@@ -511,40 +525,33 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' # Get the kernel.
 #' kernel_model_2 <- get_kernel(obj_model_2)
-#' cat(paste0(
-#'     "If no further arguments are made, kernel has dimensions for all ",
-#'     "u, v, l, t:\n",
-#'     "(s, s, k_max, n + 1) = (",
-#'     paste(dim(kernel_model_2), collapse = ", "), ")"
-#' ))
+#' cat(paste0("If no further arguments are made, kernel has dimensions ",
+#'            "for all u, v, l, t:\n",
+#'            "(s, s, k_max, n + 1) = (",
+#'            paste(dim(kernel_model_2), collapse = ", "), ")"))
 #'
 #' # Specifying `t`.
 #' kernel_model_2_t <- get_kernel(obj_model_2, t = 100)
-#' # kernel_model_2[ , , ,t = 100]
-#' cat(paste0(
-#'     "If we specify t, the kernel has dimensions for all the remaining ",
-#'     "u, v, l:\n(s, s, k_max) = (",
-#'     paste(dim(kernel_model_2_t), collapse = ", "), ")"
-#' ))
+#' # kernel_model_2_t[ , , , t = 100]
+#' cat(paste0("If we specify t, the kernel has dimensions for ",
+#'            "all the remaining u, v, l:\n(s, s, k_max) = (",
+#'            paste(dim(kernel_model_2_t), collapse = ", "), ")"))
 #'
 #' # Specifying `t` and `u`.
 #' kernel_model_2_tu <- get_kernel(obj_model_2, t = 2, u = "Aigio")
-#' # kernel_model_2["Aigio", , ,t = 2]
-#' cat(paste0(
-#'     "If we specify t and u, the kernel has dimensions for all the ",
-#'     " remaining v, l:\n(s, k_max) = (",
-#'     paste(dim(kernel_model_2_tu), collapse = ", "), ")"
-#' ))
+#' # kernel_model_2_tu["Aigio", , , t = 2]
+#' cat(paste0("If we specify t and u, the kernel has dimensions for ",
+#'            "all the remaining v, l:\n(s, k_max) = (",
+#'            paste(dim(kernel_model_2_tu), collapse = ", "), ")"))
 #'
 #'
 #' # Specifying `t`, `u` and `v`.
 #' kernel_model_2_tuv <- get_kernel(obj_model_2, t = 3,
 #'                                  u = "Rouen", v = "Bucharest")
-#' # kernel_model_2["Rouen", "Bucharest", ,t = 3]
-#' cat(paste0(
-#'     "If we specify t, u and v, the kernel has dimensions for all l:\n",
-#'     "(k_max) = (", paste(length(kernel_model_2_tuv), collapse = ", "), ")"
-#' ))
+#' # kernel_model_2_tuv["Rouen", "Bucharest", , t = 3]
+#' cat(paste0("If we specify t, u and v, the kernel has dimensions ",
+#'            "for all l:\n(k_max) = (",
+#'            paste(length(kernel_model_2_tuv), collapse = ", "), ")"))
 #'
 #' # It is possible to ask for any valid combination of `u`, `v`, `l` and `t`.
 get_kernel <- function(obj, t, u, v, l, klim = 100) {
