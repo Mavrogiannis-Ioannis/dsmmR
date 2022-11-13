@@ -27,8 +27,7 @@ sequence will not have a \emph{total length} greater than \code{seq_length}
 for the parametric object, with class \code{dsmm_parametric}.
 Default value is \eqn{100}.}
 
-\item{...}{Attributes passed down from the \code{simulate} method.
-Currently not used.}
+\item{...}{Optional. Attributes passed down from the \code{simulate} method.}
 }
 \value{
 A character vector based on \code{nsim} simulations, with a
@@ -63,5 +62,5 @@ About random number generation in R: \code{\link[base:RNG]{RNG}}.
 
 Fitting a model through a sequence from this function: \link{fit_dsmm}.
 
-For the theoretical background of Drifting semi-Markov Models: \link{dsmmR}.
+For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
 }

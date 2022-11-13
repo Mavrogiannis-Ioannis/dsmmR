@@ -1,8 +1,10 @@
 # '''
 #    1. This file contains functions that are used for supporting the other
-#     functions in the package.
+#       functions in the package.
 #    2. It is worth noting that none of the following functions are available
-#     to the user.
+#       to the user directly, apart from the last one, `create_sequence()`.
+#    3. For the user to gain access to these functions, he has to use
+#       dsmmR:::foo()
 # '''
 
 # ==============================================================================
@@ -49,7 +51,7 @@ is_double <- function(obj) {
 }
 
 
-is_double_vector <- function(obj)
+is_double_vector <- function(obj) # Used in `valid_initial_dist()`.
     is_vector(obj) && is.double(obj) && !is_number(obj)
 
 
@@ -79,7 +81,7 @@ is_integer <- function(obj) {
     is_number(obj) && obj > 0 && obj - as.integer(obj) == 0
 }
 
-is_integer_vector <- function(obj)
+is_integer_vector <- function(obj) # used in `valid_soj_times()`.
     is_vector(obj) && all(sapply(obj, is_integer))
 
 is_prob <- function(prob) {
@@ -185,11 +187,6 @@ valid_model_size <- function(model_size, length_seq) {
     #    sojourn times, e.g. from the `rle()`function.
     # '''
     if (is_integer(model_size)) {
-        # why did we need
-        # ...` & !(isFALSE(valid_seq(seq))`
-        # ???????
-        # Perhaps valid_seq() didn't exist back then...
-        # This function is only for the programmer to use.
         if (!all_equal_numeric(model_size, length_seq - 1)) {
             stop("\n`model_size` should be equal to the length of `seq`.")
         }
@@ -241,14 +238,13 @@ valid_length_states <- function(s, states) {
     # '''
     #    Intended for use in `is.dsmm`.
     # '''
-    if (is_integer(s) && s == (lstates <- length(states))) {
-        return(TRUE)
+    if (!(is_integer(s) && s == (lstates <- length(states)))) {
+        stop("\nAttribute `s` = ", s,
+             " should be an integer equal to the length of `states` = ",
+             lstates)
     }
-    stop("\nAttribute `s` = ", s,
-         " should be an integer equal to the length of `states` = ",
-         lstates)
+    TRUE
 }
-
 
 valid_degree <- function(degree, model_size) {
     # '''
@@ -302,25 +298,11 @@ valid_initial_dist_char <- function(obj) {
     TRUE
 }
 
-
-valid_model <- function(p_is_drifting, f_is_drifting
-                        # , numerical_est
-                        ) {
+valid_model <- function(p_is_drifting, f_is_drifting) {
     # '''
-    #    Intended for use in `is.dsmm_fit` & `fit_dsmm`, as well as
+    #     Intended for use in `is.dsmm_fit` & `fit_dsmm`, as well as
     #    `dsmm_parametric`, `dsmm_nonparametric`,
     #    `is.dsmm_parametric` and `is.dsmm_nonparametric`
-    #    No export.
-    #    Can be used without `numerical_est` for the parametric and the
-    #    nonparametric models.
-    #    Checks whether the choice of model is in accordance to the theory.
-    #    Model 1 : both p and f are drifting.
-    #    Model 2 : p is drifting, f is not.
-    #    Model 3 : f is drifting, p is not.
-    #    In the alternative estimation `numerical_est` for Models 2 and 3,
-    #       ONLY one of p or f should be drifting.
-    #    Finally, if neither are drifting, we cannot use a
-    #    Drifting Semi Markov Model.
     # '''
     if (!p_is_drifting && !f_is_drifting) {
         # Neither p or f are drifting.
@@ -329,20 +311,8 @@ valid_model <- function(p_is_drifting, f_is_drifting
              " for the estimation. Otherwise, a semi-Markov Model",
              "should be used.")
     }
-    # This is outdated... numerical estimate could work for any model!
-    # # if (!missing(numerical_est)){
-    # #     # The missing case is intended for use in
-    # #     # `is.dsmm_nonparametric()`and `is.dsmm_parametric()`.
-    # #     if (numerical_est && p_is_drifting && f_is_drifting) {
-    # #         # Alternative Estimation shouldn't be valid for Model 1.
-    # #         stop("\nThe alternative estimation defined in the",
-    # #              "logical parameter `numerical_est` can only be TRUE ",
-    # #              "only when f OR p is drifting.")
-    # #     }
-    # # }
     TRUE
 }
-
 
 valid_estimation <- function(estimation, fpar, s, f_is_drifting, degree,
                              states) {
@@ -405,8 +375,9 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
             #  are not equal to 1.
             logical_vector <- sapply(p_drift_rowsum,
                                      function(u) !all_equal(u, 1))
-            possible_cases <- paste0("u = ", sort(rep(states, s)), ", ",
-                                     names_i_d(degree, kernel_name = "p"))
+            possible_cases <- paste0("u = ", rep(states, s - 1), ", ",
+                                     rep(names_i_d(degree, kernel_name = "p"),
+                                         each = s))
             stop("\nFor the transition probability matrices",
                  " contained in `p_dist`, the probabilities of transistioning",
                  " from previous state `u` over all the possible next states",
@@ -473,8 +444,6 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
                                       f_is_drifting, k_max) {
     # '''
     #    Intended for use in `dsmm_nonparametric`.
-    #    This is NOT intended to be used in `dsmm_parametric`.
-    #    Not exported.
     # '''
     D <- degree + 1L
     if (f_is_drifting) {
@@ -810,7 +779,8 @@ get_dist_param <- function(row, k) {
     par1 <- as.numeric(row[2])
     par2 <- as.numeric(row[3]) # if it is NA, it is not given as a parameter.
     if (dist == 'unif') {
-        distklim <- sapply(1:k, function(x) if (x <= par1) 1/par1 else 0)
+        unif_value <- 1/par1
+        distklim <- sapply(1:k, function(x) if (x <= par1) unif_value else 0)
     } else if (dist == 'geom') {
         distklim <- dgeom(0:(k - 1), prob = par1)
     } else if (dist == 'pois') {
@@ -833,8 +803,9 @@ valid_estimation_fit <- function(estimation, degree, states, s, k_max,
                                  p_is_drifting, f_is_drifting, fdist, pdist) {
     # '''
     #    This function is acting on the OBJECT `dsmm_fit_nonparametric` and
-    #    `dsmm_fit_parametric`. Specifically, it is used for `check_attributes()`
-    #    in order to prevent someone from defining their own object in a vile manner.
+    #    `dsmm_fit_parametric`. Specifically, it is used when printing through
+    #    `check_attributes()`, in order to prevent someone from defining
+    #    their own object in a `vile` manner.
     # '''
     if (estimation != 'nonparametric' && estimation != 'parametric') {
         stop("`estimation` attribute should be either 'nonparametric' or ",
@@ -864,26 +835,19 @@ valid_estimation_fit <- function(estimation, degree, states, s, k_max,
     TRUE
 }
 
+
 # ------------------------------------------------------------------------------
 # Regarding the drifting kernels.
 poly_coeff <- function(degree) {
     # '''
     #    Returns a matrix with the coefficients of the polynomials `A_i`.
-    #    Original author: ...
-    #    If this was a list, it would be faster later (enable using lapply)
     # '''
-    pos <- seq(0, degree) / degree
-    pos <- sapply(pos, function(pos, degree) {
-        pow <- c()
-        for (i in seq(0, degree)) {
-            pow <- c(pow, pos**i)
-        }
-        return(pow)
-    }, degree = degree)
-    res <- solve(pos)
-    colnames(res) <- paste0("t^", seq(0, degree))
-    rownames(res) <- paste0("A_", seq(0, degree))
-    return(res)
+    x <- (s0 <- seq(0, degree)) / degree
+    x <- sapply(x, function(v) sapply(s0, function(i) v ** i))
+    ans <- solve(x)
+    colnames(ans) <- paste0("t^", s0)
+    rownames(ans) <- paste0("A_", s0)
+    ans
 }
 
 names_i_d <- function(d, kernel_name = "q") {
@@ -916,6 +880,12 @@ seq_states_to_id <- function(seq, states) {
 
 # Get different values needed to compute the different distributions. ----------
 get_1_u <- function(id_seq, l, n, id_states, s) {
+    # '''
+    #    Used in `fit_dsmm()` to get the indicator function 1_u.
+    #    `id_seq` is the sequence of the embedded Markov chain where we
+    #    substituted the states for positive integers.
+    #    `id_states` is seq(1, s).
+    # '''
     zero_v <- rep(0, n)
     vector_1_u <- sapply(id_states,
                          function(u, seq_u, zero_v) {
@@ -927,26 +897,18 @@ get_1_u <- function(id_seq, l, n, id_states, s) {
     vector_1_u
 }
 
-get_1_uv <- function(id_seq, l, n, id_states, s) {
-    possible_uv_states <- paste(id_states, sort(rep(id_states, s)))
-    seq_uv <- paste(id_seq[-l], id_seq[-1])
-    zero_v <- rep(0, n)
-    vector_1_uv <- sapply(possible_uv_states,
-                          function(uv, seq_uv, zero_v) {
-                              zero_v[which(uv == seq_uv)] <- 1
-                              return(zero_v)},
-                          seq_uv = seq_uv, zero_v = zero_v)
-    rownames(vector_1_uv) <- paste0("t = ", 1:n)
-    vector_1_uv
-}
-
 get_1_uvl <- function(id_seq, l, n, X, k_max, id_states, s) {
-    # `seq` should be defined as `seq <- rle(original_sequence)$values`
+    # '''
+    #    Used in `fit_dsmm()` to get the indicator function 1_uvl.
+    #    `id_seq` is the sequence of the embedded Markov chain where we
+    #    substituted the states for positive integers.
+    #    `id_states` is seq(1, s).
+    # '''
     seq_uvl <- paste(id_seq[-l], c(id_seq[-1]), X[-l])
     Es <- rep(id_states, s)
     pEs <- paste(Es, sort(Es))
     possible_uvl_states <- paste(rep(pEs, k_max),
-                                  sort(rep(1:k_max, s*s)))
+                                 sort(rep(1:k_max, s*s)))
     zero_v <- rep(0, n)
     vector_1_uvl <- sapply(X = possible_uvl_states,
                            FUN = function(uvl, seq_uvl, zero_v) {
@@ -960,15 +922,14 @@ get_1_uvl <- function(id_seq, l, n, X, k_max, id_states, s) {
 get_model <- function(p_is_drifting, f_is_drifting) {
     # '''
     #    Should only be used AFTER `valid_model(...)` function has been used!
-    #    To be used in `fit_dsmm`, `parametric_dsmm` and `nonparametric_dsmm`.
-    #    Not exported.
+    #    Used in `fit_dsmm`, `parametric_dsmm` and `nonparametric_dsmm`.
     # '''
     Model_1 <- p_is_drifting && f_is_drifting
     Model_2 <- p_is_drifting && !f_is_drifting
     Model_3 <- !p_is_drifting && f_is_drifting
     model_id <- which(c(Model_1, Model_2, Model_3) == TRUE)
     model <- c("Model_1", "Model_2", "Model_3")[model_id]
-    return(model)
+    model
 }
 
 get_vl <- function(t, u, vl_names, kernel, states) {
@@ -980,12 +941,10 @@ get_vl <- function(t, u, vl_names, kernel, states) {
     #    sojourn time `spend on previous state
     # '''
     vl <- sample(vl_names, prob = kernel[u, , , t], size = 1)
-    #  ## Because we have `size = 1`, even if the `kernel[u,,,t]` does NOT
-    #  ## have a sum of probabilities equal to 1, the sampling still goes
-    #  ## through.
-    #  ## Thus, the `replace` argument is irrelevant to our problem.
+    #  ## Because we have `size = 1`,
+    #  ## the `replace` argument is irrelevant
     #  ## See `sample()` for more details.
-    ans <- strsplit(vl, " ")[[1]] # Splitting the space added in `paste`.
+    ans <- strsplit(vl, " ")[[1]] # Splitting the space added in `paste()`.
     if ((l_ans <- length(ans)) > 2) {
         # If the state contains spaces, we take all but the last values of
         # `ans` and paste them together. The last value of `ans` is the
@@ -1009,21 +968,7 @@ get_A_i <- function(degree, model_size) {
     return(res)
 }
 
-# Get the p_not drift (Model 3).
-get_p_notdrift <- function(seq, states, s, l, n) {
-    # '''
-    #    Get the new p_notdrift which is equal to Nuv / Nu. :
-    #    Number of transitions from u to v / Number of transitions from u.
-    # '''
-    names_uv <- paste0(states, sort(rep(states, s)))
-    seq_uv <- paste0(seq[-l], seq[-1])
-    Nuv_index <- sapply(names_uv, function(uv) which(uv == seq_uv))
-    Nuv <- sapply(Nuv_index, length) # Integer
-    Nu <- as.double(table(seq[-l])) # No recycling if we divide with integer.
-    Nuv / Nu
-}
-
-# Normalization of function f.
+# Normalization of f.
 get_f <- function(v) (a <- abs(v)) / sum(a)
 
 # Check the validity of the computed kernel and return it.
@@ -1032,7 +977,7 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
     ans <- Ji %*% Ai # ans has dimensions of (s*s*k_max, n+1)
     kernel <- array(ans, dim = c(s, s, k_max, N))
     if (!all_equal_numeric(apply(kernel, c(1,4), sum), 1)) {
-        stop("\nThe sums are not equal to 1.")
+        stop("\nThe sums of the kernel are not equal to 1.")
     }
     if (!is_prob(kernel)) {
         kernel_pos <- apply(kernel, c(1,4), get_f)

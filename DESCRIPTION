@@ -1,8 +1,8 @@
 Type: Package
 Package: dsmmR
 Title: Estimation and Simulation of Drifting Semi-Markov Models
-Version: 0.0.94
-Date: 2022-11-8
+Version: 0.0.95
+Date: 2022-11-9
 Authors@R: c(
     person("Vlad Stefan", "Barbu",
            role = c("aut"),
@@ -13,11 +13,11 @@ Authors@R: c(
     person("Nicolas", "Vergne",
            role = c("aut"))
            )
-Description: Performs parametric and non-parametric estimation and simulation 
-    of Drifting semi-Markov processes. The definition of the corresponding model 
-    specifications is also possible. Furthermore, three different types of Drifting
-    semi-Markov models are considered. These models differ in the number of 
-    transition matrices and sojourn time distributions used for the computation
+Description: Performs parametric and non-parametric estimation and simulation of 
+    Drifting semi-Markov processes. The definition of parametric and non-parametric
+    model specifications is also possible. Furthermore, three different types of
+    Drifting semi-Markov models are considered. These models differ in the number
+    of transition matrices and sojourn time distributions used for the computation
     of a number of semi-Markov kernels, which in turn characterize the Drifting 
     semi-Markov kernel. For the parametric model estimation and specification, 
     several discrete distributions are considered for the sojourn times: Uniform,
