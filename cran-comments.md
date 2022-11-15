@@ -48,7 +48,7 @@ There are no ERRORs or WARNINGs, only NOTEs.
                                      `_R_CHECK_RD_VALIDATE_RD2HTML_` = "false"))
    ```
 
-    These NOTEs do not persist.
+   These NOTEs do not persist.
 
 
 

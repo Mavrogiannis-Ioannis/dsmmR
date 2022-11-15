@@ -15,17 +15,14 @@ knitr::opts_chunk$set(
 
 # dsmmR
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 The goal of dsmmR is estimation and simulation through Drifting semi-Markov models. 
 
 ## Installation
 
-You can install `dsmmR` like so:
+You can install `dsmmR` through the command:
 
 ```{r}
-install.packages("dsmmR")
+# install.packages("dsmmR")
 ```
 
 

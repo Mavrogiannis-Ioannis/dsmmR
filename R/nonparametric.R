@@ -300,6 +300,11 @@
 #' # f_dist has dimensions of: (s,s,k_{max}).
 #' f_dist_model_2 <- f_dist_2
 #'
+#'
+#'
+#'
+#'
+#'
 #' # ---------------------------------------------------------------------------
 #' # Non-Parametric object for Model 2.
 #' # ---------------------------------------------------------------------------
@@ -354,6 +359,8 @@
 #' # p distribution matrix.
 #' p_notdrift <- obj_nonpar_model_3$dist$p_notdrift
 #' p_notdrift
+#'
+#'
 #'
 #' # f distribution array.
 #' f_drift <- obj_nonpar_model_3$dist$f_drift

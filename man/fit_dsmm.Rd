@@ -406,7 +406,6 @@ degree <- 3
 # Fitting a random sequence under distributions of unknown shape.
 # ===========================================================================
 
-
 # ---------------------------------------------------------------------------
 # Both p and f are drifting - Model 1.
 # ---------------------------------------------------------------------------
@@ -484,6 +483,7 @@ cat(paste0("Dimension of f_notdrift: (s, s) = (",
 ###     of distributions while only the parameters (of the sojourn times)
 ###     are drifting. This results in (generally) higher accuracy.
 ### 2.  This process is similar to that used in `dsmm_parametric()`.
+
 
 s <- length(states)
 # Getting the distributions for the states.
