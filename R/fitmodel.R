@@ -608,16 +608,21 @@
 #'     "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution is:\n",
 #'     paste("f :", params_2))
 #'
+#'
+#'
 #' # ===========================================================================
 #' # Some methods for the `dsmm_fit_nonparametric` and
 #' #  `dsmm_fit_parametric` objects.
 #' # ===========================================================================
 #'
+#'
 #' sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
 #' str(sim_seq_nonparametric)
 #'
+#'
 #' kernel_drift_parametric <- get_kernel(obj_fit_parametric, klim = 10)
 #' str(kernel_drift_parametric)
+#'
 fit_dsmm <- function(sequence, states, degree,
                      f_is_drifting, p_is_drifting,
                      initial_dist = "unif",
