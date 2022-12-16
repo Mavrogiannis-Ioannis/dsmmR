@@ -9,4 +9,3 @@
 ## Bug fixes
 
 * Fixed a case where simulate.dsmm() did not function as expected when nsim = 1. Now nsim is also allowed to be 0. Updated the documentation corresponding to these changes.
-

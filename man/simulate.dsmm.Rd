@@ -12,11 +12,11 @@
 \code{dsmm_fit_parametric} or \code{dsmm_parametric}.}
 
 \item{nsim}{Optional. A positive integer specifying the number of simulations
-to be made from the Drifting semi-Markov kernel. If given the value \code{0},
+made from the Drifting semi-Markov kernel. If given the value \code{0},
 only the simulation from the initial distribution will be considered.
-Therefore, in all cases we will have \code{nsim + 1} simulations.
+Therefore, in all cases we will have \code{nsim + 1} simulations in total.
 The maximum value of \code{nsim} is the model size which is specified in
-\code{obj}. The model size is also the default value.}
+\code{obj}, which is also the default value.}
 
 \item{seed}{Optional. An integer specifying the initialization of the random
 number generator.}

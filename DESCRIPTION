@@ -12,7 +12,7 @@ Authors@R: c(
         email = "mavrogiannis.ioa@gmail.com"),
     person("Nicolas", "Vergne",
            role = c("aut"))
-           )
+           ) 
 Description: Performs parametric and non-parametric estimation and simulation of 
     Drifting semi-Markov processes. The definition of parametric and non-parametric
     model specifications is also possible. Furthermore, three different types of

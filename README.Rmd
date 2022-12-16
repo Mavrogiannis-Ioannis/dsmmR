@@ -75,7 +75,7 @@ _f_ and the transition matrices _p_ are drifting or not.
 
 ```{r, eval = FALSE}
 # Loading the package
-# library(dsmmR)
+library(dsmmR)
 
 # Obtaining the sequence
 data("lambda", package = "dsmmR")

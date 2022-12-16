@@ -936,11 +936,11 @@ print.dsmm_parametric <- function(x, ...) {
 #' \code{dsmm_fit_nonparametric}, \code{dsmm_nonparametric},
 #' \code{dsmm_fit_parametric} or \code{dsmm_parametric}.
 #' @param nsim Optional. A positive integer specifying the number of simulations
-#' to be made from the Drifting semi-Markov kernel. If given the value \code{0},
+#' made from the Drifting semi-Markov kernel. If given the value \code{0},
 #' only the simulation from the initial distribution will be considered.
-#' Therefore, in all cases we will have \code{nsim + 1} simulations.
+#' Therefore, in all cases we will have \code{nsim + 1} simulations in total.
 #' The maximum value of \code{nsim} is the model size which is specified in
-#' \code{obj}. The model size is also the default value.
+#' \code{obj}, which is also the default value.
 #' @param seq_length Optional. A positive integer that will ensure the simulated
 #' sequence will not have a \emph{total length} greater than \code{seq_length}
 #' (however, it is possible for the total length to be \emph{less} than

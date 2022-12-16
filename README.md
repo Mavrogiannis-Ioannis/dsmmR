@@ -64,7 +64,7 @@ of our choice. The model is chosen by defining whether the sojourn times
 
 ``` r
 # Loading the package
-# library(dsmmR)
+library(dsmmR)
 
 # Obtaining the sequence
 data("lambda", package = "dsmmR")
@@ -86,7 +86,7 @@ fitted_model <- fit_dsmm(sequence = sequence,
                          states = states,
                          degree = degree,
                          f_is_drifting = f_is_drifting,
-                         p_is_drifting = p_is_drifting)
+                         # p_is_drifting = p_is_drifting)
 ```
 
 For more details about the estimation, consider viewing the extended
