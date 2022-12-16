@@ -1,7 +1,7 @@
 Type: Package
 Package: dsmmR
 Title: Estimation and Simulation of Drifting Semi-Markov Models
-Version: 0.0.96
+Version: 1.0.1
 Date: 2022-11-15
 Authors@R: c(
     person("Vlad Stefan", "Barbu",
@@ -27,7 +27,7 @@ Description: Performs parametric and non-parametric estimation and simulation of
     Barbu, V.S., Limnios, N. (2008) <doi:10.1007/978-0-387-73173-5>.
     Drifting Markov models are described in:
     Vergne, N. (2008) <doi:10.2202/1544-6115.1326>.
-    Reliability indicators of drifting Markov models are described in:
+    Reliability indicators of Drifting Markov models are described in:
     Barbu, V. S., Vergne, N. (2019) <doi:10.1007/s11009-018-9682-8>.
 License: GPL
 Imports: DiscreteWeibull
@@ -36,7 +36,7 @@ Suggests:
     knitr,
     rmarkdown
 Encoding: UTF-8
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 NeedsCompilation: yes
 Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
   Ioannis Mavrogiannis [aut, cre],

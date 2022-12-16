@@ -936,8 +936,11 @@ print.dsmm_parametric <- function(x, ...) {
 #' \code{dsmm_fit_nonparametric}, \code{dsmm_nonparametric},
 #' \code{dsmm_fit_parametric} or \code{dsmm_parametric}.
 #' @param nsim Optional. A positive integer specifying the number of simulations
-#' that will make up the sequence, with the maximum value being the model size
-#' that is specified in \code{obj}. The model size is also the default value.
+#' to be made from the Drifting semi-Markov kernel. If given the value \code{0},
+#' only the simulation from the initial distribution will be considered.
+#' Therefore, in all cases we will have \code{nsim + 1} simulations.
+#' The maximum value of \code{nsim} is the model size which is specified in
+#' \code{obj}. The model size is also the default value.
 #' @param seq_length Optional. A positive integer that will ensure the simulated
 #' sequence will not have a \emph{total length} greater than \code{seq_length}
 #' (however, it is possible for the total length to be \emph{less} than
@@ -995,9 +998,9 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     }
     if (is.null(nsim)) {
         nsim <- object$model_size
-    } else if (!is_integer(nsim)) {
+    } else if (! (is_integer(nsim) || nsim == 0) ) {
         stop("\nThe number of simulations `nsim`",
-             "needs to be a positive integer.")
+             "needs to be a positive integer or 0.")
     }
     if (!is.null(seq_length) && !is_integer(seq_length)) {
         stop("\nThe final length of the sequence `seq_length`",
@@ -1028,21 +1031,28 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     vl_names <- paste(states, sort(rep(1:k_max, s)))
     vl_vector <- c()
     u <- initial_state
-    for (time in 1:nsim) { # max(nsim) == l!
+    if (nsim == 0) {
+        vl <- get_vl(t = 1, u = u, vl_names = vl_names,
+                     kernel = kernel, states = states)
+        sim_seq <- as.vector(rep(vl[1], vl[2]))
+        return(sim_seq)
+    }
+    for (time in 1:nsim) { # max(nsim) == n!
         u <- states[which(states == u)]
         vl_vector <- c(vl_vector,
-                       vl <- get_vl(t = time, u = u,
-                                    vl_names, kernel, states))
+                       vl <- get_vl(t = time, u = u, vl_names = vl_names,
+                                    kernel = kernel, states = states))
         u <- vl[1]
     }
     l_vl <- length(vl_vector)
     seq <- c(initial_state, vl_vector[seq(1, l_vl, 2)])
-    X <- as.numeric(c(vl_vector[seq(2, l_vl, by = 2)], vl_vector[l_vl]))
-    new_seq <- unlist(sapply(seq_along(seq), function(i) rep(seq[i], X[i])))
+    X <- as.numeric(c(vl_vector[seq(2, l_vl, by = 2)], 1))
+    sim_seq <- as.vector(unlist(sapply(seq_along(seq),
+                                       function(i) rep(seq[i], X[i]))))
     if (is.null(seq_length)) {
-        return(new_seq)
+        return(sim_seq)
     } else {
-        return(new_seq[1:seq_length])
+        return(sim_seq[1:seq_length])
     }
 }
 
