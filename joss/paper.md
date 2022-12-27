@@ -21,7 +21,7 @@ authors:
 	- name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
 	  index: 1
 date: 4 December 2022
-bibliography: joss/dsmm_refs.bib
+bibliography: dsmmR/tree/master/joss/dsmm_refs.bib
 
 
 # Summary
