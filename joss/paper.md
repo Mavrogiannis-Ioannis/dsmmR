@@ -20,7 +20,7 @@ authors:
     affiliations:
 	- name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
 	  index: 1
-date: 4 December 2022
+date: 27 December 2022
 bibliography: dsmm_refs.bib
 ---
 
