@@ -74,14 +74,14 @@ Cython-optimized) implementations of common operations such as gravitational
 potential and force evaluation, orbit integration, dynamical transformations,
 and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
 interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@limnios:2013] (`astropy.units` and
+coordinate systems in the `Astropy` package `astropy.units` and
 `astropy.coordinates`).
 
 `Gala` was designed to be used by both astronomical researchers and by
 students in courses on gravitational dynamics or astronomy. It has already been
 used in a number of scientific publications and has also been
 used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@ioannis:2023]. The combination of speed,
+visualizations of textbook material. The combination of speed,
 design, and support for Astropy functionality in `Gala` will enable exciting
 scientific explorations of forthcoming data releases from the *Gaia* mission
 by students and experts alike.
