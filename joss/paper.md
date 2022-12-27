@@ -22,7 +22,7 @@ authors:
 	  index: 1
 date: 4 December 2022
 bibliography: joss/dsmm_refs.bib
-
+---
 
 # Summary
 This is an R package that allows the user to estimate, simulate and define 
