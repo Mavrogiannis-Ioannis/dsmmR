@@ -8,20 +8,20 @@ tags:
 	- DNA sequences
 authors:
 	- name: Vlad Stefan Barbu
-        orcid: 0000-0002-0840-016X
-        equal-contrib: true
-        affiliation: 1 
+    orcid: 0000-0002-0840-016X
+    equal-contrib: true
+    affiliation: 1 
 	- name: Nicolas Vergne
-        equal-contrib: true 
-        affiliation: 1
+    equal-contrib: true 
+    affiliation: 1
 	- name: Ioannis Mavrogiannis
-        equal-contrib: true
-        affiliation: 1
-        affiliations:
+    equal-contrib: true
+    affiliation: 1
+affiliations:
 	- name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
-	    index: 1
-date: 27 December 2022
-bibliography: dsmm_refs.bib
+	index: 1
+date: 28 December 2022
+bibliography: dsmmR/joss/dsmm_refs.bib
 ---
 
 # Summary
