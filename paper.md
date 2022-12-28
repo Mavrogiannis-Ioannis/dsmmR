@@ -3,9 +3,9 @@ title: 'dsmmR: Estimation and Simulation of Drifting Semi-Markov Models'
 
 tags:
   - R
-  - semi Markov Models
+  - semi\-Markov Models
   - drifting Markov Models
-  - non homogeneous Markov chains 
+  - non\-homogeneous Markov chains 
   - DNA sequences
 
 authors:
