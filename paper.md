@@ -9,13 +9,10 @@ tags:
 authors:
   - name: Vlad Stefan Barbu
   orcid: 0000-0002-0840-016X
-  equal-contrib: true
   affiliation: 1 
   - name: Nicolas Vergne
-  equal-contrib: true 
   affiliation: 1
   - name: Ioannis Mavrogiannis
-  equal-contrib: true
   affiliation: 1
 affiliations:
   - name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
