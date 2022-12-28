@@ -1,24 +1,24 @@
 ---
 title: 'dsmmR: Estimation and Simulation of Drifting Semi-Markov Models'
 tags:
- - R
- - semi-Markov Models
- - drifting Markov Models
- - Inhomogeneous Markov chains 
- - DNA sequences
+  - R
+  - semi-Markov Models
+  - drifting Markov Models
+  - Inhomogeneous Markov chains 
+  - DNA sequences
 authors:
- - name: Vlad Stefan Barbu
-orcid: 0000-0002-0840-016X
-equal-contrib: true
-affiliation: 1 
- - name: Nicolas Vergne
-equal-contrib: true 
-affiliation: 1
- - name: Ioannis Mavrogiannis
-equal-contrib: true
-affiliation: 1
+  - name: Vlad Stefan Barbu
+  orcid: 0000-0002-0840-016X
+  equal-contrib: true
+  affiliation: 1 
+  - name: Nicolas Vergne
+  equal-contrib: true 
+  affiliation: 1
+  - name: Ioannis Mavrogiannis
+  equal-contrib: true
+  affiliation: 1
 affiliations:
- - name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
+  - name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
 index: 1
 date: 28 December 2022
 bibliography: joss/dsmm_refs.bib
