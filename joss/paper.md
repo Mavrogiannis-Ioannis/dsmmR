@@ -9,9 +9,9 @@ tags:
   - DNA sequences
 authors:
   - name: Vlad Stefan Barbu
-  orcid: 0000-0002-0840-016X
-  equal-contrib: true
-  affiliation: 1 
+    orcid: 0000-0002-0840-016X
+    equal-contrib: true
+    affiliation: 1 
   - name: Nicolas Vergne
   equal-contrib: true 
   affiliation: 1
