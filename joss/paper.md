@@ -21,7 +21,7 @@ affiliations:
 	- name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
 	index: 1
 date: 28 December 2022
-bibliography: dsmmR/joss/dsmm_refs.bib
+bibliography: joss/dsmm_refs.bib
 ---
 
 # Summary
