@@ -2,9 +2,9 @@
 title: 'dsmmR: Estimation and Simulation of Drifting Semi-Markov Models'
 tags:
   - R
-  - semi-Markov Models
+  - semi Markov Models
   - drifting Markov Models
-  - Inhomogeneous Markov chains 
+  - non homogeneous Markov chains 
   - DNA sequences
 authors:
   - name: Vlad Stefan Barbu
@@ -22,6 +22,7 @@ affiliations:
 index: 1
 date: 28 December 2022
 bibliography: joss/dsmm_refs.bib
+
 ---
 
 # Summary
