@@ -1,6 +1,7 @@
 ---
 title: 'dsmmR: Estimation and Simulation of Drifting Semi-Markov Models'
 tags:
+  - Python
   - R
   - semi Markov Models
   - drifting Markov Models
@@ -19,7 +20,7 @@ authors:
   affiliation: 1
 affiliations:
   - name: Laboratoire de Mathématiques Raphaël Salem, Université de Rouen Normandie, France
-index: 1
+  index: 1
 date: 28 December 2022
 bibliography: joss/dsmm_refs.bib
 
