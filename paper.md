@@ -24,7 +24,7 @@ affiliations:
 
 date: 28 December 2022
 
-bibliography: dsmm_refs.bib
+bibliography: paper.bib
 
 ---
 
