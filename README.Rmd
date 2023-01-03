@@ -146,7 +146,7 @@ If you are not familiar with Drifting Markov models, they were first introduced 
 [Drifting Markov models with Polynomial Drift and Applications to DNA Sequences](https://doi.org/10.2202/1544-6115.1326), while a comprehensive overview is provided in [Reliability and Survival Analysis for Drifting Markov Models: Modeling and Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
 
-### Notes
+## Notes
 If you are in need of support, please contact the maintainer at <mavrogiannis.ioa@gmail.com>.
 
 ## References
