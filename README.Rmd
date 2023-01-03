@@ -95,7 +95,7 @@ fitted_model <- fit_dsmm(sequence = sequence,
                          states = states,
                          degree = degree,
                          f_is_drifting = f_is_drifting,
-                         # p_is_drifting = p_is_drifting)
+                         p_is_drifting = p_is_drifting)
 ```
 
 For more details about the estimation, consider viewing the extended documentation through `?fit_dsmm`.
