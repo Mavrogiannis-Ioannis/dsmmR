@@ -10,6 +10,10 @@ editor_options:
 
 -   Added a `NEWS.md` file to track changes to the package.
 
+-   Now the `fit_dsmm()` function has a default value for the `states` attribute,
+    being the sorted unique values of the `sequence` character vector attribute.
+    
+
 ## Bug fixes
 
 -   Fixed a case where `simulate.dsmm()` did not function as expected
