@@ -924,6 +924,7 @@ print.dsmm_parametric <- function(x, ...) {
 # Simulate a sequence from any `dsmm` object.
 # ______________________________________________________________________________
 #' @title Simulate a sequence under a drifting semi-Markov kernel.
+#'
 #' @description Generic function that simulates a number of states \code{nsim}
 #' under the rule of a drifting semi-Markov kernel, which is retrieved from the
 #' object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
@@ -931,21 +932,26 @@ print.dsmm_parametric <- function(x, ...) {
 #' @param object An object of S3 class \code{dsmm},
 #' \code{dsmm_fit_nonparametric}, \code{dsmm_nonparametric},
 #' \code{dsmm_fit_parametric} or \code{dsmm_parametric}.
-#' @param nsim Optional. A positive integer specifying the number of simulations
-#' made from the drifting semi-Markov kernel. If given the value \code{0},
-#' only the simulation from the initial distribution will be considered.
-#' Therefore, in all cases we will have \code{nsim + 1} simulations in total.
-#' The maximum value of \code{nsim} is the model size which is specified in
-#' \code{obj}, which is also the default value.
+#'
+#' @param nsim Optional. An integer specifying the number of simulations to be made
+#' from the drifting semi-Markov kernel. The maximum value of \code{nsim} is the
+#' model size which is specified in \code{obj}, which is also the default value.
+#' We define a special case for \code{nsim = 0}, where only the initial distribution
+#' is considered and only the simulation of its sojourn time will be made, without
+#' the next state.
+#'
 #' @param seq_length Optional. A positive integer that will ensure the simulated
 #' sequence will not have a \emph{total length} greater than \code{seq_length}
 #' (however, it is possible for the total length to be \emph{less} than
 #' \code{seq_length}).
+#'
 #' @param seed Optional. An integer specifying the initialization of the random
 #' number generator.
+#'
 #' @param klim Optional. Positive integer. Passed down to \code{get_kernel}
 #' for the parametric object, with class \code{dsmm_parametric}.
 #' Default value is \eqn{100}.
+#'
 #' @param ... Optional. Attributes passed down from the \code{simulate} method.
 #'
 #' @seealso

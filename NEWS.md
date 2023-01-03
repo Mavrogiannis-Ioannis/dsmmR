@@ -16,7 +16,8 @@ editor_options:
     when `nsim = 1`.
     -   Now it is possible to specify `nsim = 0`, so that the simulated
         sequence will only include the initial state and its
-        corresponding sojourn time, e.g. "a", "a", "a".\
+        corresponding sojourn time, e.g. "a", "a", "a".
+        
         By giving `nsim = 1` , a single simulation will be made from the
         drifting semi-Markov kernel, returning for example "a", "a",
         "a", "c".
@@ -28,8 +29,9 @@ editor_options:
 
 -   Updated the `README` file.
 
-    -   Added high-level documentation of the package alongside with
-        proper installation instructions, as well as giving access to
+    -   Added high-level documentation of the package 
+    
+    -   Added installation instructions with access to
         the development version of the package through github.
 
 -   Updated the documentation for `dsmmR-package`.
