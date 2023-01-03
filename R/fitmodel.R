@@ -103,7 +103,7 @@
 #' the conditional sojourn time distribution \eqn{f} are both drifting,
 #' the drifting semi-Markov kernel can be estimated as:
 #' \deqn{\widehat{q}_{\frac{t}{n}}^{\ (1)}(u,v,l) =
-#'       \sum_{i = 0}^{d}A_{i}(t)\widehat{q}_{\frac{i}{d}}^{\ (1)}(u,v,l),}
+#'       \sum_{i = 0}^{d}A_{i}(t)\ \widehat{q}_{\frac{i}{d}}^{\ (1)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l \in \{1,\dots, k_{max} \} }, where \eqn{k_{max}} is the maximum
 #' sojourn time that was observed in the sequence and
@@ -198,7 +198,7 @@
 #' the estimated drifting semi-Markov kernel will be given by:
 #'
 #' \deqn{\widehat{q}_{\frac{t}{n}}^{\ (2)}(u,v,l) =
-#' \sum_{i=0}^{d} A_{i}(t) \widehat{q}_{\frac{i}{d}}^{\ (2)}(u,v,l),}
+#' \sum_{i=0}^{d} A_{i}(t)\ \widehat{q}_{\frac{i}{d}}^{\ (2)}(u,v,l),}
 #'
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{1,\dots, k_{max} \}}, where \eqn{k_{max}} is the maximum
@@ -236,7 +236,7 @@
 #' In this case, \eqn{f} is drifting and \eqn{p} is not drifting. Therefore,
 #' the estimated drifting semi-Markov kernel will be given by:
 #' \deqn{\widehat{q}_{\frac{t}{n}}^{\ (3)}(u,v,l) =
-#' \sum_{i=0}^{d} A_{i}(t) \widehat{q}_{\frac{i}{d}}^{\ (3)}(u,v,l),}
+#' \sum_{i=0}^{d} A_{i}(t)\ \widehat{q}_{\frac{i}{d}}^{\ (3)}(u,v,l),}
 #' \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
 #' \forall l\in \{1,\dots, k_{max} \}}, where \eqn{k_{max}} is the maximum
 #' sojourn time that was observed in the sequence and
@@ -387,7 +387,7 @@
 #'   time, which is the maximum value in \code{soj_times}, excluding the last
 #'   state.
 #' \item \code{model_size} : Positive integer that contains the size of the
-#'   Drifting semi-Markov model \eqn{n}, which is equal to the length of the
+#'   drifting semi-Markov model \eqn{n}, which is equal to the length of the
 #'   embedded Markov chain \eqn{(J_{t})_{t\in \{0,\dots,n\}}},
 #'   minus the last state.
 #'   It has a value of \code{length(seq) - 1}, for \code{seq} as defined above.
@@ -440,7 +440,7 @@
 #' Molecular Biology 7 (1).
 #'
 #' Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
-#' drifting Markov models: modelling and estimation.
+#' Drifting Markov models: modelling and estimation.
 #' Methodology and Computing in Applied Probability, 21(4), 1407-1429.
 #'
 #' T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.

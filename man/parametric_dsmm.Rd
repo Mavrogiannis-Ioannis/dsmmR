@@ -20,7 +20,7 @@ parametric_dsmm(
 }
 \arguments{
 \item{model_size}{Positive integer that represents the size of
-the Drifting semi-Markov model \eqn{n}. It is equal to the length of a
+the drifting semi-Markov model \eqn{n}. It is equal to the length of a
 theoretical embedded Markov chain
 \eqn{(J_{t})_{t\in \{0,\dots,n\}}}, without the last state.}
 
@@ -32,7 +32,7 @@ represents the initial distribution for each state in the state space
 \eqn{E}.}
 
 \item{degree}{Positive integer that represents the polynomial degree \eqn{d}
-for the Drifting semi-Markov model.}
+for the drifting semi-Markov model.}
 
 \item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
 
@@ -100,7 +100,7 @@ It has the following attributes:
     depending on whether \eqn{f} is drifting or not.
   }
 \item \code{initial_dist} : Numerical vector. Passing down from the arguments.
-It contains the initial distribution of the Drifting semi-Markov model.
+It contains the initial distribution of the drifting semi-Markov model.
 \item \code{states} : Character vector. Passing down from the arguments.
 It contains the state space \eqn{E}.
 \item \code{s} : Positive integer. It contains the number of states in the
@@ -109,7 +109,7 @@ state space, \eqn{s = |E|}, which is given in the attribute \code{states}.
 It contains the polynomial degree \eqn{d} considered for the drifting of
 the model.
 \item \code{model_size} : Positive integer. Passing down from the arguments.
-It contains the size of the Drifting semi-Markov model \eqn{n}, which
+It contains the size of the drifting semi-Markov model \eqn{n}, which
 represents the length of the embedded Markov chain
 \eqn{(J_{t})_{t\in \{0,\dots,n\}}}, without the last state.
 \item \code{f_is_drifting} : Logical. Passing down from the arguments.
@@ -124,14 +124,14 @@ Specifies if \eqn{p} is drifting or not.
         \item \code{"Model_3"} : \eqn{f} is drifting and \eqn{p}
               is not drifting.
     }
-\item \code{A_i} : Numerical Matrix. Represents the polynomials
+\item \code{A_i} : Numerical matrix. Represents the polynomials
     \eqn{A_i(t)} with degree \eqn{d} that are used for solving
     the system \eqn{MJ = P}. Used for the methods defined for the
     object. Not printed when viewing the object.
 }
 }
 \description{
-Creates a parametric model specification for a Drifting
+Creates a parametric model specification for a drifting
 semi-Markov model. Returns an object of class
 \code{(dsmm_parametric, dsmm)}.
 }
@@ -194,7 +194,7 @@ For the parametric case, we explicitly define:
 \strong{Sojourn time distributions}
 
 In this package, the available distributions for the modeling of the
-conditional sojourn times, of the Drifting semi-Markov model, used through
+conditional sojourn times, of the drifting semi-Markov model, used through
 the argument \code{f_dist}, are the following:
 \itemize{
 \item Uniform \eqn{(n)}:
@@ -643,8 +643,8 @@ IEEE Transactions on Reliability, R-24, 300-301.
 \seealso{
 Methods applied to this object: \link{simulate.dsmm}, \link{get_kernel}.
 
-For the non-parametric Drifting semi-Markov model specification:
+For the non-parametric drifting semi-Markov model specification:
 \link{nonparametric_dsmm}.
 
-For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
+For the theoretical background of drifting semi-Markov models: \link{dsmmR}.
 }

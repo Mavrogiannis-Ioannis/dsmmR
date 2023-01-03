@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -140,13 +138,26 @@ For more information, consider the documentation through `?get_kernel`.
 
 ## Further reading
 
-If you are not familiar with semi-Markov models and would like to know more,
-the book [Semi-Markov Chains and Hidden Semi-Markov Models toward Applications](https://link.springer.com/book/10.1007/978-0-387-73173-5)
+Regarding semi-Markov models, the book [Semi-Markov Chains and Hidden Semi-Markov Models toward Applications](https://doi.org/10.1007/978-0-387-73173-5)
 gives a good overview of the topic and also combines the flexibility of the 
-semi-Markov chain with the known advantages of Hidden semi-markov models. 
-Applications in Reliability and DNA analysis are also provided.
+semi-Markov chain with the known advantages of hidden semi-markov models. 
 
-If you are not familiar with Drifting Markov models, a comprehensive overview is provided in 
-[Reliability and Survival Analysis for Drifting Markov Models: Modeling and Estimation](https://link.springer.com/article/10.1007/s11009-018-9682-8).
-Reliability and Survival analysis is also considered in this work.
+If you are not familiar with Drifting Markov models, they were first introduced in 
+[Drifting Markov models with Polynomial Drift and Applications to DNA Sequences](https://doi.org/10.2202/1544-6115.1326), while a comprehensive overview is provided in [Reliability and Survival Analysis for Drifting Markov Models: Modeling and Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
+
+### Notes
+If you are in need of support, please contact the maintainer at <mavrogiannis.ioa@gmail.com>.
+
+## References
+Barbu, V. S., Limnios, N. (2008). Semi-Markov Chains and Hidden Semi-Markov
+Models Toward Applications - Their Use in Reliability and DNA Analysis.
+New York: Lecture Notes in Statistics, vol. 191, Springer.
+
+Vergne, N. (2008). Drifting Markov models with Polynomial Drift and
+Applications to DNA Sequences. Statistical Applications in Genetics
+Molecular Biology 7 (1).
+
+Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
+drifting Markov models: modelling and estimation.
+Methodology and Computing in Applied Probability, 21(4), 1407-1429.

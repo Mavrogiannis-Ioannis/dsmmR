@@ -26,16 +26,18 @@ editor_options:
 -   Updated the documentation for `simulate.dsmm()`, with accordance to
     the changes made.
 
--   Updated the `README` in the following manner:
+-   Updated the `README` file.
 
     -   Added high-level documentation of the package alongside with
         proper installation instructions, as well as giving access to
         the development version of the package through github.
 
-    -   Added a "Community Guidelines" section, so that users know where
-        to report errors or mistakes and allowing them to contribute
-        directly to the software through the newly-established open
-        source github page.
+-   Updated the documentation for `dsmmR-package`.
+
+    -   Added a "Community Guidelines" section, so that users can report
+        errors or mistakes and contribute directly to the software
+        through the newly-established open-source github page at
+        <https://github.com/Mavrogiannis-Ioannis/dsmmR.git>.
 
     -   Added a "Notes" section, specifying that automated tests are in
         place in order to aid the user with any false input made and,

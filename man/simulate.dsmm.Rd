@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic_functions.R
 \name{simulate.dsmm}
 \alias{simulate.dsmm}
-\title{Simulate a sequence under a Drifting semi-Markov kernel.}
+\title{Simulate a sequence under a drifting semi-Markov kernel.}
 \usage{
 \method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 100, ...)
 }
@@ -12,7 +12,7 @@
 \code{dsmm_fit_parametric} or \code{dsmm_parametric}.}
 
 \item{nsim}{Optional. A positive integer specifying the number of simulations
-made from the Drifting semi-Markov kernel. If given the value \code{0},
+made from the drifting semi-Markov kernel. If given the value \code{0},
 only the simulation from the initial distribution will be considered.
 Therefore, in all cases we will have \code{nsim + 1} simulations in total.
 The maximum value of \code{nsim} is the model size which is specified in
@@ -38,7 +38,7 @@ maximum length of \code{seq_length}.
 }
 \description{
 Generic function that simulates a number of states \code{nsim}
-under the rule of a Drifting semi-Markov kernel, which is retrieved from the
+under the rule of a drifting semi-Markov kernel, which is retrieved from the
 object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
 }
 \examples{
@@ -65,5 +65,5 @@ About random number generation in R: \code{\link[base:RNG]{RNG}}.
 
 Fitting a model through a sequence from this function: \link{fit_dsmm}.
 
-For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
+For the theoretical background of drifting semi-Markov models: \link{dsmmR}.
 }
