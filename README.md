@@ -13,7 +13,7 @@ logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://cran.r-project.org/packa
 # dsmmR
 
 The **dsmmR** R package allows the user to estimate, simulate and define
-different Drifting semi-Markov model (DSMM) specifications.
+different drifting semi-Markov model (DSMM) specifications.
 
 ## Installation
 
@@ -34,7 +34,7 @@ The main functions of **dsmmR** are the following:
 - `parametric_dsmm()` : define a parametric DSMM.
 - `nonparametric_dsmm()` : define a non-parametric DSMM.
 - `simulate()` : simulate a sequence from a DSMM.
-- `get_kernel()` : obtain the Drifting semi-Markov kernel.
+- `get_kernel()` : obtain the drifting semi-Markov kernel.
 
 ### Theory overview
 
@@ -44,7 +44,7 @@ approach we account for non-homogeneities that occur from the intrinsic
 evolution of the system or from the interactions between the system and
 the environment.
 
-For a detailed introduction in Drifting semi-Markov models consider the
+For a detailed introduction in drifting semi-Markov models consider the
 documentation through `?dsmmR`.
 
 For an extensive description of this approach, consider visiting the
@@ -81,7 +81,7 @@ f_is_drifting <- TRUE # sojourn time distributions are drifting in time (state j
 p_is_drifting <- FALSE # transition matrices are not drifting in time (state jumps of the EMC)
 # When both f and p are drifting, we have Model 1.
 
-# Fitting the Drifting semi-Markov model
+# Fitting the drifting semi-Markov model
 fitted_model <- fit_dsmm(sequence = sequence,
                          states = states,
                          degree = degree,
@@ -92,7 +92,7 @@ fitted_model <- fit_dsmm(sequence = sequence,
 For more details about the estimation, consider viewing the extended
 documentation through `?fit_dsmm`.
 
-### Defining Drifting semi-Markov models
+### Defining drifting semi-Markov models
 
 When defining a DSMM object we need to input parameters like the
 polynomial degree, the state space, the DSMM size (length of the
@@ -133,7 +133,7 @@ attributes of the function.
 
 For more information, consider the documentation through `?get_kernel`.
 
-## Further reading
+### Further reading
 
 If you are not familiar with semi-Markov models and would like to know
 more, the book [Semi-Markov Chains and Hidden Semi-Markov Models toward
@@ -142,8 +142,26 @@ gives a good overview of the topic and also combines the flexibility of
 the semi-Markov chain with the known advantages of Hidden semi-markov
 models. Applications in Reliability and DNA analysis are also provided.
 
-If you are not familiar with Drifting Markov models, a comprehensive
-overview is provided in [Reliability and Survival Analysis for Drifting
+If you are not familiar with drifting Markov models, a comprehensive
+overview is provided in [Reliability and Survival Analysis for drifting
 Markov Models: Modeling and
 Estimation](https://link.springer.com/article/10.1007/s11009-018-9682-8).
 Reliability and Survival analysis is also considered in this work.
+
+
+# Community Guidelines
+For third parties wishing to contribute to the software, or to report issues
+or problems about the software, they can do so directly through the open-source
+[github page of the package](https://github.com/Mavrogiannis-Ioannis/dsmmR.git).
+If you are in need of support, please contact the maintainer at
+<mavrogiannis.ioa@gmail.com>.
+
+# Notes
+Automated tests are in place in order to aid the user with any false input made
+and, furthermore, to ensure that the functions used return the expected output.
+Moreover, through strict automated tests, it is made possible for the user to
+properly define their own `dsmm` objects and make use of them with the generic
+functions of the package.
+
+
+

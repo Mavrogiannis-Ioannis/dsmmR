@@ -546,7 +546,7 @@
 #' # `f_dist_pars` has dimensions of: (s, s, 2, d + 1).
 #' # First array of coefficients, corresponding to `f_dist_1`.
 #' # First matrix.
-#' f_dist_1_pars_1 <- matrix(c(NA,  7, 0.4, 4,
+#' f_dist_1_pars_1 <- matrix(c(NA,  7,  0.4, 4,
 #'                             0.7, NA, 5,   0.6,
 #'                             0.2, 3,  NA,  0.6,
 #'                             4,   4,  0.4, NA),
@@ -601,7 +601,7 @@
 #' # Generating a sequence from the parametric object.
 #' # ---------------------------------------------------------------------------
 #'
-#' # A larger klim will increase accuracy and also the computation cost.
+#' # A larger klim will lead to an increase in accuracy.
 #' klim <- 20
 #' sim_seq <- simulate(obj_par_model_1, klim = klim, seed = 1)
 #'
@@ -711,7 +711,7 @@ parametric_dsmm <- function(model_size,
     dimnames(f_dist) <- list(as.list(states), as.list(states))
     # 2 matrices for the parameters.
     dimnames(f_dist_pars) <- list(as.list(states), as.list(states),
-                                                as.list(1:2))
+                                  as.list(1:2))
     if (p_is_drifting) {
         dimnames(p_dist)[[3]] <- as.list(names_i_d(degree, 'p'))
     }

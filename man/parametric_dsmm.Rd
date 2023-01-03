@@ -543,7 +543,7 @@ f_dist_model_1 <- array(f_dist_1, dim = c(s, s, d + 1))
 # `f_dist_pars` has dimensions of: (s, s, 2, d + 1).
 # First array of coefficients, corresponding to `f_dist_1`.
 # First matrix.
-f_dist_1_pars_1 <- matrix(c(NA,  7, 0.4, 4,
+f_dist_1_pars_1 <- matrix(c(NA,  7,  0.4, 4,
                             0.7, NA, 5,   0.6,
                             0.2, 3,  NA,  0.6,
                             4,   4,  0.4, NA),
@@ -598,7 +598,7 @@ cat("The object has class of (",
 # Generating a sequence from the parametric object.
 # ---------------------------------------------------------------------------
 
-# A larger klim will increase accuracy and also the computation cost.
+# A larger klim will lead to an increase in accuracy.
 klim <- 20
 sim_seq <- simulate(obj_par_model_1, klim = klim, seed = 1)
 

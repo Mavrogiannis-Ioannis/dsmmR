@@ -22,16 +22,14 @@
 check_attributes <- function(obj) UseMethod('check_attributes', obj)
 
 check_attributes.dsmm_fit_nonparametric <- function(obj) {
-    # Check for names of the object.
-    # Check whether `f_is_drifting`, `p_is_drifting` and
-    # `numerical_est`, are correctly used.
+    # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
         stop("\nThe logical parameter `f_is_drifting` ",
              "should be either TRUE or FALSE.")
     }
     if (!is_logical(p_is_drifting <- obj$p_is_drifting)) {
         stop("\nThe logical parameter `p_is_drifting` ",
-    "should be either TRUE or FALSE.")
+             "should be either TRUE or FALSE.")
     }
     # # numerical_est
     # if (!is_logical(numerical_est <- obj$numerical_est)) {
@@ -55,7 +53,7 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
         valid_model(p_is_drifting = p_is_drifting,
                     f_is_drifting = f_is_drifting
                     # , numerical_est = numerical_est
-                    ),
+        ),
         valid_seq(seq = (seq <- obj$seq)),
         valid_model_size(model_size = (model_size <- obj$model_size),
                          length_seq = (l <- length(seq))),
@@ -102,16 +100,14 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
 }
 
 check_attributes.dsmm_fit_parametric <- function(obj) {
-    # Check for names of the object.
-    # Check whether `f_is_drifting`, `p_is_drifting` and
-    # `numerical_est`, are correctly used.
+    # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
         stop("\nThe logical parameter `f_is_drifting` ",
              "should be either TRUE or FALSE.")
     }
     if (!is_logical(p_is_drifting <- obj$p_is_drifting)) {
         stop("\nThe logical parameter `p_is_drifting` ",
-    "should be either TRUE or FALSE.")
+             "should be either TRUE or FALSE.")
     }
     # # numerical_est
     # if (!is_logical(numerical_est <- obj$numerical_est)) {
@@ -125,20 +121,20 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
         if (f_is_drifting) 'f_drift_parametric' else 'f_notdrift_parametric'
     fparname <-
         if (f_is_drifting) 'f_drift_parameters' else 'f_notdrift_parameters'
-        if (!identical((names_tmp <- names(obj$dist)),
-                (names_real <- c(pname, fname, fparname)))) {
-            stop('\n`', paste0(substitute(obj), '$dist`'),
-                 ' should have the named distributions in order, as in: \n',
-                 paste0(1:2, ". ", names_real, collapse = ', '),
-                 ', when it has :\n',
-                 paste0(1:length(names_real), ". ",
-                        names_tmp, collapse = ', '))
-        }
+    if (!identical((names_tmp <- names(obj$dist)),
+                   (names_real <- c(pname, fname, fparname)))) {
+        stop('\n`', paste0(substitute(obj), '$dist`'),
+             ' should have the named distributions in order, as in: \n',
+             paste0(1:2, ". ", names_real, collapse = ', '),
+             ', when it has :\n',
+             paste0(1:length(names_real), ". ",
+                    names_tmp, collapse = ', '))
+    }
     stopifnot(
         valid_model(p_is_drifting = p_is_drifting,
                     f_is_drifting = f_is_drifting
                     # , numerical_est = numerical_est
-                    ),
+        ),
         valid_seq(seq = (seq <- obj$seq)),
         valid_model_size(model_size = (model_size <- obj$model_size),
                          length_seq = (l <- length(seq))),
@@ -185,7 +181,7 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
 }
 
 check_attributes.dsmm_nonparametric <- function(obj) {
-    # Check for names of the object.
+    # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
         stop("\nThe logical parameter `f_is_drifting` should be ",
              "either TRUE or FALSE.")
@@ -199,7 +195,7 @@ check_attributes.dsmm_nonparametric <- function(obj) {
     pname <- if (p_is_drifting) 'p_drift' else 'p_notdrift'
     fname <- if (f_is_drifting) 'f_drift' else 'f_notdrift'
     if (any((names_tmp <- names(obj$dist)) !=
-             (names_real <- c(pname, fname)))) {
+            (names_real <- c(pname, fname)))) {
         stop('\n`', paste0(substitute(obj), '$dist`'),
              ' should have the named distributions in order, as in: \n',
              paste0(1:2, ". ", names_real, collapse = ', '),
@@ -278,7 +274,7 @@ check_attributes.dsmm_parametric <- function(obj) {
               valid_states(states = (states <- obj$states)),
               valid_length_states(s = (s <- obj$s), states),
               valid_initial_dist(initial_dist = obj$initial_dist,
-                                         s = s),
+                                 s = s),
               valid_degree(degree = (degree <- obj$degree),
                            model_size = model_size),
               valid_p_dist(p_dist = obj$dist[[1]],
@@ -334,7 +330,7 @@ is.dsmm <- function(obj) {
     # Check for missing object, `obj`.
     if (missing(obj)) {
         stop("\nPlease input the `obj` parameter of class `dsmm`. ",
-             "This can be done through the functions\n `fit_dsmm()`,",
+             "This can be done through the functions\n `fit_dsmm()`, ",
              "`dsmm_parametric()` and `dsmm_nonparametric()`.")
     }
     # Check for class of object.
@@ -446,7 +442,7 @@ is.dsmm_nonparametric <- function(obj) {
 is.dsmm_parametric <- function(obj) {
     if (missing(obj)) {
         stop("\nPlease input the `obj` parameter of class `dsmm_parametric`.",
-             " This can be done automatically ",
+             "\nThis can be done automatically ",
              "through the function `parametric_dsmm()`.")
     }
     # Check for class of object.
@@ -986,31 +982,35 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     if (missing(object)) {
         stop("\nPlease provide an objectect of class `dsmm`.")
     } else if (!inherits(object, c('dsmm', 'dsmm_fit', 'dsmm_nonparemetric',
-                                'dsmm_parametric'))) {
-        stop("\nPlease provide an objectect of class `dsmm` to use for the",
-             " function `simulate`.",
-             "\nThe objectect can be created through the functions ",
-             "`parametric`, `nonparametric` and `fitdsmm`.")
+                                   'dsmm_parametric'))) {
+        stop("\nPlease provide an object of class `dsmm` to use for the",
+             " function `simulate()`.",
+             "\nThe object can be created through the functions ",
+             "`parametric_dsmm()`, `nonparametric_dsmm()` and `fit_dsmm()`.")
     }
-    if (is_integer(nsim) && is_integer(seq_length)) {
+    # Check if nsim and sequence length are given at the same time.
+    if (!is.null(nsim) && !is.null(seq_length)) {
         stop("\nPlease specify only one of `nsim` or `seq_length` for ",
              "the simulation.")
     }
+    # Check `nsim`.
     if (is.null(nsim)) {
         nsim <- object$model_size
-    } else if (! (is_integer(nsim) || nsim == 0) ) {
-        stop("\nThe number of simulations `nsim`",
+    } else if (!(is_integer(nsim) || nsim == 0)) {
+        stop("\nThe number of simulations `nsim` ",
              "needs to be a positive integer or 0.")
     }
+    # Check `seq_length`.
     if (!is.null(seq_length) && !is_integer(seq_length)) {
-        stop("\nThe final length of the sequence `seq_length`",
+        stop("\nThe final length of the sequence `seq_length` ",
              "needs to be a positive integer.")
     } else if (is_integer(seq_length)) {
         nsim <- seq_length
     }
+    # Set the RNG seed.
     if (!is.null(seed)) {
         set.seed(seed)
-    } # Otherwise, set.seed is automatic through user's `Sys.time()`.
+    } # Otherwise, set.seed is automatic through the user's `Sys.time()`.
     if (!is_integer(klim)) {
         stop("\nAttribute `klim` should be a positive integer.")
     }
@@ -1023,7 +1023,7 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     n <- object$model_size
     if (nsim > n) {
         stop("\nThe number of simulations `nsim` = ", nsim,
-             "cannot be larger than the model size, n = ", n)
+             " cannot be larger than the model size, n = ", n)
     }
     kernel <- get_kernel(object, klim = klim)
     k_max <- dim(kernel)[3] # We get `k_max` even for the parametric case.

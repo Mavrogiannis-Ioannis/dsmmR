@@ -18,8 +18,8 @@ characterize the Drifting semi-Markov kernel.
 \strong{Introduction}
 
 The difference between the Markov models and the semi-Markov models
-concerns the modeling of the sojourn time distributions.
-The Markov models (in discrete time) are modeled by a sojourn time
+concerns the modelling of the sojourn time distributions.
+The Markov models (in discrete time) are modelled by a sojourn time
 following the Geometric distribution. The semi-Markov models
 are able to have a sojourn time distribution of arbitrary shape.
 The further difference with a \emph{Drifting} semi-Markov model,
@@ -113,7 +113,7 @@ In this package, we can define parametric and non-parametric Drifting
 semi-Markov models.
 
 For the \emph{parametric} case, several discrete distributions are
-considered for the modeling of the sojourn times:
+considered for the modelling of the sojourn times:
 Uniform, Geometric, Poisson, Discrete Weibull and Negative Binomial.
 This is done from the function
 \code{parametric_dsmm} which returns an object of the
@@ -224,7 +224,7 @@ Applications to DNA Sequences. Statistical Applications in Genetics
 Molecular Biology 7 (1).
 
 Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
-drifting Markov models: modeling and estimation.
+drifting Markov models: modelling and estimation.
 Methodology and Computing in Applied Probability, 21(4), 1407-1429.
 
 T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.

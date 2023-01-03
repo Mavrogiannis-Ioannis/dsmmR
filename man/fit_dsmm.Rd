@@ -5,14 +5,14 @@
 \alias{dsmm_fit}
 \alias{dsmm_fit_nonparametric}
 \alias{dsmm_fit_parametric}
-\title{Estimation of a Drifting semi-Markov chain}
+\title{Estimation of a drifting semi-Markov chain}
 \usage{
 fit_dsmm(
   sequence,
-  states,
   degree,
   f_is_drifting,
   p_is_drifting,
+  states = NULL,
   initial_dist = "unif",
   estimation = "nonparametric",
   f_dist = NULL
@@ -22,22 +22,23 @@ fit_dsmm(
 \item{sequence}{Character vector that represents a sequence of states in
 \eqn{E}. States must be characters with length \eqn{\geq 1}.}
 
-\item{states}{Character vector that represents the state space
-\eqn{E}, with length equal to \eqn{s = |E|}.}
-
 \item{degree}{Positive integer that represents the polynomial degree
-\eqn{d} for the Drifting semi-Markov model.}
+\eqn{d} for the drifting semi-Markov model.}
 
 \item{f_is_drifting}{Logical. Specifies if \eqn{f} is drifting or not.}
 
 \item{p_is_drifting}{Logical. Specifies if \eqn{p} is drifting or not.}
+
+\item{states}{Character vector that represents the state space
+\eqn{E}, with length equal to \eqn{s = |E|}. Default value is set
+equal to the sorted unique values of the given sequence.}
 
 \item{initial_dist}{Optional. Character that represents the method to
 estimate the initial distribution.
 \itemize{
 \item
       \code{"unif"} : The initial distribution of each state is
-      equal to \eqn{1/s}. (\strong{Default value}).
+      equal to \eqn{1/s} (default value).
 \item
       \code{"freq"} : The initial distribution of each state is
       equal to the frequency that it has in the sequence.
@@ -48,7 +49,7 @@ estimation will be nonparametric or parametric.
 \itemize{
 \item
     \code{"nonparametric"} : The estimation will be
-    non-parametric. (\strong{Default value}).
+    non-parametric (default value).
 \item
     \code{"parametric"} : The estimation will be
     parametric.
@@ -57,7 +58,7 @@ estimation will be nonparametric or parametric.
 \item{f_dist}{Optional. It can be defined in two ways:
 \itemize{
 \item If \code{estimation = "nonparametric"}, it is
-      equal to \code{NULL}. (\strong{Default value}).
+      equal to \code{NULL} (default value).
 \item If \code{estimation = "parametric"}, it is a
     character array that specifies the distributions of the sojourn
     times, for every state transition.
@@ -157,13 +158,13 @@ Specifies if \eqn{p} is drifting or not.
 }
 }
 \description{
-Estimation of a Drifting semi-Markov chain,
+Estimation of a drifting semi-Markov chain,
 given one sequence of states. This estimation can be parametric
 or non-parametric and is available for
-the three types of Drifting semi-Markov models.
+the three types of drifting semi-Markov models.
 }
 \details{
-This function estimates a Drifting semi-Markov model in the
+This function estimates a drifting semi-Markov model in the
     parametric and non-parametric case.
     The parametric estimation can be achieved by the following steps:
     \enumerate{
@@ -177,10 +178,10 @@ This function estimates a Drifting semi-Markov model in the
     A normalization technique is used in order to correct estimation errors
     from small sequences.
     We will use the exponentials \eqn{(1), (2), (3)} to distinguish between
-    the Drifting semi-Markov kernel \eqn{\widehat{q}_{\frac{t}{n}}} and the
+    the drifting semi-Markov kernel \eqn{\widehat{q}_{\frac{t}{n}}} and the
     semi-Markov kernels \eqn{\widehat{q}_\frac{i}{d}} used in
     Model 1, Model 2, Model 3.
-    More about the theory of Drifting semi-Markov models in \link{dsmmR}.
+    More about the theory of drifting semi-Markov models in \link{dsmmR}.
 
 \strong{Non-parametric Estimation}
 
@@ -189,7 +190,7 @@ This function estimates a Drifting semi-Markov model in the
 When the transition matrix \eqn{p} of the embedded Markov chain
 \eqn{(J_{t})_{t\in \{0,\dots,n\}}} and
 the conditional sojourn time distribution \eqn{f} are both drifting,
-the Drifting semi-Markov kernel can be estimated as:
+the drifting semi-Markov kernel can be estimated as:
 \deqn{\widehat{q}_{\frac{t}{n}}^{\ (1)}(u,v,l) =
       \sum_{i = 0}^{d}A_{i}(t)\widehat{q}_{\frac{i}{d}}^{\ (1)}(u,v,l),}
 \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
@@ -249,7 +250,7 @@ and \eqn{\widehat{f}_{\frac{i}{d}}(u,v,l)}, we use the following formulas:
 \strong{\emph{Model 2}}
 
 In this case, \eqn{p} is drifting and \eqn{f} is not drifting. Therefore,
-the estimated Drifting semi-Markov kernel will be given by:
+the estimated drifting semi-Markov kernel will be given by:
 
 \deqn{\widehat{q}_{\frac{t}{n}}^{\ (2)}(u,v,l) =
 \sum_{i=0}^{d} A_{i}(t) \widehat{q}_{\frac{i}{d}}^{\ (2)}(u,v,l),}
@@ -288,7 +289,7 @@ regards to the \emph{estimated} semi-Markov kernels of Model 1,
 \strong{\emph{Model 3}}
 
 In this case, \eqn{f} is drifting and \eqn{p} is not drifting. Therefore,
-the estimated Drifting semi-Markov kernel will be given by:
+the estimated drifting semi-Markov kernel will be given by:
 \deqn{\widehat{q}_{\frac{t}{n}}^{\ (3)}(u,v,l) =
 \sum_{i=0}^{d} A_{i}(t) \widehat{q}_{\frac{i}{d}}^{\ (3)}(u,v,l),}
 \eqn{\forall t \in \{0,\dots,n\}, \forall u,v\in E,
@@ -337,8 +338,8 @@ defined in the attribute \code{f_dist} is achieved as follows:
         in previously in \eqn{1}.
 }
 
-The available distributions for the modeling of the conditional sojourn
-times of the Drifting semi-Markov model, defined from
+The available distributions for the modelling of the conditional sojourn
+times of the drifting semi-Markov model, defined from
 the argument \code{f_dist}, have their parameters estimated through the
 following formulas:
 \itemize{
@@ -580,20 +581,20 @@ Applications to DNA Sequences. Statistical Applications in Genetics
 Molecular Biology 7 (1).
 
 Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
-drifting Markov models: modeling and estimation.
+drifting Markov models: modelling and estimation.
 Methodology and Computing in Applied Probability, 21(4), 1407-1429.
 
 T. Nakagawa and S. Osaki. (1975). The discrete Weibull distribution.
 IEEE Transactions on Reliability, R-24, 300-301.
 }
 \seealso{
-For the theoretical background of Drifting semi-Markov models: \link{dsmmR}.
+For the theoretical background of drifting semi-Markov models: \link{dsmmR}.
 
 For sequence simulation: \link{simulate.dsmm} and \link{create_sequence}.
 
-For Drifting semi-Markov model specification:
+For drifting semi-Markov model specification:
 \link{parametric_dsmm}, \link{nonparametric_dsmm}
 
-For the retrieval of the Drifting semi-Markov kernel:
+For the retrieval of the drifting semi-Markov kernel:
 \link{get_kernel}.
 }
