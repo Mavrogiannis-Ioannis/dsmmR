@@ -91,7 +91,7 @@ fitted_model <- fit_dsmm(sequence = sequence,
 For more details about the estimation, consider viewing the extended
 documentation through `?fit_dsmm`.
 
-### Defining Drifting semi-Markov models
+### Defining drifting semi-Markov models
 
 When defining a DSMM object we need to input parameters like the
 polynomial degree, the state space, the DSMM size (length of the
