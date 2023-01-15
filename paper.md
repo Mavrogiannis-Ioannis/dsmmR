@@ -39,7 +39,7 @@ The main functions of `dsmmR` are the following:
 -   `parametric_dsmm()`: defines a parametric DSMM.
 -   `nonparametric_dsmm()`: defines a non-parametric DSMM.
 -   `simulate()`: simulates a sequence.
--   `get_kernel()`: returns the drifting semi-Markov (DSM) kernel.
+-   `get_kernel()`: returns the drifting semi-Markov kernel.
 
 The estimation of the DSMM kernel is parametric or non-parametric and can be defined through the function `fit_dsmm()`, which returns an object of the S3 class `(fit_dsmm_parametric`, `dsmm)` or `(fit_dsmm_nonparametric`, `dsmm)`. In the parametric estimation case, several discrete sojourn time distributions are considered for the sojourn times: Uniform, Geometric, Poisson, Discrete Weibull (of type 1) and Negative Binomial. The parametric DSMM specification can be defined through the function `parametric_dsmm()`, which returns an object of the S3 class `(dsmm_parametric`, `dsmm)`. In the parametric definition case, we have the same discrete sojourn time distributions. The non-parametric DSMM specification can be defined through the function `nonparametric_dsmm()`, which returns an object of the S3 class `(dsmm_nonparametric`, `dsmm)`. It allows for the sojourn time distributions to be of an arbitrary shape.
 
