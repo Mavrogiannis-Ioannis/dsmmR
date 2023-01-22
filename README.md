@@ -1,4 +1,7 @@
+README
+================
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
 [![CRAN
@@ -148,7 +151,19 @@ while a comprehensive overview is provided in [Reliability and Survival
 Analysis for Drifting Markov Models: Modeling and
 Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
+### Community Guidelines
+
+For third parties wishing to contribute to the software, or to report
+issues or problems about the software, they can do so directly through
+the .
+
 ### Notes
+
+Automated tests are in place in order to aid the user with any false
+input made and, furthermore, to ensure that the functions used return
+the expected output. Moreover, through strict automated tests, it is
+made possible for the user to properly define their own objects and make
+use of them with the generic functions of the package.
 
 If you are in need of support, please contact the maintainer at
 <mavrogiannis.ioa@gmail.com>.

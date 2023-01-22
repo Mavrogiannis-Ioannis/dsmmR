@@ -212,7 +212,7 @@
 #' @section {Community Guidelines}:
 #' For third parties wishing to contribute to the software, or to report issues
 #' or problems about the software, they can do so directly through the
-#' \href{https://github.com/Mavrogiannis-Ioannis/dsmmR.git}{development github page
+#' \href{https://github.com/Mavrogiannis-Ioannis/dsmmR}{development github page
 #' of the package}.
 #'
 #'
