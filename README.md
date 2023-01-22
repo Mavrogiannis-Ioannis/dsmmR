@@ -155,15 +155,16 @@ Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
 For third parties wishing to contribute to the software, or to report
 issues or problems about the software, they can do so directly through
-the .
+the
+[https://github.com/Mavrogiannis-Ioannis/dsmmR](development%20github%20page%20of%20the%20package).
 
 ### Notes
 
 Automated tests are in place in order to aid the user with any false
 input made and, furthermore, to ensure that the functions used return
 the expected output. Moreover, through strict automated tests, it is
-made possible for the user to properly define their own objects and make
-use of them with the generic functions of the package.
+made possible for the user to properly define their own `dsmm` objects
+and make use of them with the generic functions of the package.
 
 If you are in need of support, please contact the maintainer at
 <mavrogiannis.ioa@gmail.com>.
