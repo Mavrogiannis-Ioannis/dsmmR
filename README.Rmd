@@ -64,8 +64,7 @@ For a detailed introduction in Drifting semi-Markov models consider the
 documentation through `?dsmmR`.
 
 For an extensive description of this approach, consider visiting the
-[complete documentation of the
-package](https://cran.r-project.org/web/packages/dsmmR/dsmmR.pdf).
+[complete documentation of the package](https://cran.r-project.org/web/packages/dsmmR/dsmmR.pdf).
 
 ### Estimation
 
@@ -151,27 +150,20 @@ For more information, consider the documentation through `?get_kernel`.
 
 ## Further reading
 
-Regarding semi-Markov models, the book [Semi-Markov Chains and Hidden
-Semi-Markov Models toward
-Applications](https://doi.org/10.1007/978-0-387-73173-5) gives a good
+Regarding semi-Markov models, the book [Semi-Markov Chains and Hidden Semi-Markov Models toward Applications](https://doi.org/10.1007/978-0-387-73173-5) gives a good
 overview of the topic and also combines the flexibility of the
 semi-Markov chain with the known advantages of hidden semi-markov
 models.
 
 If you are not familiar with Drifting Markov models, they were first
-introduced in [Drifting Markov models with Polynomial Drift and
-Applications to DNA Sequences](https://doi.org/10.2202/1544-6115.1326),
-while a comprehensive overview is provided in [Reliability and Survival
-Analysis for Drifting Markov Models: Modeling and
-Estimation](https://doi.org/10.1007/s11009-018-9682-8).
+introduced in [Drifting Markov models with Polynomial Drift and Applications to DNA Sequences](https://doi.org/10.2202/1544-6115.1326),
+while a comprehensive overview is provided in [Reliability and Survival Analysis for Drifting Markov Models: Modeling and Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
 ### Community Guidelines
 
 For third parties wishing to contribute to the software, or to report
 issues or problems about the software, they can do so directly through
-the
-[https://github.com/Mavrogiannis-Ioannis/dsmmR](development github page
-of the package).
+the [development github page of the package](https://github.com/Mavrogiannis-Ioannis/dsmmR).
 
 ### Notes
 

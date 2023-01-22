@@ -155,8 +155,8 @@ Estimation](https://doi.org/10.1007/s11009-018-9682-8).
 
 For third parties wishing to contribute to the software, or to report
 issues or problems about the software, they can do so directly through
-the
-[https://github.com/Mavrogiannis-Ioannis/dsmmR](development%20github%20page%20of%20the%20package).
+the [development github page of the
+package](https://github.com/Mavrogiannis-Ioannis/dsmmR).
 
 ### Notes
 
