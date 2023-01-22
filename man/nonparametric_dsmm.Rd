@@ -299,11 +299,6 @@ p_dist_model_2 <- array(c(p_dist_1, p_dist_2, p_dist_3),
 # f_dist has dimensions of: (s,s,k_{max}).
 f_dist_model_2 <- f_dist_2
 
-
-
-
-
-
 # ---------------------------------------------------------------------------
 # Non-Parametric object for Model 2.
 # ---------------------------------------------------------------------------
@@ -339,6 +334,7 @@ p_dist_model_3 <- p_dist_3
 f_dist_model_3 <- array(c(f_dist_1, f_dist_2, f_dist_3),
                         dim = c(s, s, k_max, d + 1))
 
+
 # ---------------------------------------------------------------------------
 # Non-Parametric object for Model 3.
 # ---------------------------------------------------------------------------
@@ -358,8 +354,6 @@ obj_nonpar_model_3 <- nonparametric_dsmm(
 # p distribution matrix.
 p_notdrift <- obj_nonpar_model_3$dist$p_notdrift
 p_notdrift
-
-
 
 # f distribution array.
 f_drift <- obj_nonpar_model_3$dist$f_drift

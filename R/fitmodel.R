@@ -462,6 +462,8 @@
 #' # Fitting a random sequence under distributions of unknown shape.
 #' # ===========================================================================
 #'
+#'
+#'
 #' # ---------------------------------------------------------------------------
 #' # Both p and f are drifting - Model 1.
 #' # ---------------------------------------------------------------------------
@@ -512,6 +514,12 @@
 #'
 #' cat(paste0("Dimension of f_notdrift: (s, s, k_max) = (",
 #'            paste(dim(f_notdrift), collapse = ", "), ").\n"))
+#'
+#'
+#'
+#'
+#'
+#'
 #'
 #' # ---------------------------------------------------------------------------
 #' # Fitting the sequence when f is drifting and p is not drifting - Model 3.

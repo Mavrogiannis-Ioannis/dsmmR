@@ -263,8 +263,7 @@ we require two parameters. It's for this reason that the attribute
 if \eqn{f} \strong{is drifting}.
 }
 \examples{
-# Setup.
-# We can define states in a flexible way, including spaces.
+# We can also define states in a flexible way, including spaces.
 states <- c("Dollar $", " /1'2'3/ ", " Z E T A ", "O_M_E_G_A")
 s <- length(states)
 d <- 1
@@ -298,7 +297,6 @@ p_dist_2 <- matrix(c(0,   0.3, 0.6, 0.1,
 p_dist_model_1 <- array(c(p_dist_1, p_dist_2), dim = c(s, s, d + 1))
 
 # `f_dist` has dimensions of: (s, s, d + 1).
-
 # First matrix.
 f_dist_1 <- matrix(c(NA,         "unif", "dweibull", "nbinom",
                      "geom",      NA,    "pois",     "dweibull",
@@ -418,6 +416,7 @@ f_dist_pars_model_2 <- array(c(f_dist_pars_1_model_2,
                                f_dist_pars_2_model_2),
                              dim = c(s, s, 2))
 
+
 # ---------------------------------------------------------------------------
 # Parametric object for Model 2.
 # ---------------------------------------------------------------------------
@@ -498,6 +497,7 @@ f_dist_pars_drift
 # Parametric estimation using methods corresponding to an object
 #     which inherits from the class `dsmm_parametric`.
 # ===========================================================================
+
 ### Comments
 ### 1.  Using a larger `klim` and a larger `model_size` will increase the
 ###     accuracy of the model, with the need of larger memory requirements

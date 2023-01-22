@@ -147,14 +147,12 @@ obj_model_2 <- fit_dsmm(
     p_is_drifting = TRUE
 )
 
-
 # Get the kernel.
 kernel_model_2 <- get_kernel(obj_model_2)
 cat(paste0("If no further arguments are made, kernel has dimensions ",
            "for all u, v, l, t:\n",
            "(s, s, k_max, n + 1) = (",
            paste(dim(kernel_model_2), collapse = ", "), ")"))
-
 
 # Specifying `t`.
 kernel_model_2_t <- get_kernel(obj_model_2, t = 100)
@@ -163,14 +161,12 @@ cat(paste0("If we specify t, the kernel has dimensions for ",
            "all the remaining u, v, l:\n(s, s, k_max) = (",
            paste(dim(kernel_model_2_t), collapse = ", "), ")"))
 
-
 # Specifying `t` and `u`.
 kernel_model_2_tu <- get_kernel(obj_model_2, t = 2, u = "Aigio")
 # kernel_model_2_tu["Aigio", , , t = 2]
 cat(paste0("If we specify t and u, the kernel has dimensions for ",
            "all the remaining v, l:\n(s, k_max) = (",
            paste(dim(kernel_model_2_tu), collapse = ", "), ")"))
-
 
 # Specifying `t`, `u` and `v`.
 kernel_model_2_tuv <- get_kernel(obj_model_2, t = 3,
