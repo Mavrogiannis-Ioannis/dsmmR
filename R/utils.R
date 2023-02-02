@@ -201,18 +201,18 @@ valid_states <- function(states) {
     if (!is.character(states) ||
         !is_vector(states) ||
         !all_equal(states, unique(states))) {
-        stop("\nThe `states` of the State Space should be a character vector",
+        stop("\nThe `states` of the state space should be a character vector",
              " of unique values.")
     } else if (length(states) == 1L) {
         # Check for a single state.
-        stop("\nState Space `states` should have more than one states.")
+        stop("\nState space `states` should have more than one states.")
     } else if (!all_equal(states, unique(states))) {
         # Check for uniqueness of states.
         stop("\nThe state space given in `states` contains duplicate values.")
     } else if(min(prob <- (sapply(strsplit(
         x = gsub(" ", "", states), split = ""), length))) == 0) {
         # Check for a state equal to an empty string "" or `character(0)`.
-        stop("\nState Space `states` includes a state without a given name, ",
+        stop("\nState space `states` includes a state without a given name, ",
              "at position ", which(prob == 0))
     }
     TRUE
@@ -905,8 +905,7 @@ get_1_uvl <- function(id_seq, l, n, X, k_max, id_states, s) {
     seq_uvl <- paste(id_seq[-l], c(id_seq[-1]), X[-l])
     Es <- rep(id_states, s)
     pEs <- paste(Es, sort(Es))
-    possible_uvl_states <- paste(rep(pEs, k_max),
-                                 sort(rep(1:k_max, s*s)))
+    possible_uvl_states <- paste(rep(pEs, k_max), sort(rep(1:k_max, s*s)))
     zero_v <- rep(0, n)
     vector_1_uvl <- sapply(X = possible_uvl_states,
                            FUN = function(uvl, seq_uvl, zero_v) {

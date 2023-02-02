@@ -17,15 +17,15 @@
 #' or non-parametric and is available for
 #' the three types of drifting semi-Markov models.
 #'
-#' @param sequence Character vector that represents a sequence of states in
-#'     \eqn{E}. States must be characters with length \eqn{\geq 1}.
+#' @param sequence Character vector that represents a sequence of states
+#'     from the state space \eqn{E}.
 #' @param degree Positive integer that represents the polynomial degree
 #'     \eqn{d} for the drifting semi-Markov model.
 #' @param f_is_drifting Logical. Specifies if \eqn{f} is drifting or not.
 #' @param p_is_drifting Logical. Specifies if \eqn{p} is drifting or not.
 #' @param states Character vector that represents the state space
 #'     \eqn{E}, with length equal to \eqn{s = |E|}. Default value is set
-#'     equal to the sorted unique values of the given sequence.
+#'     equal to the sorted, unique states present in the given sequence.
 #' @param initial_dist Optional. Character that represents the method to
 #'     estimate the initial distribution.
 #'     \itemize{
@@ -615,7 +615,7 @@
 #'                    ', beta = ', round(f_params_2["c", "t", 2], 3))
 #'
 #' cat("Not-drifting parameters for passing from ",
-#'     "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution is:\n",
+#'     "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution are:\n",
 #'     paste("f :", params_2))
 #'
 #'

@@ -19,8 +19,8 @@ fit_dsmm(
 )
 }
 \arguments{
-\item{sequence}{Character vector that represents a sequence of states in
-\eqn{E}. States must be characters with length \eqn{\geq 1}.}
+\item{sequence}{Character vector that represents a sequence of states
+from the state space \eqn{E}.}
 
 \item{degree}{Positive integer that represents the polynomial degree
 \eqn{d} for the drifting semi-Markov model.}
@@ -31,7 +31,7 @@ fit_dsmm(
 
 \item{states}{Character vector that represents the state space
 \eqn{E}, with length equal to \eqn{s = |E|}. Default value is set
-equal to the sorted unique values of the given sequence.}
+equal to the sorted, unique states present in the given sequence.}
 
 \item{initial_dist}{Optional. Character that represents the method to
 estimate the initial distribution.
@@ -560,7 +560,7 @@ params_2 <- paste0('q = ', round(f_params_2["c", "t", 1], 3),
                    ', beta = ', round(f_params_2["c", "t", 2], 3))
 
 cat("Not-drifting parameters for passing from ",
-    "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution is:\n",
+    "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution are:\n",
     paste("f :", params_2))
 
 

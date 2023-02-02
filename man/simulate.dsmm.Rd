@@ -54,8 +54,8 @@ obj_model_3 <- fit_dsmm(sequence = seq,
 
 # Using the method `simulate.dsmm()`.
 simulated_seq <- simulate(obj_model_3, seed = 1)
-short_sim <- simulate(obj = obj_model_3, nsim = 50, seed = 1)
-cut_sim <- simulate(obj = obj_model_3, seq_length = 50, seed = 1)
+short_sim <- simulate(obj = obj_model_3, nsim = 10, seed = 1)
+cut_sim <- simulate(obj = obj_model_3, seq_length = 10, seed = 1)
 str(simulated_seq)
 str(short_sim)
 str(cut_sim)
