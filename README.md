@@ -2,6 +2,7 @@ README
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- Use `build_readme()` to edit the .md file from the .rmd file -->
 <!-- badges: start -->
 
 [![CRAN
