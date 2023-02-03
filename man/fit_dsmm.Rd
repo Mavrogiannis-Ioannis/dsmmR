@@ -438,6 +438,7 @@ cat(paste0("Dimension of p_drift: (s, s, d + 1) = (",
            "Dimension of f_drift: (s, s, k_max, d + 1) = (",
            paste(dim(f_drift), collapse = ", "), ").\n"))
 
+
 # ---------------------------------------------------------------------------
 # Fitting the sequence when p is drifting and f is not drifting - Model 2.
 # ---------------------------------------------------------------------------
@@ -451,18 +452,17 @@ obj_model_2 <- fit_dsmm(sequence = sequence,
 
 cat(paste0("We fitted a sequence with ", obj_model_2$Model, ".\n"))
 
+
 # Get the drifting p and non-drifting f arrays.
 p_drift_2 <- obj_model_2$dist$p_drift
 f_notdrift <- obj_model_2$dist$f_notdrift
 
+
 all.equal.numeric(p_drift, p_drift_2) # p is the same as in Model 1.
+
 
 cat(paste0("Dimension of f_notdrift: (s, s, k_max) = (",
            paste(dim(f_notdrift), collapse = ", "), ").\n"))
-
-
-
-
 
 
 
