@@ -414,10 +414,10 @@ degree <- 3
 # ---------------------------------------------------------------------------
 
 obj_model_1 <- fit_dsmm(sequence = sequence,
-                        states = states,
                         degree = degree,
                         f_is_drifting = TRUE,
                         p_is_drifting = TRUE,
+                        states = states,
                         initial_dist = "freq",
                         estimation = "nonparametric", # default value
                         f_dist = NULL # default value
@@ -443,12 +443,12 @@ cat(paste0("Dimension of p_drift: (s, s, d + 1) = (",
 # Fitting the sequence when p is drifting and f is not drifting - Model 2.
 # ---------------------------------------------------------------------------
 
+
 obj_model_2 <- fit_dsmm(sequence = sequence,
-                        states = states,
                         degree = degree,
-                        initial_dist = "unif",
                         f_is_drifting = FALSE,
                         p_is_drifting = TRUE)
+
 
 cat(paste0("We fitted a sequence with ", obj_model_2$Model, ".\n"))
 
@@ -471,10 +471,10 @@ cat(paste0("Dimension of f_notdrift: (s, s, k_max) = (",
 # ---------------------------------------------------------------------------
 
 obj_model_3 <- fit_dsmm(sequence = sequence,
-                        states = states,
                         degree = degree,
                         f_is_drifting = TRUE,
                         p_is_drifting = FALSE)
+
 cat(paste0("We fitted a sequence with ", obj_model_3$Model, ".\n"))
 # Get the drifting f and non-drifting p arrays.
 p_notdrift <- obj_model_3$dist$p_notdrift
@@ -511,10 +511,10 @@ dim(f_dist)
 # ---------------------------------------------------------------------------
 
 obj_fit_parametric <- fit_dsmm(sequence = sequence,
-                               states = states,
                                degree = degree,
                                f_is_drifting = TRUE,
                                p_is_drifting = TRUE,
+                               states = states,
                                initial_dist = 'unif',
                                estimation = 'parametric',
                                f_dist = f_dist)
@@ -544,13 +544,13 @@ cat("The drifting of the parameters for passing from \n",
 # ---------------------------------------------------------------------------
 
 obj_fit_parametric_2 <- fit_dsmm(sequence = sequence,
-                                 states = states,
                                  degree = degree,
                                  f_is_drifting = FALSE,
                                  p_is_drifting = TRUE,
                                  initial_dist = 'unif',
                                  estimation = 'parametric',
                                  f_dist = f_dist_1)
+
 cat("The class of `obj_fit_parametric_2` is : (",
     paste0(class(obj_fit_parametric_2), collapse = ', '), ").\n")
 # Estimated parameters.
@@ -562,7 +562,6 @@ params_2 <- paste0('q = ', round(f_params_2["c", "t", 1], 3),
 cat("Not-drifting parameters for passing from ",
     "`u` = 'c' to `v` = 't' \n under a discrete Weibull distribution are:\n",
     paste("f :", params_2))
-
 
 
 # ===========================================================================

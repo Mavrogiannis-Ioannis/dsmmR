@@ -299,6 +299,7 @@ p_dist_model_2 <- array(c(p_dist_1, p_dist_2, p_dist_3),
 # f_dist has dimensions of: (s,s,k_{max}).
 f_dist_model_2 <- f_dist_2
 
+
 # ---------------------------------------------------------------------------
 # Non-Parametric object for Model 2.
 # ---------------------------------------------------------------------------
@@ -323,12 +324,15 @@ p_drift
 f_notdrift <- obj_nonpar_model_2$dist$f_notdrift
 f_notdrift
 
+
 # ---------------------------------------------------------------------------
 # Defining Model 3 - f is drifting, p is not drifting.
 # ---------------------------------------------------------------------------
 
+
 # `p_dist` has dimensions of: (s, s, d + 1).
 p_dist_model_3 <- p_dist_3
+
 
 # `f_dist` has the same dimensions as in Model 1: (s, s, d + 1).
 f_dist_model_3 <- array(c(f_dist_1, f_dist_2, f_dist_3),
