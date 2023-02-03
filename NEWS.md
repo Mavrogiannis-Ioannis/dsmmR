@@ -17,7 +17,7 @@ editor_options:
 
 ## Bug fixes
 
--   Fixed a case where `simulate.dsmm()` did not function as expected
+-   Fixed a case where `simulate.dsmm()` sometimes did not function as expected
     when `nsim = 1`.
     -   Now it is possible to specify `nsim = 0`, so that the simulated
         sequence will only include the initial state and its
