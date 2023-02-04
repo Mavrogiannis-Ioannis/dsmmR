@@ -6,10 +6,10 @@ README
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/dsmmR)](https://cran.r-project.org/package=dsmmR)
+status](https://www.r-pkg.org/badges/version/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![R-CMD-check](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml)
 [![CRAN
-logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://cran.r-project.org/package=dsmmR)
+logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 
 <!-- badges: end -->
 
@@ -51,8 +51,8 @@ For a detailed introduction in Drifting semi-Markov models consider the
 documentation through `?dsmmR`.
 
 For an extensive description of this approach, consider visiting the
-[complete documentation of the
-package](https://cran.r-project.org/web/packages/dsmmR/dsmmR.pdf).
+complete documentation of the package on the [official CRAN
+page](https://CRAN.R-project.org/package=dsmmR).
 
 ### Estimation
 

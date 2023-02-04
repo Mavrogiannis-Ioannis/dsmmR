@@ -44,7 +44,7 @@ editor_options:
     -   Added a "Community Guidelines" section, so that users can report
         errors or mistakes and contribute directly to the software
         through the newly-established open-source github page at
-        <https://github.com/Mavrogiannis-Ioannis/dsmmR.git>.
+        <https://github.com/Mavrogiannis-Ioannis/dsmmR>.
 
     -   Added a "Notes" section, specifying that automated tests are in
         place in order to aid the user with any false input made and,
