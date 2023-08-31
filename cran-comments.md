@@ -1,3 +1,21 @@
+# version 1.0.2 --------------------------------------------------------------------
+
+# R Version: 4.3.1
+
+# R CMD check results.
+
+No ERRORs, WARNINGs or NOTEs.
+
+
+# R CMD check results through `rhub::check_for_cran()`.
+
+There are no ERRORs or WARNINGs, only NOTEs.
+
+   Notes:
+   (1) * Solutions similar to what was described in v0.0.96.
+
+
+
 # version 1.0.1 --------------------------------------------------------------------
 
 # R Version: 4.2.2

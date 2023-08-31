@@ -18,11 +18,9 @@ knitr::opts_chunk$set(
 <!-- Use `build_readme()` to edit the .md file from the .rmd file -->
 <!-- badges: start -->
 
-[![CRAN
-status](https://www.r-pkg.org/badges/version/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
+[![CRAN status](https://www.r-pkg.org/badges/version/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![R-CMD-check](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml)
-[![CRAN
-logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
+[![CRAN logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 
 <!-- badges: end -->
 
@@ -64,7 +62,8 @@ For a detailed introduction in Drifting semi-Markov models consider the
 documentation through `?dsmmR`.
 
 For an extensive description of this approach, consider visiting the
-complete documentation of the package on the [official CRAN page](https://CRAN.R-project.org/package=dsmmR).
+complete documentation of the package on the
+[official CRAN page](https://CRAN.R-project.org/package=dsmmR).
 
 ### Estimation
 
@@ -170,11 +169,11 @@ the [development github page of the package](https://github.com/Mavrogiannis-Ioa
 Automated tests are in place in order to aid the user with any false
 input made and, furthermore, to ensure that the functions used return
 the expected output. Moreover, through strict automated tests, it is
-made possible for the user to properly define their own `dsmm`
-objects and make use of them with the generic functions of the package.
+made possible for the user to properly define their own `dsmm` objects
+and make use of them with the generic functions of the package.
 
 If you are in need of support, please contact the maintainer at
-[mavrogiannis.ioa@gmail.com](mailto:mavrogiannis.ioa@gmail.com).
+[mavrogiannis.ioa\@gmail.com](mailto:mavrogiannis.ioa@gmail.com).
 
 ## References
 
@@ -189,3 +188,11 @@ Molecular Biology 7 (1).
 Barbu V. S., Vergne, N. (2019). Reliability and survival analysis for
 drifting Markov models: modelling and estimation. Methodology and
 Computing in Applied Probability, 21(4), 1407-1429.
+
+## Acknowledgements
+
+We acknowledge the DATALAB Project
+[https://lmrs-num.math.cnrs.fr/projet-datalab.html](https://lmrs-num.math.cnrs.fr/projet-datalab.html)
+(financed by the European Union with the European Regional Development fund (ERDF)
+and by the Normandy Region) and the HSMM-INCA Project (financed by the French
+Agence Nationale de la Recherche (ANR) under grant ANR-21-CE40-0005).
