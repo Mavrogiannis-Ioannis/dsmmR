@@ -47,4 +47,4 @@ Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
   Ioannis Mavrogiannis [aut, cre],
   Nicolas Vergne [aut]
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
-Depends: R (>= 2.10)
+Depends: R (>= 3.5.0)
