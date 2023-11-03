@@ -134,7 +134,7 @@ valid_sequence <- function(sequence, s) {
     TRUE
 }
 
-valid_seq <- function(seq) {
+valid_seq <- function(emc) {
     # '''
     #    This function is for checking the correct use of the 'trimmed'
     #    sequence that has all sojourn times equal to 1. This is not
@@ -142,11 +142,11 @@ valid_seq <- function(seq) {
     #    `fit_dsmm`.
     #     Intended for use in the function `is.dsmm`.
     # '''
-    if (!is.character(seq)){
-        stop("\n`seq` argument should be a character vector.")
-    } else if (!all_equal(seq, rle(seq)$values)) {
-        # check for seq not having any recurrent states.
-        stop("\n`seq` argument should have all sojourn times equal to 1.")
+    if (!is.character(emc)){
+        stop("\n`emc` argument should be a character vector.")
+    } else if (!all_equal(emc, rle(emc)$values)) {
+        # check for emc not having any recurrent states.
+        stop("\n`emc` argument should have all sojourn times equal to 1.")
     }
     TRUE
 }
@@ -159,7 +159,7 @@ valid_soj_times <- function(soj_times, length_seq) {
         stop("\nAttribute `soj_times` should be an integer vector.")
     } else if (!all_equal_numeric(length(soj_times), length_seq)) {
         stop("\nAttribute `soj_times` should have length equal to that of ",
-             "attribute `seq`.")
+             "attribute `emc`.")
     }
     TRUE
 }
@@ -188,7 +188,7 @@ valid_model_size <- function(model_size, length_seq) {
     # '''
     if (is_integer(model_size)) {
         if (!all_equal_numeric(model_size, length_seq - 1)) {
-            stop("\n`model_size` should be equal to the length of `seq`.")
+            stop("\n`model_size` should be equal to the length of `emc`.")
         }
     }
     TRUE
@@ -867,13 +867,13 @@ names_i_d <- function(d, kernel_name = "q") {
     }
 }
 
-seq_states_to_id <- function(seq, states) {
+seq_states_to_id <- function(emc, states) {
     # Transforming a sequence of states into numbers.
-    list_which <- sapply(states, function(u) which(seq == u) )
+    list_which <- sapply(states, function(u) which(emc == u) )
     for (i in seq_along(states)) {
-        seq[list_which[[i]]] <- i
+        emc[list_which[[i]]] <- i
     }
-    seq
+    emc
 }
 
 # Get different values needed to compute the different distributions. ----------
@@ -1047,7 +1047,7 @@ create_sequence <- function(states, len = 5000, probs = NULL, seed = NULL) {
         probs <- rep(overs, s)
     }
     stopifnot(is_prob(probs))
-    seq <- sample(x = states, size = len, replace = TRUE, prob = probs)
-    seq
+    emc <- sample(x = states, size = len, replace = TRUE, prob = probs)
+    emc
 }
 

@@ -93,9 +93,9 @@ degree <- 1 # we define a linear evolution in time (state jumps of the embedded 
 # Defining the model 
 f_is_drifting <- TRUE # sojourn time distributions are drifting in time (state jumps of the EMC)
 p_is_drifting <- FALSE # transition matrices are not drifting in time (state jumps of the EMC)
-# When both f and p are drifting, we have Model 1.
+# When f is drifting and p is not drifting, we have Model 3.
 
-# Fitting the Drifting semi-Markov model
+# Fitting the drifting semi-Markov model on the sequence.
 fitted_model <- fit_dsmm(sequence = sequence,
                          states = states,
                          degree = degree,

@@ -58,8 +58,7 @@ specified, their dimension in the array becomes 1.
 }
 \description{
 This is a generic method that computes and returns the drifting
-semi-Markov kernel as a numerical array of dimensions
-\eqn{s \times s \times k_{max} \times (n + 1)}.
+semi-Markov kernel.
 }
 \details{
 The drifting semi-Markov kernel is given as the probability that,
@@ -138,9 +137,9 @@ Thus, the drifting semi-Markov kernel will be equal to:
 \examples{
 # Setup.
 states <- c("Rouen", "Bucharest", "Samos", "Aigio", "Marseille")
-seq <- create_sequence(states, probs = c(0.3, 0.1, 0.1, 0.3, 0.2))
+emc <- create_sequence(states, probs = c(0.3, 0.1, 0.1, 0.3, 0.2))
 obj_model_2 <- fit_dsmm(
-    sequence = seq,
+    sequence = emc,
     states = states,
     degree = 3,
     f_is_drifting = FALSE,

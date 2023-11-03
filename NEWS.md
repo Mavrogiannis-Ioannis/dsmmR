@@ -5,6 +5,23 @@ editor_options:
     wrap: 72
 ---
 
+# dsmmR 1.0.3
+
+## DESCRIPTION
+
+- Updated the `Depends` section. Now we impose the requirement for R >= 3.5.0,
+  in order to make proper use of the `isTRUE()` and `isFALSE()` functions in 
+  the `is_logical()` function defined in `utils.R`. These functions will remain
+  for their clarity.
+  
+
+## Documentation
+
+- Updated the `fit_dsmm()` and `simulate.dsmm()` functions to properly explain the 
+  difference between the given/simulated sequence of states and the embedded Markov
+  chain. Also, the function `base::rle()` is mentioned for clarity.
+
+
 # dsmmR 1.0.2
 
 ## Documentation

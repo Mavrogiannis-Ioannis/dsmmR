@@ -54,9 +54,9 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
                     f_is_drifting = f_is_drifting
                     # , numerical_est = numerical_est
         ),
-        valid_seq(seq = (seq <- obj$seq)),
+        valid_seq(emc = (emc <- obj$emc)),
         valid_model_size(model_size = (model_size <- obj$model_size),
-                         length_seq = (l <- length(seq))),
+                         length_seq = (l <- length(emc))),
         valid_soj_times(soj_times = (soj_times <- obj$soj_times),
                         length_seq = l),
         valid_k_max(k_max = (k_max <- obj$k_max), soj_times = soj_times),
@@ -76,7 +76,7 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
         )
     )
     # Check names of the list.
-    names_fit <- c("dist", "seq", "soj_times", "initial_dist", "states",
+    names_fit <- c("dist", "emc", "soj_times", "initial_dist", "states",
                    "s", "degree", "k_max", "model_size", "f_is_drifting",
                    "p_is_drifting", "Model", "estimation", "A_i", "J_i")
     if (!identical((nobj <- names(obj)), names_fit)) {
@@ -135,9 +135,9 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
                     f_is_drifting = f_is_drifting
                     # , numerical_est = numerical_est
         ),
-        valid_seq(seq = (seq <- obj$seq)),
+        valid_seq(emc = (emc <- obj$emc)),
         valid_model_size(model_size = (model_size <- obj$model_size),
-                         length_seq = (l <- length(seq))),
+                         length_seq = (l <- length(emc))),
         valid_soj_times(soj_times = (soj_times <- obj$soj_times),
                         length_seq = l),
         valid_k_max(k_max = (k_max <- obj$k_max), soj_times = soj_times),
@@ -157,7 +157,7 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
         )
     )
     # Check names of the list.
-    names_fit <- c("dist", "seq", "soj_times", "initial_dist", "states",
+    names_fit <- c("dist", "emc", "soj_times", "initial_dist", "states",
                    "s", "degree", "k_max", "model_size", "f_is_drifting",
                    "p_is_drifting", "Model", "estimation", "A_i", "J_i")
     if (!identical((nobj <- names(obj)), names_fit)) {
@@ -464,8 +464,7 @@ is.dsmm_parametric <- function(obj) {
 #'
 #' @description
 #' This is a generic method that computes and returns the drifting
-#' semi-Markov kernel as a numerical array of dimensions
-#' \eqn{s \times s \times k_{max} \times (n + 1)}.
+#' semi-Markov kernel.
 #'
 #' @param obj An object that inherits from the S3
 #' classes \code{dsmm},
@@ -598,9 +597,9 @@ is.dsmm_parametric <- function(obj) {
 #' @examples
 #' # Setup.
 #' states <- c("Rouen", "Bucharest", "Samos", "Aigio", "Marseille")
-#' seq <- create_sequence(states, probs = c(0.3, 0.1, 0.1, 0.3, 0.2))
+#' emc <- create_sequence(states, probs = c(0.3, 0.1, 0.1, 0.3, 0.2))
 #' obj_model_2 <- fit_dsmm(
-#'     sequence = seq,
+#'     sequence = emc,
 #'     states = states,
 #'     degree = 3,
 #'     f_is_drifting = FALSE,
@@ -829,7 +828,7 @@ print.dsmm <- function(x, ...) {
     check_attributes(x)
     nm <- names(x)
     for (i in seq_along(nm)) {
-        if (!nm[i] %in% c('A_i', 'dist', 'J_i', 'soj_times', 'seq')) {
+        if (!nm[i] %in% c('A_i', 'dist', 'J_i', 'soj_times', 'emc')) {
             cat(paste0("\n$", nm[i], "\n"))
             if (nm[i] %in% c('k_max', 'model_size', 's',
                              'degree', 'states',
@@ -839,7 +838,7 @@ print.dsmm <- function(x, ...) {
             } else {
                 print(x[[i]])
             }
-        } else if (nm[i] %in% c('soj_times', 'seq')) {
+        } else if (nm[i] %in% c('soj_times', 'emc')) {
             cat(paste0("\n$", nm[i], "\n"))
             print(head((xx <- x[[i]]), n = 100L))
             cat(" ... [ output truncated at 100 values -- ommited ",
@@ -919,11 +918,12 @@ print.dsmm_parametric <- function(x, ...) {
 # ______________________________________________________________________________
 # Simulate a sequence from any `dsmm` object.
 # ______________________________________________________________________________
-#' @title Simulate a sequence under a drifting semi-Markov kernel.
-#'
-#' @description Generic function that simulates a number of states \code{nsim}
-#' under the rule of a drifting semi-Markov kernel, which is retrieved from the
-#' object \code{obj}, which in turn inherits from the S3 class \code{dsmm}.
+#' @title Simulate a sequence given a drifting semi-Markov kernel.
+#' @aliases dsmm_simulate
+#' @description Generic function that simulates a sequence under the rule of a
+#' drifting semi-Markov kernel. The number of simulated states is \code{nsim},
+#' while the kernel is retrieved from the object \code{obj} via inheritance
+#' from the S3 class \code{dsmm}.
 #'
 #' @param object An object of S3 class \code{dsmm},
 #' \code{dsmm_fit_nonparametric}, \code{dsmm_nonparametric},
@@ -931,7 +931,7 @@ print.dsmm_parametric <- function(x, ...) {
 #'
 #' @param nsim Optional. An integer specifying the number of simulations to be made
 #' from the drifting semi-Markov kernel. The maximum value of \code{nsim} is the
-#' model size which is specified in \code{obj}, which is also the default value.
+#' model size which is specified in \code{obj}. This is also the default value.
 #' We define a special case for \code{nsim = 0}, where only the initial distribution
 #' is considered and only the simulation of its sojourn time will be made, without
 #' the next state.
@@ -957,15 +957,24 @@ print.dsmm_parametric <- function(x, ...) {
 #'
 #' For the theoretical background of drifting semi-Markov models: \link{dsmmR}.
 #'
-#' @return A character vector based on \code{nsim} simulations, with a
-#' maximum length of \code{seq_length}.
+#' For obtaining the lengths and values of equals values in a vector:
+#' \code{\link[base:rle]{rle}}.
+#'
+#' @return Returns the simulated sequence for the given drifting
+#'  semi-Markov model. It is a character vector based on \code{nsim} simulations,
+#'  with a maximum length of \code{seq_length}.
+#'
+#'  This sequence is not to be confused with the embedded Markov chain. The user
+#'  can apply the \code{base::rle()} function on this simulated sequence, if he wishes
+#'  to obtain the corresponding embedded Markov chain and the sojourn times.
+#'
 #' @export
 #' @examples
 #' # Setup.
-#' seq <- create_sequence("DNA", len = 1000)
-#' states <- sort(unique(seq))
+#' sequence <- create_sequence("DNA", len = 1000)
+#' states <- sort(unique(sequence))
 #' d <- 1
-#' obj_model_3 <- fit_dsmm(sequence = seq,
+#' obj_model_3 <- fit_dsmm(sequence = sequence,
 #'                         states = states,
 #'                         degree = d,
 #'                         f_is_drifting = TRUE,
@@ -978,6 +987,16 @@ print.dsmm_parametric <- function(x, ...) {
 #' str(simulated_seq)
 #' str(short_sim)
 #' str(cut_sim)
+#'
+#' # To obtain the embedded Markov chain (EMC) and the corresponding sojourn times
+#' # of any simulated sequence, we can simply use the `base::rle()` function.
+#'
+#' sim_seq_emc <- base::rle(cut_sim)$values # embedded Markov chain
+#' sim_seq_sojourn_times <- base::rle(cut_sim)$lengths # sojourn times
+#' cat("Start of the simulated sequence: ", head(cut_sim),
+#'     "...\nThe embedded Markov chain:       ", head(sim_seq_emc),
+#'     "...\nThe sojourn times:               ", head(sim_seq_sojourn_times), "...")
+#'
 simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
                           seq_length = NULL, klim = 100, ...) {
     # Parameters Setup.
@@ -1047,10 +1066,10 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
         u <- vl[1]
     }
     l_vl <- length(vl_vector)
-    seq <- c(initial_state, vl_vector[seq(1, l_vl, 2)])
+    emc <- c(initial_state, vl_vector[seq(1, l_vl, 2)])
     X <- as.numeric(c(vl_vector[seq(2, l_vl, by = 2)], 1))
-    sim_seq <- as.vector(unlist(sapply(seq_along(seq),
-                                       function(i) rep(seq[i], X[i]))))
+    sim_seq <- as.vector(unlist(sapply(seq_along(emc),
+                                       function(i) rep(emc[i], X[i]))))
     if (is.null(seq_length)) {
         return(sim_seq)
     } else {
