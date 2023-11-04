@@ -11,6 +11,10 @@ README
 
 <!-- badges: end -->
 
+# Developer Version
+
+## 1.0.3
+
 # dsmmR
 
 The **dsmmR** R package allows the user to estimate, simulate and define
