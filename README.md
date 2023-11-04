@@ -11,11 +11,7 @@ README
 
 <!-- badges: end -->
 
-# Developer Version
-
-## 1.0.3
-
-# dsmmR
+# dsmmR Developer Version 1.0.3
 
 The **dsmmR** R package allows the user to estimate, simulate and define
 different Drifting semi-Markov model (DSMM) specifications.
