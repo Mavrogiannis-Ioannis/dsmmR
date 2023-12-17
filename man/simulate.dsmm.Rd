@@ -5,7 +5,14 @@
 \alias{dsmm_simulate}
 \title{Simulate a sequence given a drifting semi-Markov kernel.}
 \usage{
-\method{simulate}{dsmm}(object, nsim = NULL, seed = NULL, seq_length = NULL, klim = 100, ...)
+\method{simulate}{dsmm}(
+  object,
+  nsim = NULL,
+  seed = NULL,
+  max_seq_length = NULL,
+  klim = 100,
+  ...
+)
 }
 \arguments{
 \item{object}{An object of S3 class \code{dsmm},
@@ -22,10 +29,10 @@ the next state.}
 \item{seed}{Optional. An integer specifying the initialization of the random
 number generator.}
 
-\item{seq_length}{Optional. A positive integer that will ensure the simulated
-sequence will not have a \emph{total length} greater than \code{seq_length}
-(however, it is possible for the total length to be \emph{less} than
-\code{seq_length}).}
+\item{max_seq_length}{Optional. A positive integer that will ensure the simulated
+sequence will not have a \emph{maximum total length} greater than
+\code{max_seq_length} (however, it is possible for the total length to be
+\emph{less} than \code{max_seq_length}).}
 
 \item{klim}{Optional. Positive integer. Passed down to \code{get_kernel}
 for the parametric object, with class \code{dsmm_parametric}.
@@ -36,7 +43,7 @@ Default value is \eqn{100}.}
 \value{
 Returns the simulated sequence for the given drifting
  semi-Markov model. It is a character vector based on \code{nsim} simulations,
- with a maximum length of \code{seq_length}.
+ with a maximum length of \code{max_seq_length}.
 
  This sequence is not to be confused with the embedded Markov chain. The user
  can apply the \code{base::rle()} function on this simulated sequence, if he wishes
@@ -62,7 +69,7 @@ obj_model_3 <- fit_dsmm(sequence = sequence,
 # Using the method `simulate.dsmm()`.
 simulated_seq <- simulate(obj_model_3, seed = 1)
 short_sim <- simulate(obj = obj_model_3, nsim = 10, seed = 1)
-cut_sim <- simulate(obj = obj_model_3, seq_length = 10, seed = 1)
+cut_sim <- simulate(obj = obj_model_3, max_seq_length = 10, seed = 1)
 str(simulated_seq)
 str(short_sim)
 str(cut_sim)

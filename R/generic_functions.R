@@ -936,10 +936,10 @@ print.dsmm_parametric <- function(x, ...) {
 #' is considered and only the simulation of its sojourn time will be made, without
 #' the next state.
 #'
-#' @param seq_length Optional. A positive integer that will ensure the simulated
-#' sequence will not have a \emph{total length} greater than \code{seq_length}
-#' (however, it is possible for the total length to be \emph{less} than
-#' \code{seq_length}).
+#' @param max_seq_length Optional. A positive integer that will ensure the simulated
+#' sequence will not have a \emph{maximum total length} greater than
+#' \code{max_seq_length} (however, it is possible for the total length to be
+#' \emph{less} than \code{max_seq_length}).
 #'
 #' @param seed Optional. An integer specifying the initialization of the random
 #' number generator.
@@ -962,7 +962,7 @@ print.dsmm_parametric <- function(x, ...) {
 #'
 #' @return Returns the simulated sequence for the given drifting
 #'  semi-Markov model. It is a character vector based on \code{nsim} simulations,
-#'  with a maximum length of \code{seq_length}.
+#'  with a maximum length of \code{max_seq_length}.
 #'
 #'  This sequence is not to be confused with the embedded Markov chain. The user
 #'  can apply the \code{base::rle()} function on this simulated sequence, if he wishes
@@ -983,7 +983,7 @@ print.dsmm_parametric <- function(x, ...) {
 #' # Using the method `simulate.dsmm()`.
 #' simulated_seq <- simulate(obj_model_3, seed = 1)
 #' short_sim <- simulate(obj = obj_model_3, nsim = 10, seed = 1)
-#' cut_sim <- simulate(obj = obj_model_3, seq_length = 10, seed = 1)
+#' cut_sim <- simulate(obj = obj_model_3, max_seq_length = 10, seed = 1)
 #' str(simulated_seq)
 #' str(short_sim)
 #' str(cut_sim)
@@ -998,7 +998,7 @@ print.dsmm_parametric <- function(x, ...) {
 #'     "...\nThe sojourn times:               ", head(sim_seq_sojourn_times), "...")
 #'
 simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
-                          seq_length = NULL, klim = 100, ...) {
+                          max_seq_length = NULL, klim = 100, ...) {
     # Parameters Setup.
     if (missing(object)) {
         stop("\nPlease provide an objectect of class `dsmm`.")
@@ -1010,8 +1010,8 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
              "`parametric_dsmm()`, `nonparametric_dsmm()` and `fit_dsmm()`.")
     }
     # Check if nsim and sequence length are given at the same time.
-    if (!is.null(nsim) && !is.null(seq_length)) {
-        stop("\nPlease specify only one of `nsim` or `seq_length` for ",
+    if (!is.null(nsim) && !is.null(max_seq_length)) {
+        stop("\nPlease specify only one of `nsim` or `max_seq_length` for ",
              "the simulation.")
     }
     # Check `nsim`.
@@ -1021,12 +1021,12 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
         stop("\nThe number of simulations `nsim` ",
              "needs to be a positive integer or 0.")
     }
-    # Check `seq_length`.
-    if (!is.null(seq_length) && !is_integer(seq_length)) {
-        stop("\nThe final length of the sequence `seq_length` ",
+    # Check `max_seq_length`.
+    if (!is.null(max_seq_length) && !is_integer(max_seq_length)) {
+        stop("\nThe final length of the sequence `max_seq_length` ",
              "needs to be a positive integer.")
-    } else if (is_integer(seq_length)) {
-        nsim <- seq_length
+    } else if (is_integer(max_seq_length)) {
+        nsim <- max_seq_length
     }
     # Set the RNG seed.
     if (!is.null(seed)) {
@@ -1070,10 +1070,10 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     X <- as.numeric(c(vl_vector[seq(2, l_vl, by = 2)], 1))
     sim_seq <- as.vector(unlist(sapply(seq_along(emc),
                                        function(i) rep(emc[i], X[i]))))
-    if (is.null(seq_length)) {
+    if (is.null(max_seq_length)) {
         return(sim_seq)
     } else {
-        return(sim_seq[1:seq_length])
+        return(sim_seq[1:max_seq_length])
     }
 }
 
