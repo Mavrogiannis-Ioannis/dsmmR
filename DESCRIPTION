@@ -35,6 +35,8 @@ Description: Performs parametric and non-parametric estimation and simulation of
     the Normandy Region) and the HSMM-INCA Project (financed by the French
     Agence Nationale de la Recherche (ANR) under grant ANR-21-CE40-0005).
 License: GPL
+URL: https://github.com/Mavrogiannis-Ioannis/dsmmR
+BugReports: https://github.com/Mavrogiannis-Ioannis/dsmmR/issues
 Imports: DiscreteWeibull
 Suggests: 
     utils,
