@@ -39,7 +39,8 @@ Imports: DiscreteWeibull
 Suggests: 
     utils,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: yes
@@ -48,3 +49,4 @@ Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
   Nicolas Vergne [aut]
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
 Depends: R (>= 3.5.0)
+Config/testthat/edition: 3
