@@ -36,6 +36,14 @@ editor_options:
 - Another Github workflow for `codecov` was added in `.github/workflows`. This ensures
   that the `dsmmR` package is mostly covered by the automated tests in place.
 
+## Errors
+
+- Fixed an unexpected check that was failing in the functions `valid_p_dist()`,
+  `valid_fdist_nonparametric()`, `valid_fdist_parametric()` and added a cases for
+  the f non-drifting case in `get_fdist_parametric()`. This was causing some
+  errors to appear when trying to print an estimated fitted model when f was not
+  drifting (Model 2).
+
 
 # dsmmR 1.0.4
 
