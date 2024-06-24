@@ -9,6 +9,7 @@ README
 [![R-CMD-check](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml)
 [![CRAN logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![Codecov test coverage](https://codecov.io/gh/Mavrogiannis-Ioannis/dsmmR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Mavrogiannis-Ioannis/dsmmR?branch=master)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md) 
 
 <!-- badges: end -->
 
