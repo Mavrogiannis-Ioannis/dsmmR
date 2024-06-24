@@ -120,16 +120,23 @@ is_prob_vector <- function(prob) {
 # ==============================================================================
 # Check for the valid use of the different arguments that the user can input
 # ==============================================================================
-valid_sequence <- function(sequence, s) {
+valid_sequence <- function(sequence, s, seq_id = NULL) {
     # '''
     #    Used in `fit_dsmm`.
     # '''
+    warning_message = ''
+    if (!is.null(seq_id)) warning_message <- paste0("In the list `sequences`, ", 
+                                                    "for the sequence numbered (",
+                                                    seq_id,
+                                                    "), this warning occured:")
     if (!is.character(sequence)){
-        stop("\nThe `sequence` argument should be a character vector.")
+        stop(paste0(warning_message, 
+                    "\nThe `sequence` argument should be a character vector."))
     } else if (!missing(s) && length(unique(sequence)) < s) {
         # check for (very) short sequence.
-        stop("\nThe `sequence` argument should have more than s = ",
-             s, " values.")
+        stop(paste0(warning_message, 
+                    "\nThe `sequence` argument should have more than s = ",
+                    s, " values."))
     }
     TRUE
 }
@@ -343,6 +350,9 @@ valid_estimation <- function(estimation, fpar, s, f_is_drifting, degree,
 valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
     # '''
     #    Intended for use in `dsmm_nonparametric` & `dsmm_parametric`.
+    #    The parametric case only concerns the sojourn dime distribution, f.
+    #    In other words, we do not need to separate cases for `valid_p_dist`,
+    #    only the non-parametric case of p is concerned.
     # '''
     D <- degree + 1L
     if (p_is_drifting) {
@@ -367,9 +377,10 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
             stop("\nThe diagonal values of `p_dist` should all be",
                  " equal to 0.")
         } else if (!all_equal_numeric(
-            (p_drift_rowsum <-
-             c(sapply(1:D, function(u) rowSums(p_dist[ , , u])))),
-            1)) {
+            (p_drift_rowsum <- c(sapply(1:D,
+                                        function(u) rowSums(p_dist[ , , u])))),
+            no_diag <- sapply(p_drift_rowsum, function(i) if (i > 0) 1 else 0))
+        ) {
             # Case where, for every d + 1 matrix, the sums over v for every u
             #  are not equal to 1.
             logical_vector <- sapply(p_drift_rowsum,
@@ -471,10 +482,13 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             stop("\nThe diagonal values of `f_dist` should all be equal to 0.")
         } else if (!all_equal_numeric(
             f_drift_l_sum <- apply(f_dist, c(1,2,4), sum),
-            no_diag <- array(array(1, dimension[1:2]) -
-                             base::diag(dimension[1]),
-                             dim = dimension[-3]))
-        ) { # Sums over l are not equal to 1.
+            no_diag <- sapply(f_drift_l_sum,
+                              function(i) if (i > 0) 1 else 0)
+                       # array(array(1, dimension[1:2]) -
+                       #       base::diag(dimension[1]),
+                       #       dim = dimension[-3]))
+        )) {
+            # Sums over l are not equal to 1.
             array_names <- sapply(
                 names_i_d(as.integer(degree), "f"), function(d)
                     sapply(states, function(v)
@@ -528,8 +542,10 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             stop("\nThe diagonal values of `f_dist` should all be equal to 0.")
         } else if (!all_equal_numeric(
             f_notdrift_l_sum <- apply(f_dist, c(1,2), sum),
-            no_diag <- array(1, dimension[1:2]) - base::diag(dimension[1]))
-        ) {
+            no_diag <- sapply(f_notdrift_l_sum,
+                              function(i) if (i > 0) 1 else 0)
+                              # array(1, dimension[1:2]) - base::diag(dimension[1]))
+        )) { 
             array_names <- sapply(states, function(v)
                 sapply(states, function(u)
                     paste(c(paste("u =", u),
@@ -759,8 +775,13 @@ get_fdist_parametric <- function(fdist, params, klim) {
     #    for the class `dsmm_parametric`.
     #    Therefore, no check is required for `fdist` and `params`.
     # '''
-    m <- matrix(c(fdist, params[,,1,], params[,,2,]), ncol = 3)
-    # No `nrow` given, because by not defining the number of rows,
+    if (length(dim(params)) == 4) { # drifting case, dim(params) == 4
+        m <- matrix(c(fdist, params[, , 1, ], params[, , 2, ]), ncol = 3)
+    } else if (length(dim(params)) == 3) { # non-drifting case, dim(params) == 3
+        m <- matrix(c(fdist, params[, , 1], params[, , 2]), ncol = 3)
+    }
+    # No `nrow` argument is given above,
+    # because by not defining the number of rows,
     # we simultaneously define the drifting & non-drifting cases.
     ans <- apply(m, c(1), function(row, klim) get_dist_param(row, klim),
                  k = klim)
@@ -850,7 +871,7 @@ poly_coeff <- function(degree) {
 
 names_i_d <- function(d, kernel_name = "q") {
     # '''
-    #    Generate names for the drifting cases. This is not exported.
+    #    Generate names for the drifting cases.
     # '''
     kernel_name <- paste0(kernel_name, "_")
     kernel_0 <- paste0(kernel_name, "0")
@@ -973,7 +994,7 @@ get_valid_kernel <- function(Ji, Ai, s, n, k_max, states) {
     N <- n + 1
     ans <- Ji %*% Ai # ans has dimensions of (s*s*k_max, n+1)
     kernel <- array(ans, dim = c(s, s, k_max, N))
-    if (!all_equal_numeric(apply(kernel, c(1,4), sum), 1)) {
+    if (!all_equal_numeric(apply(kernel, c(1, 4), sum), 1)) {
         stop("\nThe sums of the kernel are not equal to 1.")
     }
     if (!is_prob(kernel)) {
@@ -1047,7 +1068,7 @@ create_sequence <- function(states, len = 5000, probs = NULL, seed = NULL) {
         probs <- rep(overs, s)
     }
     stopifnot(is_prob(probs))
-    emc <- sample(x = states, size = len, replace = TRUE, prob = probs)
-    emc
+    seq <- sample(x = states, size = len, replace = TRUE, prob = probs)
+    seq
 }
 

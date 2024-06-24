@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![R-CMD-check](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml)
 [![CRAN logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
+[![Codecov test coverage](https://codecov.io/gh/Mavrogiannis-Ioannis/dsmmR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Mavrogiannis-Ioannis/dsmmR?branch=master)
 
 <!-- badges: end -->
 

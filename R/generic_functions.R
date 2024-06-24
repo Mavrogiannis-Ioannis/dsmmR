@@ -21,6 +21,7 @@
 # ______________________________________________________________________________
 check_attributes <- function(obj) UseMethod('check_attributes', obj)
 
+#' @export
 check_attributes.dsmm_fit_nonparametric <- function(obj) {
     # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
@@ -99,6 +100,7 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
     TRUE
 }
 
+#' @export
 check_attributes.dsmm_fit_parametric <- function(obj) {
     # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
@@ -180,6 +182,7 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
     TRUE
 }
 
+#' @export
 check_attributes.dsmm_nonparametric <- function(obj) {
     # Check whether `f_is_drifting`, `p_is_drifting` are correctly used.
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
@@ -244,6 +247,7 @@ check_attributes.dsmm_nonparametric <- function(obj) {
     TRUE
 }
 
+#' @export
 check_attributes.dsmm_parametric <- function(obj) {
     if (!is_logical(f_is_drifting <- obj$f_is_drifting)) {
         stop("\nThe logical parameter `f_is_drifting` should be either ",
@@ -256,7 +260,7 @@ check_attributes.dsmm_parametric <- function(obj) {
     # Check names of dist, in order for `obj$dist[[ i ]]` to work in
     # the next section of `stopifnot`.
     pname <- if (p_is_drifting) 'p_drift' else 'p_notdrift'
-    fname <- if (f_is_drifting) 'f_drift_parametric' else 'f_notdrift'
+    fname <- if (f_is_drifting) 'f_drift_parametric' else 'f_notdrift_parametric'
     fparname <-
         if (f_is_drifting) 'f_drift_parameters' else 'f_notdrift_parameters'
     if (any((names_tmp <- names(obj$dist)) !=
@@ -581,8 +585,8 @@ is.dsmm_parametric <- function(obj) {
 #' @return An array with dimensions of
 #' \eqn{s \times s \times k_{max} \times (n + 1)}, giving the
 #' value of the drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} for
-#' the corresponding \eqn{(u,v,l,t)}. If any of \eqn{u,v,l} or \eqn{t} were
-#' specified, their dimension in the array becomes 1.
+#' the corresponding \eqn{(u,v,l,t)}. If any of \eqn{u,v,l} or \eqn{t} are
+#' specified, we obtain the element of the array for their given value.
 #'
 #' @export
 #'
@@ -1076,4 +1080,3 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
         return(sim_seq[1:max_seq_length])
     }
 }
-

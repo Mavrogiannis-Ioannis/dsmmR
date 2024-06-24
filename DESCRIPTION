@@ -2,7 +2,7 @@ Type: Package
 Package: dsmmR
 Title: Estimation and Simulation of Drifting Semi-Markov Models
 Version: 1.0.3
-Date: 2023-11-4
+Date: 2024-24-6
 Authors@R: c(
     person("Vlad Stefan", "Barbu",
            role = c("aut"),
@@ -35,16 +35,20 @@ Description: Performs parametric and non-parametric estimation and simulation of
     the Normandy Region) and the HSMM-INCA Project (financed by the French
     Agence Nationale de la Recherche (ANR) under grant ANR-21-CE40-0005).
 License: GPL
+URL: https://github.com/Mavrogiannis-Ioannis/dsmmR
+BugReports: https://github.com/Mavrogiannis-Ioannis/dsmmR/issues
 Imports: DiscreteWeibull
 Suggests: 
     utils,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 3.0.0)
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 NeedsCompilation: yes
 Author: Vlad Stefan Barbu [aut] (<https://orcid.org/0000-0002-0840-016X>),
   Ioannis Mavrogiannis [aut, cre],
   Nicolas Vergne [aut]
 Maintainer: Ioannis Mavrogiannis <mavrogiannis.ioa@gmail.com>
 Depends: R (>= 3.5.0)
+Config/testthat/edition: 3

@@ -5,6 +5,21 @@ editor_options:
     wrap: 72
 ---
 
+# dsmmR 1.0.4
+
+## DESCRIPTION
+
+- `fit_dsmm` now has a new attribute, `multi_estimation`, that enables the 
+  estimation of a drifting semi-Markov model using multiple sequences. There 
+  are two possible options: `avg_model` and `count_sum`.
+     - `avg_model` averages the `q_i` received from multiple sequences 
+     - `count_sum` adds the counts of the states for each sequence (of equal size)
+       and then computes the `q_i`. 
+       
+- Further changes were made for clarity, to the naming conventions of
+  `simulate.dsmm()`. Specifically, the previous variable `seq_length` 
+  is now named `max_seq_length`.
+
 # dsmmR 1.0.3
 
 ## DESCRIPTION

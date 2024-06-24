@@ -6,3 +6,4 @@
 ^\.github$
 ^paper.md$
 ^paper.bib$
+^codecov.yml

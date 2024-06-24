@@ -53,8 +53,8 @@ However, this will lead to better estimations through \code{fit_dsmm()}.
 An array with dimensions of
 \eqn{s \times s \times k_{max} \times (n + 1)}, giving the
 value of the drifting semi-Markov kernel \eqn{q_{\frac{t}{n}}(u,v,l)} for
-the corresponding \eqn{(u,v,l,t)}. If any of \eqn{u,v,l} or \eqn{t} were
-specified, their dimension in the array becomes 1.
+the corresponding \eqn{(u,v,l,t)}. If any of \eqn{u,v,l} or \eqn{t} are
+specified, we obtain the element of the array for their given value.
 }
 \description{
 This is a generic method that computes and returns the drifting

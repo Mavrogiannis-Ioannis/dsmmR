@@ -68,7 +68,7 @@
 #'         It is defined similarly to the attribute \code{f_dist}
 #'         in \link{dsmm_parametric}.
 #'     }
-#'
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # @param numerical_est Optional. Logical. Specifies if numerical estimation
 #   under constraint should be used instead of LSE.
@@ -775,8 +775,8 @@ fit_dsmm <- function(sequence,
     #     as.list(paste0('l = ', 1:k_max)),
     #     as.list(paste0('u = ', states))
     # )
-    Ji <- aperm(Ji, c(4, 2, 3, 1)) # For clarification.
-    # Normalizing Values.
+    Ji <- aperm(Ji, c(4, 2, 3, 1)) # Getting back to (u, v, l, d + 1)
+    # Normalizing Values over the v and l dimensions.
     Jinormal <- apply(Ji, c(1,4), function(vl_values) {
         if (any(vl_values < 0)) {
             return(get_f(vl_values))
