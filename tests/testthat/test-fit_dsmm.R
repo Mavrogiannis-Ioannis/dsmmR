@@ -1,6 +1,4 @@
-set.seed(1)
-data("lambda", package = "dsmmR")
-sequence <- c(lambda)
+sequence <- create_sequence("DNA", len = 10000, probs = NULL, seed = 1)
 states <- sort(unique(sequence))
 degree <- 3
 
