@@ -30,7 +30,8 @@ editor_options:
 
 - A Github workflow for `R-hub v2` is added in `.github/workflows`. This ensures that
   after every github update of the online `dsmmR` repository, the CRAN checks are 
-  being made for multiple platforms (linux, macos, windows).
+  being made for multiple platforms (linux, macos, windows). This can be run manually
+  through the command rhub::rhub_check(branch = 'master').
   
 - Another Github workflow for `codecov` was added in `.github/workflows`. This ensures
   that the `dsmmR` package is mostly covered by the automated tests in place.
