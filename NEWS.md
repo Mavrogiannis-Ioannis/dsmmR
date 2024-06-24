@@ -5,6 +5,37 @@ editor_options:
     wrap: 72
 ---
 
+# dsmmR 1.0.5
+
+## Tests
+
+- Tests are now implemented for the functions of the package. Namely:
+    - `fit_dsmm()`
+    - `create_sequence()`
+    - `get_kernel()`
+    - `parametric_dsmm()`
+    - `nonparametric_dsmm()`
+    
+## Code of Conduct
+
+- The Contributor Covenant Code of Conduct is now added with respect to the JOSS 
+  publication. The `CODE_OF_CONDUCT.md` file can be found in the `.github` folder.
+
+## Documentation
+
+- Small changes in the description of `get_kernel()`, regarding the reduction of 
+  dimensions when selecting a specific argument of u, v, l or t.
+
+## Workflows
+
+- A Github workflow for `R-hub v2` is added in `.github/workflows`. This ensures that
+  after every github update of the online `dsmmR` repository, the CRAN checks are 
+  being made for multiple platforms (linux, macos, windows).
+  
+- Another Github workflow for `codecov` was added in `.github/workflows`. This ensures
+  that the `dsmmR` package is mostly covered by the automated tests in place.
+
+
 # dsmmR 1.0.4
 
 ## DESCRIPTION
