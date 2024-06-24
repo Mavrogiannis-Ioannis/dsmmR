@@ -815,35 +815,35 @@
       
       , , 1
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 2
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 3
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 4
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       
       
@@ -852,67 +852,67 @@
       
       , , 1, fpars_0
       
-                a         c         g          t
-      a        NA 3.0000000 0.3062659 0.08844116
-      c 0.5526086        NA 0.2642541 0.28559307
-      g 0.6821648 0.2882907        NA 0.76730322
-      t 0.1768350 0.7984301 0.3492194         NA
+                a         c         g         t
+      a        NA 3.0000000 0.6970727 0.1541034
+      c 0.5526086        NA 0.2642541 0.6688289
+      g 0.6821648 0.2882907        NA 0.7673032
+      t 0.8120297 0.7984301 0.3492194        NA
       
       , , 2, fpars_0
       
-                a  c        g         t
-      a        NA NA 1.479848 0.3646389
-      c        NA NA       NA 0.7718552
-      g        NA NA       NA        NA
-      t 0.9199561 NA       NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_(1/3)
       
                 a         c         g         t
-      a        NA 5.0000000 0.2481787 1.0251200
-      c 0.3296147        NA 0.3694657 0.2188723
+      a        NA 5.0000000 0.7546609 0.4235866
+      c 0.3296147        NA 0.3694657 0.7723762
       g 0.7410962 0.3933682        NA 0.7524879
-      t 0.2484473 0.7862696 0.2518407        NA
+      t 0.7672277 0.7862696 0.2518407        NA
       
       , , 2, fpars_(1/3)
       
-               a  c         g         t
-      a       NA NA 0.9992995 0.7076105
-      c       NA NA        NA 0.9289312
-      g       NA NA        NA        NA
-      t 1.123721 NA        NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_(2/3)
       
                 a         c         g         t
-      a        NA 3.0000000 0.2621495 0.9790602
-      c 0.2912460        NA 0.3195996 0.2689361
+      a        NA 3.0000000 0.7325090 0.3413562
+      c 0.2912460        NA 0.3195996 0.7375140
       g 0.7550799 0.3835163        NA 0.7772033
-      t 0.2639133 0.8021310 0.3144896        NA
+      t 0.7415471 0.8021310 0.3144896        NA
       
       , , 2, fpars_(2/3)
       
-               a  c         g         t
-      a       NA NA 0.9615595 0.7414784
-      c       NA NA        NA 1.1733763
-      g       NA NA        NA        NA
-      t 1.106065 NA        NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_1
       
                 a         c         g         t
-      a        NA 3.0000000 0.2435086 0.8937968
-      c 0.3468074        NA 0.4942816 0.1995666
+      a        NA 3.0000000 0.7853381 0.3333198
+      c 0.3468074        NA 0.4942816 0.7755676
       g 0.7840811 0.4402235        NA 0.6706817
-      t 0.2957115 0.7216419 0.2703238        NA
+      t 0.7262443 0.7216419 0.2703238        NA
       
       , , 2, fpars_1
       
-              a  c       g         t
-      a      NA NA 1.23172 0.7283715
-      c      NA NA      NA 1.0067659
-      g      NA NA      NA        NA
-      t 1.14708 NA      NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       
       $emc
@@ -1011,11 +1011,11 @@
       
       $dist$f_notdrift_parametric
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       
       
@@ -1024,18 +1024,18 @@
       , , 1
       
                 a         c         g         t
-      a        NA 5.0000000 0.2653187 0.5141939
-      c 0.3744175        NA 0.3545041 0.2417519
+      a        NA 5.0000000 0.7414246 0.3087153
+      c 0.3744175        NA 0.3545041 0.7376153
       g 0.7378057 0.3805870        NA 0.7428863
-      t 0.2468006 0.7704754 0.3024998        NA
+      t 0.7600909 0.7704754 0.3024998        NA
       
       , , 2
       
-               a  c        g         t
-      a       NA NA 1.032049 0.6248489
-      c       NA NA       NA 0.8432054
-      g       NA NA       NA        NA
-      t 1.065543 NA       NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       
       $emc
@@ -1109,35 +1109,35 @@
       
       , , 1
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 2
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 3
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       , , 4
       
-           [,1]       [,2]   [,3]       [,4]      
-      [1,] NA         "unif" "dweibull" "nbinom"  
-      [2,] "pois"     NA     "pois"     "dweibull"
-      [3,] "geom"     "pois" NA         "geom"    
-      [4,] "dweibull" "geom" "pois"     NA        
+           [,1]   [,2]   [,3]   [,4]  
+      [1,] NA     "unif" "geom" "pois"
+      [2,] "pois" NA     "pois" "geom"
+      [3,] "geom" "pois" NA     "geom"
+      [4,] "geom" "geom" "pois" NA    
       
       
       
@@ -1146,67 +1146,67 @@
       
       , , 1, fpars_0
       
-                a         c         g          t
-      a        NA 3.0000000 0.3062659 0.08844116
-      c 0.5526086        NA 0.2642541 0.28559307
-      g 0.6821648 0.2882907        NA 0.76730322
-      t 0.1768350 0.7984301 0.3492194         NA
+                a         c         g         t
+      a        NA 3.0000000 0.6970727 0.1541034
+      c 0.5526086        NA 0.2642541 0.6688289
+      g 0.6821648 0.2882907        NA 0.7673032
+      t 0.8120297 0.7984301 0.3492194        NA
       
       , , 2, fpars_0
       
-                a  c        g         t
-      a        NA NA 1.479848 0.3646389
-      c        NA NA       NA 0.7718552
-      g        NA NA       NA        NA
-      t 0.9199561 NA       NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_(1/3)
       
                 a         c         g         t
-      a        NA 5.0000000 0.2481787 1.0251200
-      c 0.3296147        NA 0.3694657 0.2188723
+      a        NA 5.0000000 0.7546609 0.4235866
+      c 0.3296147        NA 0.3694657 0.7723762
       g 0.7410962 0.3933682        NA 0.7524879
-      t 0.2484473 0.7862696 0.2518407        NA
+      t 0.7672277 0.7862696 0.2518407        NA
       
       , , 2, fpars_(1/3)
       
-               a  c         g         t
-      a       NA NA 0.9992995 0.7076105
-      c       NA NA        NA 0.9289312
-      g       NA NA        NA        NA
-      t 1.123721 NA        NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_(2/3)
       
                 a         c         g         t
-      a        NA 3.0000000 0.2621495 0.9790602
-      c 0.2912460        NA 0.3195996 0.2689361
+      a        NA 3.0000000 0.7325090 0.3413562
+      c 0.2912460        NA 0.3195996 0.7375140
       g 0.7550799 0.3835163        NA 0.7772033
-      t 0.2639133 0.8021310 0.3144896        NA
+      t 0.7415471 0.8021310 0.3144896        NA
       
       , , 2, fpars_(2/3)
       
-               a  c         g         t
-      a       NA NA 0.9615595 0.7414784
-      c       NA NA        NA 1.1733763
-      g       NA NA        NA        NA
-      t 1.106065 NA        NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       , , 1, fpars_1
       
                 a         c         g         t
-      a        NA 3.0000000 0.2435086 0.8937968
-      c 0.3468074        NA 0.4942816 0.1995666
+      a        NA 3.0000000 0.7853381 0.3333198
+      c 0.3468074        NA 0.4942816 0.7755676
       g 0.7840811 0.4402235        NA 0.6706817
-      t 0.2957115 0.7216419 0.2703238        NA
+      t 0.7262443 0.7216419 0.2703238        NA
       
       , , 2, fpars_1
       
-              a  c       g         t
-      a      NA NA 1.23172 0.7283715
-      c      NA NA      NA 1.0067659
-      g      NA NA      NA        NA
-      t 1.14708 NA      NA        NA
+         a  c  g  t
+      a NA NA NA NA
+      c NA NA NA NA
+      g NA NA NA NA
+      t NA NA NA NA
       
       
       $emc

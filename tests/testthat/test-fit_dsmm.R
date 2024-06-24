@@ -3,11 +3,16 @@ states <- sort(unique(sequence))
 degree <- 3
 
 s <- length(states)
-f_dist_1 <- matrix(c(NA,         "unif",     "dweibull", "nbinom",
-                     "pois",      NA,        "pois",     "dweibull",
+f_dist_1 <- matrix(c(NA,         "unif",     "geom",     "pois",
+                     "pois",      NA,        "pois",     "geom",
                      "geom",     "pois",      NA,        "geom",
-                     "dweibull", 'geom',     "pois",      NA),
+                     "geom",     'geom',     "pois",      NA),
                    nrow = s, ncol = s, byrow = TRUE)
+# f_dist_1 <- matrix(c(NA,         "unif",     "dweibull", "nbinom",
+#                      "pois",      NA,        "pois",     "dweibull",
+#                      "geom",     "pois",      NA,        "geom",
+#                      "dweibull", 'geom',     "pois",      NA),
+#                    nrow = s, ncol = s, byrow = TRUE)
 f_dist <- array(f_dist_1, dim = c(s, s, degree + 1))
 
 test_that("fit_dsmm() non parametric estimation; p and f are drifting", {
