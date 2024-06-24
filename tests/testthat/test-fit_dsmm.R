@@ -1,3 +1,4 @@
+set.seed(1)
 data("lambda", package = "dsmmR")
 sequence <- c(lambda)
 states <- sort(unique(sequence))
