@@ -109,6 +109,7 @@ test_that("fit_dsmm() parametric estimation; p and f are drifting", {
     # Both p and f are drifting - Model 1.
     # ---------------------------------------------------------------------------
     
+    set.seed(1)
     expect_no_condition(
         obj_fit_parametric_1 <- fit_dsmm(sequence = sequence,
                                          degree = degree,
@@ -131,12 +132,13 @@ test_that("fit_dsmm() parametric estimation; p and f are drifting", {
     
 })
 
-test_that("fit_dsmm() parametric estimation; p and f are drifting", {
+test_that("fit_dsmm() parametric estimation; p is drifting, f is not drifting", {
     
     # ---------------------------------------------------------------------------
     # f is not drifting, only p is drifting - Model 2.
     # ---------------------------------------------------------------------------
     
+    set.seed(1)
     expect_no_condition(
         obj_fit_parametric_2 <- fit_dsmm(
             sequence = sequence,
@@ -156,5 +158,34 @@ test_that("fit_dsmm() parametric estimation; p and f are drifting", {
     )
     
     expect_snapshot(obj_fit_parametric_2)
+    
+})
+
+test_that("fit_dsmm() parametric estimation; p is not drifting, f is drifting", {
+    
+    # ---------------------------------------------------------------------------
+    # p is not drifting, only f is drifting - Model 3.
+    # ---------------------------------------------------------------------------
+    
+    set.seed(1)
+    expect_no_condition(
+        obj_fit_parametric_3 <- fit_dsmm(
+            sequence = sequence,
+            degree = degree,
+            f_is_drifting = TRUE,
+            p_is_drifting = FALSE,
+            initial_dist = 'unif',
+            estimation = 'parametric',
+            f_dist = f_dist
+        )
+    )
+    
+    # Sums over v, l should be 1
+    expect_equal(
+        model_sum <- apply(obj_fit_parametric_3$J_i, c(1, 4), sum),
+        array(1, dim = dim(model_sum), dimnames = dimnames(model_sum))
+    )
+    
+    expect_snapshot(obj_fit_parametric_3)
     
 })

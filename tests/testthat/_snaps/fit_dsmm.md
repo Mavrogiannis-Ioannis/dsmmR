@@ -1036,7 +1036,7 @@
       
       Class: dsmm_fit_parametric, dsmm
 
----
+# fit_dsmm() parametric estimation; p is drifting, f is not drifting
 
     Code
       obj_fit_parametric_2
@@ -1152,6 +1152,177 @@
       
       $Model
       Model_2 
+      
+      $estimation
+      parametric 
+      
+      
+      Class: dsmm_fit_parametric, dsmm
+
+# fit_dsmm() parametric estimation; p is not drifting, f is drifting
+
+    Code
+      obj_fit_parametric_3
+    Output
+      
+      
+      
+      $dist$p_notdrift
+      
+                a         c         g         t
+      a 0.0000000 0.3055155 0.3252591 0.3692254
+      c 0.3541686 0.0000000 0.3680487 0.2777827
+      g 0.3489412 0.3763050 0.0000000 0.2747538
+      t 0.2367266 0.2962898 0.4669836 0.0000000
+      
+      
+      
+      $dist$f_drift_parametric
+      
+      , , 1
+      
+           [,1]       [,2]   [,3]       [,4]      
+      [1,] NA         "unif" "dweibull" "nbinom"  
+      [2,] "pois"     NA     "pois"     "dweibull"
+      [3,] "geom"     "pois" NA         "geom"    
+      [4,] "dweibull" "geom" "pois"     NA        
+      
+      , , 2
+      
+           [,1]       [,2]   [,3]       [,4]      
+      [1,] NA         "unif" "dweibull" "nbinom"  
+      [2,] "pois"     NA     "pois"     "dweibull"
+      [3,] "geom"     "pois" NA         "geom"    
+      [4,] "dweibull" "geom" "pois"     NA        
+      
+      , , 3
+      
+           [,1]       [,2]   [,3]       [,4]      
+      [1,] NA         "unif" "dweibull" "nbinom"  
+      [2,] "pois"     NA     "pois"     "dweibull"
+      [3,] "geom"     "pois" NA         "geom"    
+      [4,] "dweibull" "geom" "pois"     NA        
+      
+      , , 4
+      
+           [,1]       [,2]   [,3]       [,4]      
+      [1,] NA         "unif" "dweibull" "nbinom"  
+      [2,] "pois"     NA     "pois"     "dweibull"
+      [3,] "geom"     "pois" NA         "geom"    
+      [4,] "dweibull" "geom" "pois"     NA        
+      
+      
+      
+      
+      $dist$f_drift_parameters
+      
+      , , 1, fpars_0
+      
+                a         c         g         t
+      a        NA 4.0000000 0.2931395 0.2573780
+      c 0.2993014        NA 0.5042017 0.1877439
+      g 0.7292906 0.3162102        NA 0.7090922
+      t 0.3811023 0.6864256 0.1678208        NA
+      
+      , , 2, fpars_0
+      
+                a  c         g         t
+      a        NA NA 0.8820125 0.4702177
+      c        NA NA        NA 1.3183296
+      g        NA NA        NA        NA
+      t 0.9853349 NA        NA        NA
+      
+      , , 1, fpars_(1/3)
+      
+                a         c         g         t
+      a        NA 5.0000000 0.2323796 0.4508238
+      c 0.2130453        NA 0.3619084 0.2117913
+      g 0.7262501 0.4018156        NA 0.7563290
+      t 0.2716859 0.6912428 0.2372413        NA
+      
+      , , 2, fpars_(1/3)
+      
+               a  c         g         t
+      a       NA NA 0.8460144 0.5637969
+      c       NA NA        NA 1.4642445
+      g       NA NA        NA        NA
+      t 1.110525 NA        NA        NA
+      
+      , , 1, fpars_(2/3)
+      
+                a         c         g         t
+      a        NA 7.0000000 0.3019116 0.7030723
+      c 0.2891009        NA 0.2615949 0.2023154
+      g 0.7709800 0.2564900        NA 0.7800595
+      t 0.3163287 0.6571714 0.4034364        NA
+      
+      , , 2, fpars_(2/3)
+      
+                a  c        g         t
+      a        NA NA 1.041711 0.6392065
+      c        NA NA       NA 1.0175190
+      g        NA NA       NA        NA
+      t 0.9469695 NA       NA        NA
+      
+      , , 1, fpars_1
+      
+                a         c         g         t
+      a        NA 6.0000000 0.2915127 0.8150096
+      c 0.1606740        NA 0.2757916 0.2481804
+      g 0.7676899 0.3092067        NA 0.7563272
+      t 0.3362814 0.7245312 0.2483855        NA
+      
+      , , 2, fpars_1
+      
+               a  c        g         t
+      a       NA NA 0.998148 0.6299242
+      c       NA NA       NA 1.4695536
+      g       NA NA       NA        NA
+      t 1.059593 NA       NA        NA
+      
+      
+      $emc
+        [1] "g" "c" "g" "c" "g" "a" "c" "t" "c" "g" "c" "g" "t" "c" "g" "c" "t" "a"
+       [19] "t" "a" "t" "g" "a" "t" "c" "g" "t" "a" "g" "c" "g" "t" "c" "g" "t" "c"
+       [37] "t" "c" "t" "c" "g" "t" "c" "a" "t" "a" "c" "t" "a" "t" "g" "t" "a" "t"
+       [55] "a" "t" "a" "c" "t" "c" "t" "g" "a" "g" "a" "g" "a" "c" "g" "a" "c" "a"
+       [73] "g" "t" "g" "c" "t" "g" "a" "g" "c" "g" "a" "g" "c" "t" "g" "c" "t" "c"
+       [91] "t" "g" "t" "c" "g" "t" "c" "t" "c" "t"
+       ... [ output truncated at 100 values -- ommited  35687  entries ]
+      
+      $soj_times
+        [1] 3 1 2 1 1 1 2 1 1 1 1 3 4 1 1 1 1 1 3 1 1 1 4 4 2 2 3 2 2 1 1 3 2 1 2 1 2
+       [38] 1 2 1 1 1 1 1 1 2 1 2 2 1 1 5 1 3 4 1 1 3 1 1 1 1 4 1 3 2 3 1 1 1 1 1 2 1
+       [75] 1 1 1 1 3 1 1 1 1 2 1 5 2 2 1 1 1 1 1 1 1 3 2 3 1 1
+       ... [ output truncated at 100 values -- ommited  35687  entries ]
+      
+      $initial_dist
+         a    c    g    t 
+      0.25 0.25 0.25 0.25 
+      
+      $states
+      a c g t 
+      
+      $s
+      4 
+      
+      $degree
+      3 
+      
+      $k_max
+      8 
+      
+      $model_size
+      35786 
+      
+      $f_is_drifting
+      TRUE 
+      
+      $p_is_drifting
+      FALSE 
+      
+      $Model
+      Model_3 
       
       $estimation
       parametric 
