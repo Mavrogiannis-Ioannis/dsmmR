@@ -13,7 +13,11 @@ README
 
 <!-- badges: end -->
 
-# dsmmR Developer Version 1.0.3
+# Developer Version
+ 
+## 1.0.5
+ 
+# dsmmR
 
 The **dsmmR** R package allows the user to estimate, simulate and define
 different Drifting semi-Markov model (DSMM) specifications.
@@ -122,7 +126,7 @@ For more information, consider the documentation through
 
 ### Drifting semi-Markov kernel
 
-In order to account for the large dimension of the DSM kernel, a
+In order to account for the dimension of the DSM kernel, a
 separate function was necessary. You can obtain the DSM kernel through
 the command:
 

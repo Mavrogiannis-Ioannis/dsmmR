@@ -181,7 +181,7 @@ valid_k_max <- function(k_max, soj_times) {
             return(TRUE)
         } else {
             stop("\nThe maximum sojourn time attribute `k_max` should be",
-                 " an integer equal to the maximum of `soj_times`.")
+                 " an integer,\nequal to the maximum of `soj_times`.")
         }
     }
     stop("\nThe maximum sojourn time `k_max` should be an integer.")
@@ -219,8 +219,8 @@ valid_states <- function(states) {
     } else if(min(prob <- (sapply(strsplit(
         x = gsub(" ", "", states), split = ""), length))) == 0) {
         # Check for a state equal to an empty string "" or `character(0)`.
-        stop("\nState space `states` includes a state without a given name, ",
-             "at position ", which(prob == 0))
+        stop("\nState space `states` includes a state without a given name,\n",
+             "at position(s): ", which(prob == 0))
     }
     TRUE
 }
@@ -234,8 +234,8 @@ valid_state <- function(state, states) {
     }
     stopifnot(valid_states(states))
     if (!state %in% states) {
-        stop("\nState `", state, "` is not included in the State",
-             " Space that is given,\nE = (", paste(states, collapse = ', '),
+        stop("\nState `", state, "` is not included in the state",
+             " space that is given,\nE = (", paste(states, collapse = ', '),
              ").")
     }
     TRUE
@@ -247,7 +247,7 @@ valid_length_states <- function(s, states) {
     # '''
     if (!(is_integer(s) && s == (lstates <- length(states)))) {
         stop("\nAttribute `s` = ", s,
-             " should be an integer equal to the length of `states` = ",
+             " should be an integer,\nequal to the length of `states` = ",
              lstates)
     }
     TRUE
@@ -255,7 +255,7 @@ valid_length_states <- function(s, states) {
 
 valid_degree <- function(degree, model_size) {
     # '''
-    #   This functions checks for correct behavior of the `degree` parameter.
+    #   This functions checks for correct behaviour of the `degree` parameter.
     # '''
     if (!is_integer(degree)) {
         stop("\nThe the polynomial `degree` should be a positive integer.")
@@ -263,8 +263,9 @@ valid_degree <- function(degree, model_size) {
     if (!missing(model_size)) {
         if (degree > model_size) {
             stop("\nThe polynomial `degree` = ", degree,
-                 " should not be larger than the model size = ",
-                 model_size, ".")
+                 " should not be larger than the model size = ", model_size,
+                 ",\nwhich is the length of the EMC of the sequence, minus 1.",
+                 "\nSee `Definition` section at ?dsmmR for more information.")
         }
     }
     TRUE
@@ -313,9 +314,9 @@ valid_model <- function(p_is_drifting, f_is_drifting) {
     # '''
     if (!p_is_drifting && !f_is_drifting) {
         # Neither p or f are drifting.
-        stop("\nAt least p or f should be drifting to use a drifting ",
-             "semi-Markov model for the estimation. Otherwise, ",
-             "a semi-Markov model should be used.")
+        stop("\nAt least p or f should be drifting,\nto use a drifting ",
+             "semi-Markov model for the estimation.\n", 
+             "Otherwise, a semi-Markov model should be used.")
     }
     TRUE
 }
@@ -330,13 +331,13 @@ valid_estimation <- function(estimation, fpar, s, f_is_drifting, degree,
     # '''
     if (!is.character(estimation) ||
         (estimation != "nonparametric" && estimation != "parametric")) {
-        stop('`estimation` attribute should be either "nonparametric" for the',
-             ' non-parametric estimation or "parametric" for the parametric',
-             ' estimation.')
+        stop('\nThe `estimation` attribute should be either "nonparametric",\n', 
+             'for the non-parametric estimation, or "parametric" for the\n',
+             'parametric estimation.')
     }
     if (estimation == "nonparametric") {
         if (!is.null(fpar)) {
-            stop('When `estimation = "nonparametric"`, attribute `fpar` ',
+            stop('\nWhen `estimation = "nonparametric"`, attribute `fpar` ',
                  'should be NULL')
         }
     } else if (estimation == "parametric") {
@@ -358,8 +359,8 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
     if (p_is_drifting) {
         # Case when p is drifting, a.k.a. `p_is_drifting` = TRUE.
         if (!is_double_array(p_dist)) {
-            stop("\nSince `p_is_drifting` is TRUE, `p_dist` should be a ",
-                 "numeric array with dimensions:\n(s, s, degree + 1).")
+            stop("\nSince `p_is_drifting` is TRUE,\n`p_dist` should be a ",
+                 "numeric array,\n with dimensions: (s, s, degree + 1).")
         } else if (!is_prob(p_dist)) {
             non_prob <- which(!is_prob_vector(p_dist))
             stop("\nArray `p_drift` contains values that are not ",
@@ -367,10 +368,11 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
                  paste0(p_dist[non_prob], collapse = ", "))
         } else if (!all_equal((dimension <- dim(p_dist)),
                               c(s, s, D))) {
-            stop("\nSince `p_is_drifting` = TRUE, `p_dist` should be an ",
-                 "array with dimensions:\n(s, s, degree + 1) = (",
-                 paste(c(s, s, D), collapse = ', '),
-                 ") when it has dimensions of: (",
+            stop("\nSince `p_is_drifting` = TRUE,\n`p_dist` should be an ",
+                 "array\n",
+                 "with dimensions: (s, s, degree + 1) = (",
+                 paste(c(s, s, D), collapse = ', '), ")\n",
+                 "when it has dimensions of           = (",
                  paste(dimension, collapse = ', '), ").")
         } else if (!all_equal_numeric(
             sum(p_dist * array(diag(s), dim = c(s, s, D))), 0)) {
@@ -389,9 +391,9 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
                                      rep(names_i_d(degree, kernel_name = "p"),
                                          each = s))
             stop("\nFor the transition probability matrices",
-                 " contained in `p_dist`, the probabilities of transistioning",
-                 " from previous state `u` over all the possible next states",
-                 " `v` should be equal to 1, for all the (d + 1) matrices",
+                 " contained in `p_dist`,\nthe probabilities of transistioning",
+                 " from previous state `u`,\nover all the possible next states",
+                 " `v`, should be equal to 1,\nfor all the (d + 1) matrices",
                  " p_(i/d).\nWhat follows are the cases that violate",
                  " this principle:\n",
                  paste("\n", possible_cases[logical_vector]))
@@ -416,18 +418,19 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
     } else {
         # Case when p is not drifting, a.k.a. `p_is_drifting` = FALSE.
         if (!is_double_matrix(p_dist)) {
-            stop("\nSince `p_is_drifting` = FALSE, `p_dist` should be",
-                 " a square matrix with dimensions: \n(s, s)")
+            stop("\nSince `p_is_drifting` = FALSE,\n`p_dist` should be",
+                 " a square matrix with dimensions: (s, s)")
         } else if (!is_prob(p_dist)) {
             non_prob <- which(!is_prob_vector(p_dist))
             stop("\nArray `p_drift` contains values that are not ",
                  "probabilities:\n",
                  paste0(p_dist[non_prob], collapse = ", "))
         } else if (!all((dimension <- dim(p_dist)) == c(s, s))) {
-            stop("\nSince `p_is_drifting` = FALSE, `p_dist` should be",
-                 " a square matrix with dimensions: \n(s, s) = (",
-                 paste(c(s,s), collapse = ', '),
-                 ") when it has dimensions: (",
+            stop("\nSince `p_is_drifting` = FALSE,\n`p_dist` should be",
+                 " a square matrix\n",
+                 " with dimensions: (s, s) = (",
+                 paste(c(s,s), collapse = ', '), "),\n",
+                 " when it has dimensions  = (",
                  paste(dimension, collapse = ', '), ").")
         } else if (!all_equal(sum(p_dist *  diag(s)), 0)) {
             stop("\nThe diagonal values of `p_dist` should all be equal to 0.")
@@ -437,10 +440,10 @@ valid_p_dist <- function(p_dist, s, degree, p_is_drifting, states) {
             logical_vector <- sapply(p_notdrift_rowsum,
                                      function(u) !all_equal(u, 1))
             stop("\nFor the transition probability matrice contained in ",
-                 "`p_dist`the probabilities of transistioning from ",
-                 "previous state `u` over all the possible next states ",
-                 "`v` should be equal to 1. \nWhat follows are ",
-                 "the states  that violate this principle.\n",
+                 "`p_dist`,\nthe probabilities of transistioning from",
+                 "previous state `u`,\nover all the possible next states ",
+                 "`v`, should be equal to 1.\nWhat follows are ",
+                 "the states which violate this principle.\n",
                  paste("\n", states[logical_vector]))
         }
     }
@@ -459,23 +462,23 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
     if (f_is_drifting) {
         # Case when f is drifting, a.k.a. `f_is_drifting` == TRUE.
         if (!is_double_array(f_dist)) {
-            stop("\nSince `f_is_drifting` is TRUE, `f_dist` should be a ",
-                 "numeric array with dimensions:\n(s, s, k_max, degree + 1).")
+            stop("\nSince `f_is_drifting` is TRUE,\n`f_dist` should be a ",
+                 "numeric array with dimensions:\n (s, s, k_max, degree + 1).")
         } else if (!is_prob(f_dist)) {
             non_prob <- which(!is_prob_vector(f_dist))
             stop("\nArray `f_drift` contains values that are not ",
                  "probabilities:\n",
                  paste0(f_dist[non_prob], collapse = ", "))
         } else if (!all((dimension <- dim(f_dist)) == c(s, s, k_max, D))) {
-            stop("\nSince `f_is_drifting` is TRUE, the `f_dist` should be an ",
-                 "array with dimensions:\n(s, s, k_max, degree + 1) = (",
-                 paste(c(s, s, k_max, D), collapse = ', '),
-                 '), when it has',
-                 " dimensions (", paste(dimension, collapse = ', '),
-                 ")\nThese dimensions",
-                 " should correspond to previous states `u`,",
-                 " current states `v`,\n",
-                 "maximum sojourn time of `k_max` and degree + 1.")
+            stop("\nSince `f_is_drifting` is TRUE,\n`f_dist` should be an ",
+                 "array with dimensions:\n",
+                 " (s, s, k_max, degree + 1) = (",
+                 paste(c(s, s, k_max, D), collapse = ', '), '),\n',
+                 ' when it has dimensions   = (', paste(dimension, collapse = ', '),
+                 ").\nThese dimensions",
+                 " should correspond to previous states `u`,\n",
+                 "current states `v`, ",
+                 "maximum sojourn time `k_max`\nand degree + 1.")
         } else if (!sum(f_dist * array(diag(s),
                                        dim = c(s, s, k_max, D))) ==  0) {
             # Diagonal values are not equal to 0.
@@ -499,7 +502,7 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
                                   collapse = ', '))))
             diffs <- sapply(f_drift_l_sum - no_diag, function(diff)
                 !all_equal_numeric(diff, 0))
-            stop('\nThe sums over l of `f_dist` are not equal to 1 for the ',
+            stop('\nThe sums over l of `f_dist` are not equal to 1,\nfor the ',
                  'following cases of u, v and array:\n',
                  paste0(array_names[diffs], collapse = '\n'))
         } else if (any(same <- sapply(1:D, function(d1) {
@@ -517,12 +520,12 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
             even <- same_arrays[x + 1]
             same_pairs <- paste0("\n\n", odd, " and ", even, collapse = ',\n ')
             stop("\nThe values given in `f_dist` are the same for the arrays:",
-                 same_pairs, ".")
+                 "\n ", same_pairs, ".")
         }
     } else {
         # Case when f is not drifting, a.k.a. `f_is_drifting` = FALSE.
         if (!is_double_array(f_dist)) {
-            stop("\nSince `f_is_drifting` is FALSE, `f_dist` should be a ",
+            stop("\nSince `f_is_drifting` is FALSE,\n`f_dist` should be a ",
                  "numeric array with dimensions:\n(s, s, k_max).")
         } else if (!is_prob(f_dist)) {
             non_prob <- which(!is_prob_vector(f_dist))
@@ -530,13 +533,16 @@ valid_fdist_nonparametric <- function(f_dist, states, s, degree,
                  "probabilities:\n",
                  paste0(f_dist[non_prob], collapse = ", "))
         } else if (!all((dimension <- dim(f_dist)) == c(s, s, k_max))) {
-            stop("\nSince `f_is_drifting` is FALSE, the `f_dist` should be",
-                 " an array with dimensions:\n",
-                 "(s, s, k_max) = (", paste(c(s, s, k_max), collapse = ', '),
-                 ") when it has dimensions of (",
-                 paste(dimension, collapse = ", "), ").\n",
-                 "These dimensions should correspond to previous states `u`, ",
-                 "current states `v`, and maximum sojourn time of `k_max`.")
+            stop("\nSince `f_is_drifting` is FALSE,\n`f_dist` should be an ",
+                 "array\n",
+                 " with dimensions: (s, s, k_max) = (",
+                 paste(c(s, s, k_max), collapse = ', '), '),\n',
+                 ' when it has dimensions         = (',
+                 paste(dimension, collapse = ', '), 
+                 ").\nThese dimensions",
+                 " should correspond to previous states `u`,\n",
+                 "current states `v`, ",
+                 "and maximum sojourn time `k_max`")
         } else if (!all_equal_numeric(sum(f_dist *
                                           array(diag(s), dimension)), 0)) {
             stop("\nThe diagonal values of `f_dist` should all be equal to 0.")
@@ -593,10 +599,11 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
     # Checking f.
     if (f_is_drifting) {
         if (!all((tmp_d <- dim(fdist)) == (real_dim <- c(s, s, D)))) {
-            stop("\nSince `f_is_drifting` = TRUE, `f_dist` should have ",
-                 "dimensions: \n(s, s, degree + 1) = (",
-                 paste(real_dim, collapse = ', '),
-                 ') when it has dimensions: \n(',
+            stop("\nSince `f_is_drifting` = TRUE,",
+                 "\n`f_dist` should be an array\n", 
+                 " with dimensions: (s, s, degree + 1) = (",
+                 paste(real_dim, collapse = ', '), ')\n',
+                 ' when it has dimensions              = (',
                  paste(tmp_d, collapse = ', '), ").")
         } else if (!all(apply(fdist, c(3), function(matrix_uv)
             all(is.na(diag(matrix_uv)))))) {
@@ -604,11 +611,11 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
         }
     } else {
         if (!all((tmp_d <- dim(fdist)) == (real_dim <- c(s, s)))) {
-            stop("\nSince `f_is_drifting` = FALSE,",
-                 " `f_dist` should be a square matrix",
-                 " with dimensions: \n(s, s) = (",
-                 paste(real_dim, collapse = ', '),
-                 ') when it has dimensions: \n(',
+            stop("\nSince `f_is_drifting` = FALSE,\n",
+                 "`f_dist` should be a square matrix\n",
+                 " with dimensions: (s, s) = (",
+                 paste(real_dim, collapse = ', '), '),\n',
+                 ' when it has dimensions  = (',
                  paste(tmp_d, collapse = ', '), ").")
         } else if (!all(is.na(diag(fdist)))) {
             stop("\n`f_dist` should have all the diagonal values equal to NA.")
@@ -629,11 +636,11 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
     # Checking parameters
     if (f_is_drifting) {
         if (!all((par_tmp_d <- dim(params)) == (par_real_d <- c(s, s, 2L, D)))) {
-            stop("\nSince `f_is_drifting` = TRUE, `f_dist_parameters`",
-                 " should have dimensions:",
-                 "\n(s, s, 2, degree + 1) = (",
-                 paste(par_real_d, collapse = ', '),
-                 ') when it has dimensions: \n(',
+            stop("\nSince `f_is_drifting` = TRUE,\n`f_dist_parameters`",
+                 "should be an array\n",
+                 " with dimensions: (s, s, 2, degree + 1) = (",
+                 paste(par_real_d, collapse = ', '), "),\n",
+                 ' when it has dimensions                 = (',
                  paste(par_tmp_d, collapse = ', '), ").")
         } else if (!all(apply(params, c(3, 4), function(matrix_uvd)
             all(is.na(diag(matrix_uvd)))))) {
@@ -662,8 +669,8 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
             dist_ij <- fdist[,,d]
             params_ij <- params[,,,d]
             sapply(1:s, function(j) {
-                dist_i <- dist_ij[,j]
-                params_i <- params_ij[,j,]
+                dist_i <- dist_ij[, j]
+                params_i <- params_ij[, j, ]
                 sapply(1:s, function(i) {
                     row <- c(dist_i[i], params_i[i,])
                     valid_parameters(row = row, i = i, j = j, d = d,
@@ -673,11 +680,11 @@ valid_fdist_parametric <- function(fdist, params, degree, s, f_is_drifting,
         })
     } else {
         if (!all((par_tmp_d <- dim(params)) == (par_real_d <- c(s, s, 2L)))) {
-            stop("\nSince `f_is_drifting` = FALSE, ",
-                 "`f_dist_parameters` should be an ",
-                 "array with dimensions: \n(s, s, 2) = (",
+            stop("\nSince `f_is_drifting` = FALSE,\n",
+                 "`f_dist_parameters` should be an array\n", 
+                 " with dimensions: (s, s, 2) = (",
                  paste(par_real_d, collapse = ', '),
-                 ') when it has dimensions: \n(',
+                 ',\n when it has dimensions     = (',
                  paste(par_tmp_d, collapse = ', '), ").")
         } else if (!all(
             apply(params, c(3),
@@ -715,42 +722,42 @@ valid_parameters <- function(row, i, j, d, degree, states) {
     p2 <- as.numeric(row[3])
     msg <- paste0("\nCurrently for the sojourn time distribution ",
                   names_i_d(d = degree, kernel_name = "f")[d],
-                  ", for the previous state u = ", states[i],
+                  ",\n for the previous state u = ", states[i],
                   " and the next state v = ", states[j],
-                  ", we have that the first parameter is equal to ", p1,
+                  ",\n we have that the first parameter is equal to ", p1,
                   " and the second parameter is equal to ", p2, ".")
     if (distr == "unif") {
         if (is.na(p1) || !(is.na(p2))) {
-            stop("\nFor Uniform distributions, only the first parameter",
-                 " must be specified.", msg)
-        } else if (!((p1 > 0) && ((p1 %% 1) == 0))) {
-            stop("\nFor Uniform distributions, the value of the parameter",
+            stop("\nFor Uniform distributions, the first parameter must",
+                 " be specified,\nand the second parameter must be NA.", msg)
+        } else if (!((p1 >= 0) && ((p1 %% 1) == 0))) {
+            stop("\nFor Uniform distributions,\nthe parameter",
                  " must be a positive integer.", msg)
         }
     } else if (distr == "geom") {
         if (is.na(p1) || !(is.na(p2))) {
             stop("\nFor Geometric distributions, the first parameter must",
-                 " be specified and the second parameter must be NA.", msg)
+                 " be specified,\nand the second parameter must be NA.", msg)
         } else if (p1 <= 0 || p1 >= 1) {
-            stop("\nFor Geometric distributions, the value of the parameter",
-                 " must be between [0, 1] (probability of success).", msg)
+            stop("\nFor Geometric distributions,\nthe parameter",
+                 " must be a probability in (0, 1).", msg)
         }
     } else if (distr == "pois") {
         if (is.na(p1) || !(is.na(p2))) {
             stop("\nFor Poisson distributions, the first parameter must",
-                 " be specified and the second parameter must be NA.", msg)
+                 " be specified,\nand the second parameter must be NA.", msg)
         } else if (p1 <= 0) {
-            stop("\nFor Poisson distributions, the first parameter ",
-                 "specified must be a positive number.", msg)
+            stop("\nFor Poisson distributions,\nthe parameter ",
+                 "must be a positive number.", msg)
         }
     } else if (distr == "dweibull") {
         if (anyNA(c(p1, p2))) {
             stop("\nFor Discrete Weibull distributions, both ",
                  "parameters must be specified.", msg)
         } else if (p1 <= 0 || p1 >= 1 || p2 <= 0) {
-            stop("\nFor Discrete Weibull distributions, the value ",
-                 "of the first parameter must be between [0, 1],",
-                 " and the second parameter must be a positive number.",
+            stop("\nFor Discrete Weibull distributions,\n",
+                 "the first parameter must be a probability in (0, 1),\n",
+                 "and the second parameter must be a positive number.",
                  msg)
         }
     } else if (distr == "nbinom") {
@@ -758,11 +765,10 @@ valid_parameters <- function(row, i, j, d, degree, states) {
             stop("\nFor Negative Binomial distributions, both parameters ",
                  "must be specified.", msg)
         } else if (p1 <= 0 || p2 <= 0 || p2 >= 1) {
-            stop("\nFor Negative Binomial distributions, the first parameter ",
-                 "must be a positive number (parameter of overdispersion), ",
-                 "and the value of the second parameter must ",
-                 "be between [0, 1] ",
-                 "(the parameter is the probability of success).", msg)
+            stop("\nFor Negative Binomial distributions,\nthe first parameter ",
+                 "must be a positive number (overdispersion),\n",
+                 "and the second parameter must be a probability in ",
+                 "(0, 1).", msg)
         }
     }
     TRUE
@@ -827,7 +833,7 @@ valid_estimation_fit <- function(estimation, degree, states, s, k_max,
     #    their own object in a `vile` manner.
     # '''
     if (estimation != 'nonparametric' && estimation != 'parametric') {
-        stop("`estimation` attribute should be either 'nonparametric' or ",
+        stop("`estimation` attribute should be either 'nonparametric',\nor ",
              " 'parametric'.")
     }
     stopifnot(valid_p_dist(p_dist = pdist,
@@ -1054,7 +1060,7 @@ create_sequence <- function(states, len = 5000, probs = NULL, seed = NULL) {
     #    This is a convenience function intended for fast sequence simulation.
     # '''
     if (missing(states)) {
-        stop("\nPlease input a character vector of states.")
+        stop("\nPlease input the character vector of `states`.")
     } else if (identical(states, "DNA")) {
         states <- c("a", "c", "g", "t")
     }

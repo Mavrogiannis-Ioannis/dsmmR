@@ -15,6 +15,7 @@ editor_options:
     - `get_kernel()`
     - `parametric_dsmm()`
     - `nonparametric_dsmm()`
+  (@Bisaloo, 2)
     
 ## Code of Conduct
 
@@ -23,18 +24,19 @@ editor_options:
 
 ## Documentation
 
-- Small changes in the description of `get_kernel()`, regarding the reduction of 
-  dimensions when selecting a specific argument of u, v, l or t.
+- `get_kernel()` has small changes in the description, regarding the
+  reduction of dimensions when selecting a specific argument of u, v, l or t.
 
 ## Workflows
 
-- A Github workflow for `R-hub v2` is added in `.github/workflows`. This ensures that
-  after every github update of the online `dsmmR` repository, the CRAN checks are 
-  being made for multiple platforms (linux, macos, windows). This can be run manually
-  through the command rhub::rhub_check(branch = 'master').
+- The Github workflow `R-hub v2` is added in `.github/workflows`. This ensures
+  that after every github update of the online `dsmmR` repository, the CRAN
+  checks are being made for multiple platforms (linux, macos, windows). This can
+  be run manually through the `command rhub::rhub_check(branch = 'master')`.
   
-- Another Github workflow for `codecov` was added in `.github/workflows`. This ensures
-  that the `dsmmR` package is mostly covered by the automated tests in place.
+- Another Github workflow `codecov` was added in `.github/workflows`. This 
+  ensures that the `dsmmR` package is mostly covered by the automated tests in 
+  place.
 
 ## Errors
 
@@ -44,21 +46,30 @@ editor_options:
   errors to appear when trying to print an estimated fitted model when f was not
   drifting (Model 2).
 
+## Reference DOIs
+
+- For each reference cited in `paper.bib`, DOIs were added in the correct
+  formatting. This was a small fix done for the JOSS publication.
+
+## Error handling
+
+- Increased the clarity of the string formatting for the different warning
+  messages the user may encounter during his use of the package.
 
 # dsmmR 1.0.4
 
 ## DESCRIPTION
 
-- `fit_dsmm` now has a new attribute, `multi_estimation`, that enables the 
+- `fit_dsmm()` gains a new attribute `multi_estimation`, which enables the 
   estimation of a drifting semi-Markov model using multiple sequences. There 
   are two possible options: `avg_model` and `count_sum`.
      - `avg_model` averages the `q_i` received from multiple sequences 
-     - `count_sum` adds the counts of the states for each sequence (of equal size)
-       and then computes the `q_i`. 
+     - `count_sum` adds the counts of the states for each sequence
+       (of equal size) and then computes the `q_i`. 
        
-- Further changes were made for clarity, to the naming conventions of
-  `simulate.dsmm()`. Specifically, the previous variable `seq_length` 
-  is now named `max_seq_length`.
+- `simulate.dsmm()` gains a new attribute, `max_seq_length`, which is renamed
+  from old attribute `seq_length` for clarity.
+  
 
 # dsmmR 1.0.3
 
@@ -72,9 +83,13 @@ editor_options:
 
 ## Documentation
 
-- Updated the `fit_dsmm()` and `simulate.dsmm()` functions to properly explain the 
-  difference between the given/simulated sequence of states and the embedded Markov
-  chain. Also, the function `base::rle()` is mentioned for clarity.
+- `fit_dsmm()` and `simulate.dsmm()` functions now better explain the difference
+  between a sequence of states and the embedded Markov chain.
+  Notably, it was specified that sequences are input in `fit_dsmm()`, specified
+  with the argument `sequence`.
+  In `simulate.dsmm()`, such a sequence is the resulting output. 
+  The embedded Markov chain can be seen as part of the output from `fit_dsmm()`,
+  named `emc`. Furthermore, the function `base::rle()` is mentioned for clarity.
 
 
 # dsmmR 1.0.2

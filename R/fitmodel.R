@@ -670,8 +670,8 @@ fit_dsmm <- function(sequence,
     }
     # p_is_drifting
     if (missing(p_is_drifting)) {
-        stop("\nPlease provide whether the transition matrix p is drifting",
-             " through the logical parameter `p_is_drifting`.")
+        stop("\nPlease provide whether the transition matrix p is drifting,\n",
+             "through the logical parameter `p_is_drifting`.")
     } else if (!is_logical(p_is_drifting)) {
         stop("\nThe logical parameter `p_is_drifting` ",
              "should be either TRUE or FALSE.")
@@ -858,18 +858,18 @@ fit_dsmm <- function(sequence,
                             if (sum_fl != 0) {
                                 stop("For the states u = ", i, ", v = ", j,
                                      " and ", names_i_d(degree, 'f')[d],
-                                     " `f_dist` was defined to be NA, ",
+                                     "\n`f_dist` was defined to be NA, ",
                                      "however we do have occurences in ",
                                      "the sequence, corresponding to ",
-                                     "these states. Therefore, a ",
+                                     "these states.\nTherefore, a ",
                                      "distribution should be chosen.")
                             }
                             return(c(NA, NA))
                         } else if (sum_fl == 0) {
                             stop("For the states u = ", i, ", v = ", j,
                                  " and ", names_i_d(degree, 'f')[d],
-                                 " we have no occurences in the sequence.",
-                                 " Therefore, `f_dist` has to be NA.")
+                                 "\nwe have no occurences in the sequence.",
+                                 "\nTherefore, `f_dist` has to be NA.")
                         }
                         suppressWarnings( # because NA is being generated.
                             parametric_estimation(
@@ -905,8 +905,8 @@ fit_dsmm <- function(sequence,
                         if (sum_fl != 0) {
                             stop("For the states u = ", i, ", v = ", j,
                                  " and ", names_i_d(degree, 'f')[0],
-                                 " `f_dist` was defined to be NA, however",
-                                 " we do have occurences in the sequence.",
+                                 "\n`f_dist` was defined to be NA, however",
+                                 " we do have occurences in the sequence.\n",
                                  " Therefore, a distribution should be",
                                  " chosen.")
                         }
@@ -914,7 +914,7 @@ fit_dsmm <- function(sequence,
                     } else if (sum_fl == 0) {
                         stop("For the states u = ", i, ", v = ", j,
                              " and ", names_i_d(degree, 'f')[0],
-                             " we have no occurences in the sequence.",
+                             " we have no occurences in the sequence.\n",
                              " Therefore, `f_dist` has to be NA.")
                     }
                     suppressWarnings( # Because NAs are being generated.

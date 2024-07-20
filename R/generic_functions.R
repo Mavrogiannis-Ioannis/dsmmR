@@ -82,7 +82,7 @@ check_attributes.dsmm_fit_nonparametric <- function(obj) {
                    "p_is_drifting", "Model", "estimation", "A_i", "J_i")
     if (!identical((nobj <- names(obj)), names_fit)) {
         msg <- c("\nThe attributes of the object defined are not",
-                 " the same as for a parametric object defined ",
+                 " the same as\nfor a parametric object defined ",
                  "through `nonparametric_dsmm()`.\n")
         extranames <- nobj[which(!nobj %in% names_fit)]
         if (length(extranames) > 0) {
@@ -164,7 +164,7 @@ check_attributes.dsmm_fit_parametric <- function(obj) {
                    "p_is_drifting", "Model", "estimation", "A_i", "J_i")
     if (!identical((nobj <- names(obj)), names_fit)) {
         msg <- c("\nThe attributes of the object defined are not",
-                 " the same as for a parametric object defined ",
+                 " the same\nas for a parametric object defined ",
                  "through `nonparametric_dsmm()`.\n")
         extranames <- nobj[which(!nobj %in% names_fit)]
         if (length(extranames) > 0) {
@@ -229,7 +229,7 @@ check_attributes.dsmm_nonparametric <- function(obj) {
         "model_size", "f_is_drifting", "p_is_drifting", 'Model', "A_i")
     if (!identical((nobj <- names(obj)), names_nonpar)) {
         msg <- c("\nThe attributes of the object defined are not",
-                 " the same as for a parametric object defined ",
+                 " the same\nas for a parametric object defined ",
                  "through `nonparametric_dsmm()`.\n")
         extranames <- nobj[which(!nobj %in% names_nonpar)]
         if (length(extranames) > 0) {
@@ -297,7 +297,7 @@ check_attributes.dsmm_parametric <- function(obj) {
         "f_is_drifting", "p_is_drifting", 'Model', "A_i")
     if (!identical((nobj <- names(obj)), names_par)) {
         msg <- c("\nThe attributes of the object defined are not",
-                 " the same as for a parametric object defined ",
+                 " the same\nas for the parametric object defined ",
                  "through `parametric_dsmm()`.\n")
         extranames <- nobj[which(!nobj %in% names_par)]
         if (length(extranames) > 0) {
@@ -334,7 +334,7 @@ is.dsmm <- function(obj) {
     # Check for missing object, `obj`.
     if (missing(obj)) {
         stop("\nPlease input the `obj` parameter of class `dsmm`. ",
-             "This can be done through the functions\n `fit_dsmm()`, ",
+             "\nThis can be done through the functions:\n `fit_dsmm()`, ",
              "`dsmm_parametric()` and `dsmm_nonparametric()`.")
     }
     # Check for class of object.
@@ -653,7 +653,7 @@ get_kernel <- function(obj, t, u, v, l, klim = 100) {
     s <- length(states)
     if (!missing(t)) {
         if (!is_integer(t)) {
-            stop("\nAttribute `t` should be a positive integer, specifying",
+            stop("\nAttribute `t` should be a positive integer,\nspecifying",
                  " the instance of the visited state of your choice.\n",
                  "Currently, it is equal to: ", t)
         }
@@ -666,7 +666,7 @@ get_kernel <- function(obj, t, u, v, l, klim = 100) {
             stopifnot(valid_state(u, states))
         } else if (is_integer(u) && u > s) {
             stop("\nThe previous state `u` is specified as the numbered ",
-                 "state `", u, "` in the state space of total length s = ",
+                 "state `", u, "`,\nin the state space of total length s = ",
                  s, ".")
         }
         u <- states[which(states == u)]
@@ -677,7 +677,7 @@ get_kernel <- function(obj, t, u, v, l, klim = 100) {
         } else if (is_integer(v) && v > s) {
             stop("\nThe previous state `v` is specified as the numbered",
                  " state `", v,
-                 "` in the state space of total length s = ", s, ".")
+                 "`,\n in the state space of total length s = ", s, ".")
         }
         v <- states[which(states == v)]
     }
@@ -1010,7 +1010,7 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
                                    'dsmm_parametric'))) {
         stop("\nPlease provide an object of class `dsmm` to use for the",
              " function `simulate()`.",
-             "\nThe object can be created through the functions ",
+             "\nThe object can be created easily through the functions\n",
              "`parametric_dsmm()`, `nonparametric_dsmm()` and `fit_dsmm()`.")
     }
     # Check if nsim and sequence length are given at the same time.
@@ -1027,7 +1027,7 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     }
     # Check `max_seq_length`.
     if (!is.null(max_seq_length) && !is_integer(max_seq_length)) {
-        stop("\nThe final length of the sequence `max_seq_length` ",
+        stop("\nThe final length of the sequence `max_seq_length`,\n",
              "needs to be a positive integer.")
     } else if (is_integer(max_seq_length)) {
         nsim <- max_seq_length
@@ -1048,7 +1048,7 @@ simulate.dsmm <- function(object, nsim = NULL, seed = NULL,
     n <- object$model_size
     if (nsim > n) {
         stop("\nThe number of simulations `nsim` = ", nsim,
-             " cannot be larger than the model size, n = ", n)
+             ",\ncannot be larger than the model size, n = ", n)
     }
     kernel <- get_kernel(object, klim = klim)
     k_max <- dim(kernel)[3] # We get `k_max` even for the parametric case.

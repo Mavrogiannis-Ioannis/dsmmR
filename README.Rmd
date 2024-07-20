@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 # Developer Version
 
-## 1.0.3
+## 1.0.5
 
 # dsmmR
 
@@ -139,7 +139,7 @@ For more information, consider the documentation through
 
 ### Drifting semi-Markov kernel
 
-In order to account for the large dimension of the DSM kernel, a
+In order to account for the dimension of the DSM kernel, a
 separate function was necessary. You can obtain the DSM kernel through
 the command:
 

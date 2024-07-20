@@ -1,3 +1,23 @@
+# version 1.0.5 --------------------------------------------------------------------
+
+# R Version: 4.4.1
+
+# R CMD check results.
+
+No ERRORs, WARNINGs or NOTEs.
+
+
+# R CMD check results through `rhub::rhub_check(branch = 'master')`.
+
+There are no ERRORs or NOTEs, only one WARNING.
+   
+   Warnings:
+   (1) * `rchk` (input number 19):
+      `No files were found with the provided path: check. No artifacts will be uploaded.`
+      I believe this is an internal warning on `rchk`s side.
+      See <https://github.com/actions/upload-artifact/issues/232>
+
+
 # version 1.0.2 --------------------------------------------------------------------
 
 # R Version: 4.3.1
