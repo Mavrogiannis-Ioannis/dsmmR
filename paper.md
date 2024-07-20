@@ -117,7 +117,7 @@ f_dist_2_pars_1 <- matrix(c(NA,  3,   5,
                             5,   0.3, NA), nrow = s, ncol = s, byrow = TRUE)
 f_dist_2_pars_2 <- matrix(c(NA,  0.4, NA,
                             NA,  NA,  NA,
-                            NA,  0.5, NA), nrow = s, ncol = s, byrow = TRUE)`.
+                            NA,  0.5, NA), nrow = s, ncol = s, byrow = TRUE).
 
 f_dist <- array(c(f_dist_1, f_dist_2), dim = c(s, s, degree + 1))
 f_dist_pars <- array(c(f_dist_1_pars_1, f_dist_1_pars_2,
@@ -161,9 +161,56 @@ Finally, the drifting transition matrix is estimated as:
 ```r
 print(fitted_model$dist$p_drift, digits = 2)
 ```
+
+```
+, , p_0
+
+     a    b    c
+a 0.00 0.40 0.60
+b 0.51 0.00 0.49
+c 0.27 0.73 0.00
+
+, , p_1
+
+     a    b    c
+a 0.00 0.54 0.46
+b 0.23 0.00 0.77
+c 0.51 0.49 0.00
+```
+
 and the parameters for the drifting sojourn time distributions are:
 ```r
 print(fitted_model$dist$f_drift_parameters, digits = 2)
+```
+
+```
+, , 1, fpars_0
+
+     a    b   c
+a   NA 3.66 3.0
+b 0.65   NA 4.8
+c 3.09 0.62  NA
+
+, , 2, fpars_0
+
+   a    b  c
+a NA 0.46 NA
+b NA   NA NA
+c NA 0.84 NA
+
+, , 1, fpars_1
+
+     a    b   c
+a   NA 2.74 5.0
+b 0.31   NA 2.1
+c 5.02 0.29  NA
+
+, , 2, fpars_1
+
+   a    b  c
+a NA 0.38 NA
+b NA   NA NA
+c NA 0.50 NA
 ```
 
 For more details about any of these functions, consider viewing the extended
