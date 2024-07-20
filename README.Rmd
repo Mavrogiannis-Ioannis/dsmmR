@@ -240,7 +240,10 @@ fitted_model <- fit_dsmm(sequence = sim_seq,
 Finally, the drifting transition matrix is estimated as:
 ```{r, eval = FALSE}
 print(fitted_model$dist$p_drift, digits = 2)
+```
 
+with output:
+```{r, eval = FALSE}
 , , p_0
 
      a    b    c
@@ -254,13 +257,15 @@ c 0.27 0.73 0.00
 a 0.00 0.54 0.46
 b 0.23 0.00 0.77
 c 0.51 0.49 0.00
-
 ```
 
 and the parameters for the drifting sojourn time distributions are:
 ```{r, eval = FALSE}
 print(fitted_model$dist$f_drift_parameters, digits = 2)
+```
 
+with output:
+```{r, eval = FALSE}
 , , 1, fpars_0
 
      a    b   c

@@ -241,7 +241,11 @@ Finally, the drifting transition matrix is estimated as:
 
 ``` r
 print(fitted_model$dist$p_drift, digits = 2)
+```
 
+with output:
+
+``` r
 , , p_0
 
      a    b    c
@@ -261,7 +265,11 @@ and the parameters for the drifting sojourn time distributions are:
 
 ``` r
 print(fitted_model$dist$f_drift_parameters, digits = 2)
+```
 
+with output:
+
+``` r
 , , 1, fpars_0
 
      a    b   c
