@@ -63,67 +63,12 @@ Furthermore, for drifting Markov models the R package `drimmR` [@drimmR_package]
 
 # Quickstart
 
-```{r, eval = TRUE, include = FALSE}
-library(dsmmR)
-states <- c("a", "b", "c")
-s <- length(states)
-degree <- 1
-p_dist_1 <- matrix(c(0,   0.4,  0.6,
-                     0.5, 0,    0.5,
-                     0.3, 0.7,  0   ), ncol = s, byrow = TRUE)
-p_dist_2 <- matrix(c(0,   0.55, 0.45,
-                     0.25, 0,   0.75,
-                     0.5, 0.5,  0   ), ncol = s, byrow = TRUE)
-p_dist <- array(c(p_dist_1, p_dist_2), dim = c(s, s, degree + 1))
-f_dist_1 <- matrix(c(NA,   "nbinom",   "unif",
-                   "geom",  NA,        "pois",
-                   "pois", "dweibull",  NA   ), nrow = s, ncol = s, byrow = TRUE)
-f_dist_1_pars_1 <- matrix(c(NA,  4,   3,
-                            0.7, NA,  5,
-                            3,   0.6, NA), nrow = s, ncol = s, byrow = TRUE)
-f_dist_1_pars_2 <- matrix(c(NA,  0.5, NA,
-                            NA,  NA,  NA,
-                            NA,  0.8, NA), nrow = s, ncol = s, byrow = TRUE)
-f_dist_2 <- f_dist_1 
-f_dist_2_pars_1 <- matrix(c(NA,  3,   5,
-                            0.3, NA,  2,
-                            5,   0.3, NA), nrow = s, ncol = s, byrow = TRUE)
-f_dist_2_pars_2 <- matrix(c(NA,  0.4, NA,
-                            NA,  NA,  NA,
-                            NA,  0.5, NA), nrow = s, ncol = s, byrow = TRUE)`.
-
-f_dist <- array(c(f_dist_1, f_dist_2), dim = c(s, s, degree + 1))
-f_dist_pars <- array(c(f_dist_1_pars_1, f_dist_1_pars_2,
-                       f_dist_2_pars_1, f_dist_2_pars_2), 
-                     dim = c(s, s, 2, degree + 1))
-dsmm_model <- parametric_dsmm(
-    model_size = 10000,
-    states = states,
-    initial_dist = c(0.6, 0.3, 0.1),
-    degree = degree,
-    p_dist = p_dist,
-    f_dist = f_dist,
-    f_dist_pars = f_dist_pars,
-    p_is_drifting = TRUE,
-    f_is_drifting = TRUE
-)
-sim_seq <- simulate(dsmm_model, klim = 30, seed = 1)
-fitted_model <- fit_dsmm(sequence = sim_seq,
-                         states = states,
-                         degree = degree,
-                         f_is_drifting = TRUE,
-                         p_is_drifting = TRUE,
-                         estimation = 'parametric',
-                         f_dist = f_dist)
-```
-
-
 To install the package, simply use either of the commands in the R console:
-```{r, eval = FALSE}
+```r
 install.packages('dsmmR') # official release in CRAN
 ```
 Otherwise, if you wish to download the development version directly from Github: 
-```{r, eval = FALSE}
+```r
 if (!require("devtools")) install.packages("devtools")
 devtools::install_github("Mavrogiannis-Ioannis/dsmmR")
 ```
@@ -131,18 +76,18 @@ devtools::install_github("Mavrogiannis-Ioannis/dsmmR")
 We can then set up a simple case of defining a parametric `dsmm` object,
 simulating from it and then estimating from the simulated sequence, 
 by first of all loading the package, 
-```{r, eval = FALSE}
+```r
 library(dsmmR)
 ```
 and then defining the states and a degree equal to 1.
-```{r, eval = FALSE}
+```r
 states <- c("a", "b", "c")
 s <- length(states)
 degree <- 1
 ```
 
 Since degree is equal to 2, we can then define the 2 drifting transition matrices:
-```{r, eval = FALSE}
+```r
 p_dist_1 <- matrix(c(0,   0.4,  0.6,
                      0.5, 0,    0.5,
                      0.3, 0.7,  0   ), ncol = s, byrow = TRUE)
@@ -156,7 +101,7 @@ Let us also consider the case where only the parameters of the distributions
 modeling the sojourn times are drifting across the sequence. Note that some 
 distributions like the Negative Binomial and the Discrete Weibull require two 
 parameters, which we define in two matrices.
-```{r, eval = FALSE}
+```r
 f_dist_1 <- matrix(c(NA,   "nbinom",   "unif",
                    "geom",  NA,        "pois",
                    "pois", "dweibull",  NA   ), nrow = s, ncol = s, byrow = TRUE)
@@ -182,7 +127,7 @@ f_dist_pars <- array(c(f_dist_1_pars_1, f_dist_1_pars_2,
 
 Then, defining a `dsmm_parametric` object is done simply through the function 
 `parametric_dsmm()`:
-```{r, eval = FALSE}
+```r
 dsmm_model <- parametric_dsmm(
     model_size = 10000,
     states = states,
@@ -197,12 +142,12 @@ dsmm_model <- parametric_dsmm(
 ```
 
 We can then simulate a sequence from this parametric object like-so:
-```{r, eval = FALSE}
+```r
 sim_seq <- simulate(dsmm_model, klim = 30, seed = 1)
 ```
 
 To fit this sequence with a drifting semi-Markov model, one can use:
-```{r, eval = FALSE}
+```r
 fitted_model <- fit_dsmm(sequence = sim_seq,
                          states = states,
                          degree = degree,
@@ -213,11 +158,11 @@ fitted_model <- fit_dsmm(sequence = sim_seq,
 ```
 
 Finally, the drifting transition matrix is estimated as:
-```{r, eval = TRUE}
+```r
 print(fitted_model$dist$p_drift, digits = 2)
 ```
 and the parameters for the drifting sojourn time distributions are:
-```{r, eval = TRUE}
+```r
 print(fitted_model$dist$f_drift_parameters, digits = 2)
 ```
 
