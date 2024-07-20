@@ -135,25 +135,23 @@ For more information, consider the documentation through `?get_kernel`.
 
 ### Defining drifting semi-Markov models
 
-When defining a DSMM object we need to input parameters like the
-polynomial degree, the state space, the DSMM size (length of the
-embedded Markov chain), the sojourn times *f*, the transition matrices
-*p* and more.
-
-See example below.
+We can put together all the previous concepts in the showcase of
+parametric estimation. First, we will define the drifting transition
+matrices and the drifting sojourn time distributions. Then, we will
+create a `dsmm_parametric` object, we will simulate a sequence from it
+and then finally we will estimate a drifting semi-Markov model from that
+simulated sequence.
 
 For more information, consider the documentation through
 `?parametric_dsmm` and `?nonparametric_dsmm`.
 
-We can set up a simple case of defining a parametric `dsmm` object,
-simulating from it and then estimating from the simulated sequence, by
-first of all loading the package,
+First of all we load the package,
 
 ``` r
 library(dsmmR)
 ```
 
-and then defining the states and a degree equal to 1.
+and then we define the states and we set the degree equal to 1.
 
 ``` r
 states <- c("a", "b", "c")
@@ -161,7 +159,7 @@ s <- length(states)
 degree <- 1
 ```
 
-Since degree is equal to 1, we can then define the 2 drifting transition
+Since degree is equal to 1, we then define the 2 drifting transition
 matrices:
 
 ``` r
@@ -176,9 +174,9 @@ p_dist <- array(c(p_dist_1, p_dist_2), dim = c(s, s, degree + 1))
 
 Let us also consider the case where only the parameters of the
 distributions modeling the sojourn times are drifting across the
-sequence. Note that some distributions like the Negative Binomial and
-the Discrete Weibull require two parameters, which we define in two
-matrices.
+sequence. Note that distributions like the Negative Binomial and the
+Discrete Weibull require two parameters, which we define in two matrices
+for each distribution.
 
 ``` r
 f_dist_1 <- matrix(c(NA,   "nbinom",   "unif",
@@ -196,7 +194,7 @@ f_dist_2_pars_1 <- matrix(c(NA,  3,   5,
                             5,   0.3, NA), nrow = s, ncol = s, byrow = TRUE)
 f_dist_2_pars_2 <- matrix(c(NA,  0.4, NA,
                             NA,  NA,  NA,
-                            NA,  0.5, NA), nrow = s, ncol = s, byrow = TRUE).
+                            NA,  0.5, NA), nrow = s, ncol = s, byrow = TRUE)
 
 f_dist <- array(c(f_dist_1, f_dist_2), dim = c(s, s, degree + 1))
 f_dist_pars <- array(c(f_dist_1_pars_1, f_dist_1_pars_2,
@@ -243,55 +241,55 @@ Finally, the drifting transition matrix is estimated as:
 
 ``` r
 print(fitted_model$dist$p_drift, digits = 2)
+
+, , p_0
+
+     a    b    c
+a 0.00 0.40 0.60
+b 0.51 0.00 0.49
+c 0.27 0.73 0.00
+
+, , p_1
+
+     a    b    c
+a 0.00 0.54 0.46
+b 0.23 0.00 0.77
+c 0.51 0.49 0.00
 ```
-
-    , , p_0
-
-         a    b    c
-    a 0.00 0.40 0.60
-    b 0.51 0.00 0.49
-    c 0.27 0.73 0.00
-
-    , , p_1
-
-         a    b    c
-    a 0.00 0.54 0.46
-    b 0.23 0.00 0.77
-    c 0.51 0.49 0.00
 
 and the parameters for the drifting sojourn time distributions are:
 
 ``` r
 print(fitted_model$dist$f_drift_parameters, digits = 2)
+
+, , 1, fpars_0
+
+     a    b   c
+a   NA 3.66 3.0
+b 0.65   NA 4.8
+c 3.09 0.62  NA
+
+, , 2, fpars_0
+
+   a    b  c
+a NA 0.46 NA
+b NA   NA NA
+c NA 0.84 NA
+
+, , 1, fpars_1
+
+     a    b   c
+a   NA 2.74 5.0
+b 0.31   NA 2.1
+c 5.02 0.29  NA
+
+, , 2, fpars_1
+
+   a    b  c
+a NA 0.38 NA
+b NA   NA NA
+c NA 0.50 NA
 ```
-
-    , , 1, fpars_0
-
-         a    b   c
-    a   NA 3.66 3.0
-    b 0.65   NA 4.8
-    c 3.09 0.62  NA
-
-    , , 2, fpars_0
-
-       a    b  c
-    a NA 0.46 NA
-    b NA   NA NA
-    c NA 0.84 NA
-
-    , , 1, fpars_1
-
-         a    b   c
-    a   NA 2.74 5.0
-    b 0.31   NA 2.1
-    c 5.02 0.29  NA
-
-    , , 2, fpars_1
-
-       a    b  c
-    a NA 0.38 NA
-    b NA   NA NA
-    c NA 0.50 NA
 
 ## Further reading
 
