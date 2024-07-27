@@ -567,8 +567,8 @@ cat("Not-drifting parameters for passing from ",
 
 
 # ===========================================================================
-# Some methods for the `dsmm_fit_nonparametric` and
-#  `dsmm_fit_parametric` objects.
+# `simulate()` and `get_kernel()` can be used for the two objects,
+# `dsmm_fit_nonparametric` and `dsmm_fit_parametric`.
 # ===========================================================================
 
 
