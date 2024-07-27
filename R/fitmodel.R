@@ -629,11 +629,11 @@
 #' # ===========================================================================
 #'
 #'
-#' sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
+#' sim_seq_nonparametric <- simulate(object = obj_model_1, nsim = 10)
 #' str(sim_seq_nonparametric)
 #'
 #'
-#' kernel_drift_parametric <- get_kernel(obj_fit_parametric, klim = 10)
+#' kernel_drift_parametric <- get_kernel(obj = obj_fit_parametric, klim = 10)
 #' str(kernel_drift_parametric)
 #'
 fit_dsmm <- function(sequence,

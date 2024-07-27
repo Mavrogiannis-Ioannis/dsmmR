@@ -371,7 +371,7 @@
 #' kernel_parametric <- get_kernel(obj = obj_nonpar_model_3)
 #' str(kernel_parametric)
 #'
-#' sim_seq_par <- simulate(obj_nonpar_model_3, nsim = 50)
+#' sim_seq_par <- simulate(object = obj_nonpar_model_3, nsim = 50)
 #' str(sim_seq_par)
 nonparametric_dsmm <- function(model_size,
                                states,
