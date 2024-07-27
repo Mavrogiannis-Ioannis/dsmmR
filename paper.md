@@ -12,6 +12,7 @@ authors:
     affiliation: 1 
   - name: Ioannis Mavrogiannis
     affiliation: 2
+    orcid: 0000-0002-2948-0648
     corresponding: true
   - name: Nicolas Vergne
     affiliation: 1
