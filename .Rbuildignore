@@ -4,6 +4,7 @@
 ^README\.Rmd$
 ^cran-comments.md$
 ^\.github$
+^\.github\code_of_conduct.md$
 ^paper.md$
 ^paper.bib$
 ^codecov.yml$
