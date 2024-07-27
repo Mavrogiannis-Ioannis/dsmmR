@@ -20,7 +20,7 @@ There are no ERRORs or NOTEs, only WARNINGs.
 ### Regarding the WARNINGs:
    Regarding (1) : 
       This happens only for `rchk`, out of all 24 available platforms:
-      <>
+      <https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/runs/10019382164>.
       I believe this is an internal bug on `rchk`s side. See below:
       <https://github.com/actions/upload-artifact/issues/232#issuecomment-964235360>
 
