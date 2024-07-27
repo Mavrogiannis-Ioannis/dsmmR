@@ -624,17 +624,17 @@
 #'
 #'
 #' # ===========================================================================
-#' # Some methods for the `dsmm_fit_nonparametric` and
-#' #  `dsmm_fit_parametric` objects.
+#' # `simulate()` and `get_kernel()` can be used for the two objects,
+#' # `dsmm_fit_nonparametric` and `dsmm_fit_parametric`.
 #' # ===========================================================================
 #'
 #'
-#' sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
-#' str(sim_seq_nonparametric)
+#' # sim_seq_nonparametric <- simulate(obj_model_1, nsim = 10)
+#' # str(sim_seq_nonparametric)
 #'
 #'
-#' kernel_drift_parametric <- get_kernel(obj_fit_parametric, klim = 10)
-#' str(kernel_drift_parametric)
+#' # kernel_drift_parametric <- get_kernel(obj_fit_parametric, klim = 5)
+#' # str(kernel_drift_parametric)
 #'
 fit_dsmm <- function(sequence,
                      degree,
