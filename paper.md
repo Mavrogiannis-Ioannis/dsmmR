@@ -21,7 +21,7 @@ affiliations:
     index: 1
   - name: Laboratoire de Mécanique, Modélisation & Procédés Propres (M2P2), UMR 7340, Aix Marseille Université, CNRS, Centrale Méditerranée, France 
     index: 2
-date: 21 July 2024
+date: 27 July 2024
 bibliography: paper.bib
 editor_options: 
   markdown: 
@@ -32,7 +32,7 @@ editor_options:
 
 Markov models are a common approach in the researcher's toolbox for aiding with the modeling of many real-life phenomena, often presented as a sequence of states in discrete time, known as a Markov chain. However, this assumes that the sequence under inspection is time-homogeneous and that the sojourn times always follow a geometric distribution. Notice that this is not always true in practice, for example when modeling DNA sequences.
 
-Drifting semi-Markov models (DSMM) aim to be a discrete-time pairing of semi-Markov models with drifting Markov models. Semi-Markov models allow an arbitrary choice for the distribution of the sojourn times. The drifting Markov models describe the non-homogeneity of a sequence through a smooth, known shape that is gradually evolving, expressed through a polynomial function. As a result, DSMM are best suited to capture non-homogeneities which occurs from the intrinsic evolution of the system or from the interactions between the system and the environment. For a detailed introduction to semi-Markov models see @barbu_limnios. Drifting Markov models were first introduced in @drift_polynomial.
+Drifting semi-Markov models (DSMM) aim to be a discrete-time pairing of semi-Markov models with drifting Markov models. Semi-Markov models allow an arbitrary choice for the distribution of the sojourn times. The drifting Markov models describe the non-homogeneity of a sequence through a smooth, known shape that is gradually evolving, expressed through a polynomial function. As a result, DSMM are best suited to capture non-homogeneities which occur from the intrinsic evolution of the system or from the interactions between the system and the environment. For a detailed introduction to semi-Markov models see @barbu_limnios. Drifting Markov models were first introduced in @drift_polynomial.
 
 `dsmmR` is an R package which allows the user to perform parametric and non-parametric estimation and simulation of drifting semi-Markov processes. The user can also define their own parametric and non-parametric DSMM specifications, allowing for a necessary degree of freedom when dealing with a research question. Furthermore, three different types of DSMM are considered. These three models differ in the way they characterize the drifting semi-Markov kernel. Specifically, the first model allows both the transition matrix and the sojourn time distribution to vary (i.e. to "drift"), the second model allows only the transition matrix to drift, while the third model allows only the sojourn time distribution to drift.
 
@@ -46,7 +46,7 @@ The main functions of `dsmmR` are the following:
 
 The estimation of the DSMM is parametric or non-parametric and can be defined through the function `fit_dsmm()`, which returns an object of the S3 class `(fit_dsmm_parametric`, `dsmm)` or `(fit_dsmm_nonparametric`, `dsmm)`. In the parametric estimation case, several sojourn time distributions are considered for the sojourn times: Uniform, Geometric, Poisson, Discrete Weibull (of type 1) and Negative Binomial. The parametric DSMM specification can be defined through the function `parametric_dsmm()`, which returns an object of the S3 class `(dsmm_parametric`, `dsmm)`. The non-parametric DSMM specification can be defined through the function `nonparametric_dsmm()`, which returns an object of the S3 class `(dsmm_nonparametric`, `dsmm)`. It allows for the sojourn time distributions to be of an arbitrary shape.
 
-The `dsmm` class acts like a wrapper class, enabling the handling of all above objects, which encompass the three models and parametric or non-parametric cases for any degree for:
+The `dsmm` class acts like a wrapper class, enabling the handling of all above objects, which encompass the three models and parametric or non-parametric cases for any degree, for:
 
 -   Simulating a sequence of states under a drifting semi-Markov kernel through the S3 method `simulate.dsmm()`.
 
