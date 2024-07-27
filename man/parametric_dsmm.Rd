@@ -600,7 +600,7 @@ cat("The object has class of (",
 
 # A larger klim will lead to an increase in accuracy.
 klim <- 20
-sim_seq <- simulate(object = obj_par_model_1, klim = klim, seed = 1)
+sim_seq <- simulate(obj_par_model_1, klim = klim, seed = 1)
 
 
 # ---------------------------------------------------------------------------

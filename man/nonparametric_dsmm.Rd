@@ -367,11 +367,11 @@ f_drift
 # Using methods for non-parametric objects.
 # ===========================================================================
 
-# kernel_parametric <- get_kernel(obj = obj_nonpar_model_3)
-# str(kernel_parametric)
+kernel_parametric <- get_kernel(obj_nonpar_model_3)
+str(kernel_parametric)
 
-# sim_seq_par <- simulate(object = obj_nonpar_model_3, nsim = 50)
-# str(sim_seq_par)
+sim_seq_par <- simulate(obj_nonpar_model_3, nsim = 50)
+str(sim_seq_par)
 }
 \references{
 V. S. Barbu, N. Limnios. (2008). semi-Markov Chains and Hidden semi-Markov
