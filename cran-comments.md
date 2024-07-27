@@ -13,11 +13,19 @@ There are no ERRORs or NOTEs, only WARNINGs.
    
    Warnings:
    (1) * `rchk` (input number 19):
-      The warning reads as:
+      Github action fails to finish, with the error message:
       `No files were found with the provided path: check. No artifacts will be uploaded.`
-      I believe this is an internal bug on `rchk`s side;
-      See:
+
+
+### Regarding the WARNINGs:
+   Regarding (1) : 
+      This happens only for `rchk`, out of all 24 available platforms:
+      <>
+      I believe this is an internal bug on `rchk`s side. See below:
       <https://github.com/actions/upload-artifact/issues/232#issuecomment-964235360>
+
+   
+
 
 
 # version 1.0.2 --------------------------------------------------------------------
