@@ -2,29 +2,35 @@
 
 # R Version: 4.4.1
 
+
 # R CMD check results.
 
 No ERRORs, WARNINGs or NOTEs.
 
 
+
 # R CMD check results through `rhub::rhub_check(branch = 'master')`.
 
-There are no ERRORs or NOTEs, only WARNINGs.
+There are no WARNINGs or NOTEs, only ERRORs.
    
-   Warnings:
+   Errors:
+   All errors are associated with github actions.
    (1) * `rchk` (input number 19):
       Github action fails to finish, with the error message:
       `No files were found with the provided path: check. No artifacts will be uploaded.`
+   (2-6) * `c23`, `clang16`, `clang17`, `clang18`, `clang19` (input numbers 6, 8, 9, 10, 11):
+      Github action fails to finish, in part with the error message:
+      `undefined symbol: __asan_option_detect_stack_use_after_return`
 
+### Regarding the ERRORs:
 
-### Regarding the WARNINGs:
    Regarding (1) : 
-      This happens only for `rchk`, out of all 24 available platforms:
-      <https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/runs/10019382164>.
-      I believe this is an internal bug on `rchk`s side. See below:
+      As seen in the issue below, this could be a bug in `rchk`'s side:
       <https://github.com/actions/upload-artifact/issues/232#issuecomment-964235360>
-
-   
+      
+   Regarding (2-6) : 
+      Similar problems were encountered before from other users:
+      <https://gcc.gnu.org/pipermail/gcc-help/2019-March/136892.html>
 
 
 
