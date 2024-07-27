@@ -16,7 +16,8 @@ There are no ERRORs or NOTEs, only WARNINGs.
       The warning reads as:
       `No files were found with the provided path: check. No artifacts will be uploaded.`
       I believe this is an internal bug on `rchk`s side;
-      see <https://github.com/actions/upload-artifact/issues/232>
+      See:
+      <https://github.com/actions/upload-artifact/issues/232#issuecomment-964235360>
 
 
 # version 1.0.2 --------------------------------------------------------------------

@@ -93,3 +93,8 @@ jobs:
         with:
           job-config: ${{ matrix.config.job-config }}
           token: ${{ secrets.RHUB_TOKEN }}
+      - name: List installed files
+        run: |
+          pkg=$(grep '^Package' DESCRIPTION | cut -d ' ' -f2)
+          find /opt/R/devel-rchk/packages/lib/$pkg/libs/ -type f
+
