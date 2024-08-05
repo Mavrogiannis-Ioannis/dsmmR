@@ -338,7 +338,14 @@ Computing in Applied Probability, 21(4), 1407-1429.
 
 ## Acknowledgements
 
-We acknowledge the DATALAB Project
+The author and developer Mavrogiannis Ioannis would like to acknowledge
+that this research work was primarily conducted while he was affiliated
+with the LMRS laboratory (UMR CNRS 6085, University of Rouen Normandy,
+France), while he is currently affiliated with the M2P2 laboratory
+(Aix-Marseille Université, CNRS, Centrale Marseille, M2P2 UMR 7340,
+Marseille, France).
+
+The authors acknowledge the DATALAB Project
 <https://lmrs-num.math.cnrs.fr/projet-datalab.html> (financed by the
 European Union with the European Regional Development fund (ERDF) and by
 the Normandy Region) and the HSMM-INCA Project (financed by the French
