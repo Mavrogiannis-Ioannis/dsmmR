@@ -11,7 +11,7 @@ authors:
     orcid: 0000-0002-0840-016X
     affiliation: 1 
   - name: Ioannis Mavrogiannis
-    affiliation: 2
+    affiliation: 1, 2
     orcid: 0000-0002-2948-0648
     corresponding: true
   - name: Nicolas Vergne
@@ -19,9 +19,9 @@ authors:
 affiliations:
   - name: Laboratory of Mathematics Raphaël Salem (LMRS), UMR CNRS 6085, University of Rouen Normandy, France
     index: 1
-  - name: Laboratoire de Mécanique, Modélisation & Procédés Propres (M2P2), UMR 7340, Aix Marseille Université, CNRS, Centrale Méditerranée, France 
+  - name: Aix-Marseille Université, CNRS, Centrale Marseille, M2P2 UMR 7340, Marseille, France
     index: 2
-date: 27 July 2024
+date: 05 August 2024
 bibliography: paper.bib
 editor_options: 
   markdown: 
@@ -63,7 +63,9 @@ Furthermore, for drifting Markov models the R package `drimmR` [@drimmR_package]
 
 # Acknowledgements
 
-We acknowledge the DATALAB Project (financed by the European Union with the European Regional Development fund (ERDF) and by the Normandy Region) and the HSMM-INCA Project (financed by the French Agence Nationale de la Recherche (ANR) under grant ANR-21-CE40-0005).
+The author I.M. would like to acknowledge that this research work was primarily conducted while he was affiliated with the LMRS laboratory (affiliation 1), while he is currently affiliated with the M2P2 laboratory (affiliation 2).
+
+All the authors acknowledge the DATALAB Project (financed by the European Union with the European Regional Development fund (ERDF) and by the Normandy Region) and the HSMM-INCA Project (financed by the French Agence Nationale de la Recherche (ANR) under grant ANR-21-CE40-0005).
 
 
 # References
