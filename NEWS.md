@@ -5,6 +5,13 @@ editor_options:
     wrap: 72
 ---
 
+# dsmmR 1.0.6
+
+## README
+
+- Added DOI label for the JOSS paper, after the successful publication.
+
+
 # dsmmR 1.0.5
 
 ## Tests
