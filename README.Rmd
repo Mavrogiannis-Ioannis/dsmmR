@@ -20,10 +20,10 @@ knitr::opts_chunk$set(
 
 [![CRAN status](https://www.r-pkg.org/badges/version/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![R-CMD-check](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Mavrogiannis-Ioannis/dsmmR/actions/workflows/R-CMD-check.yaml)
-[![DOI](https://joss.theoj.org/papers/10.21105/joss.05572/status.svg)](https://doi.org/10.21105/joss.05572)
 [![CRAN logs](https://cranlogs.r-pkg.org/badges/dsmmR)](https://CRAN.R-project.org/package=dsmmR)
 [![Codecov test coverage](https://codecov.io/gh/Mavrogiannis-Ioannis/dsmmR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Mavrogiannis-Ioannis/dsmmR?branch=master)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://usethis.r-lib.org/CODE_OF_CONDUCT.html) 
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.05572/status.svg)](https://doi.org/10.21105/joss.05572)
 <!-- badges: end -->
 
 # Developer Version
