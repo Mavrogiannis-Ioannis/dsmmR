@@ -5,6 +5,13 @@ editor_options:
     wrap: 72
 ---
 
+# dsmmR 1.0.7
+
+## DESCRIPTION
+
+- Removed 'Needs Compilation : yes' according to an email from the CRAN team.
+
+
 # dsmmR 1.0.6
 
 ## README

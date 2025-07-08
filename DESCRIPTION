@@ -1,8 +1,8 @@
 Type: Package
 Package: dsmmR
 Title: Estimation and Simulation of Drifting Semi-Markov Models
-Version: 1.0.6
-Date: 2024-08-07
+Version: 1.0.7
+Date: 2025-07-08
 Authors@R: c(
     person("Vlad Stefan", "Barbu",
            role = c("aut"),
