@@ -1,3 +1,26 @@
+# version 1.0.7 --------------------------------------------------------------------
+
+# R Version: 4.5.1
+
+# R CMD check results.
+
+No ERRORs, WARNINGs or NOTEs.
+
+
+# R CMD check results through `rhub::rhub_check()`.
+
+There are no WARNINGs or NOTEs, only ERRORs.
+   
+   Similar to previous accepted version.
+
+### Regarding a local Rstudio ERROR, after all CMD check passes.
+
+Solution: `devtools::check(document = FALSE)` 
+
+Info: `https://github.com/rstudio/rstudio/issues/15805`
+
+
+
 # version 1.0.5 --------------------------------------------------------------------
 
 # R Version: 4.4.1
